@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { motion } from 'framer-motion';
 import './Produits.css';
+import { useCart } from '../cartContext';
 
 // Exemple de données produits
 const produits = [
@@ -44,6 +45,7 @@ const produits = [
 ];
 
 export default function Produits() {
+  const { addToCart } = useCart();
   return (
     <div className="produits-container">
       <h2 className="produits-title">Nos produits</h2>
@@ -74,7 +76,7 @@ export default function Produits() {
                   </Typography>
                 </CardContent>
                 <CardActions className="bg-white pb-3">
-                  <Button variant="contained" color="primary" className="!bg-pink-500 hover:!bg-pink-600 rounded-full px-6 shadow-none">
+                  <Button variant="contained" color="primary" className="!bg-pink-500 hover:!bg-pink-600 rounded-full px-6 shadow-none" onClick={() => addToCart(produit)}>
                     Ajouter au panier
                   </Button>
                 </CardActions>
