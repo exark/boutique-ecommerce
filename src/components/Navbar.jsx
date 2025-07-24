@@ -15,6 +15,11 @@ export default function Navbar() {
         <div className="navbar__logo">
           <img src={logo} alt="Logo Solène" />
         </div>
+        <ul className="navbar__menu">
+          <li><a href="#">Accueil</a></li>
+          <li><a href="#">Boutique</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
       </div>
       <div className="navbar__right">
         <div className="navbar__cart">

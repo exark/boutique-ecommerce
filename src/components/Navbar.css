@@ -57,6 +57,26 @@
   align-items: center;
   height: 72px;
   padding: 0 8px;
+  position: relative;
+}
+
+.navbar__menu a::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 18px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s cubic-bezier(.4,2,.6,1);
+  pointer-events: none;
+}
+
+.navbar__menu a:hover::after {
+  transform: scaleX(1);
 }
 
 .navbar__menu a:hover {
