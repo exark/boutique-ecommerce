@@ -49,6 +49,9 @@ export default function Hero() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      <div className="hero-slogan">
+        <h1>Découvrez la nouvelle collection tendance&nbsp;!</h1>
+      </div>
       <div className="embla" ref={emblaRef}>
         <div className="embla__container">
           {images.map((src, idx) => (
