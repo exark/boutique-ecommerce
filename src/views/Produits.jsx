@@ -1,73 +1,48 @@
 import React from 'react';
-import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
+import Masonry from 'react-masonry-css';
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { motion } from 'framer-motion';
 import './Produits.css';
 import { useCart } from '../cartContext';
-
-// Exemple de données produits
-const produits = [
-  {
-    id: 1,
-    nom: 'Robe d’été fleurie',
-    prix: 49.99,
-    image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 2,
-    nom: 'Blouse légère',
-    prix: 29.99,
-    image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 3,
-    nom: 'Jean taille haute',
-    prix: 59.99,
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 4,
-    nom: 'Veste en jean',
-    prix: 69.99,
-    image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 5,
-    nom: 'T-shirt basique',
-    prix: 19.99,
-    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 6,
-    nom: 'Jupe plissée',
-    prix: 39.99,
-    image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80',
-  },
-];
+import { Link } from 'react-router-dom';
+import produits from '../data/produits';
 
 export default function Produits() {
   const { addToCart } = useCart();
+  // Breakpoints pour le responsive masonry
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 2,
+    700: 1
+  };
   return (
     <div className="produits-container">
       <h2 className="produits-title">Nos produits</h2>
-      <Grid container spacing={4} justifyContent="center">
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="masonry-grid"
+        columnClassName="masonry-grid_column"
+      >
         {produits.map((produit, i) => (
-          <Grid item key={produit.id} xs={12} sm={6} md={4} lg={3}>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 40 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.4, 0.2, 0.2, 1] }}
-            >
-              <Card className="rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-200">
+          <motion.div
+            key={produit.id}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.3, delay: i * 0.04, ease: [0.4, 0.2, 0.2, 1] }}
+            style={{ marginBottom: 24 }}
+          >
+            <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none' }}>
+              <Card className="rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-200" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <CardMedia
                   component="img"
-                  height="220"
                   image={produit.image}
                   alt={produit.nom}
+                  sx={{ objectFit: 'cover' }}
                   className="object-cover rounded-t-2xl"
                 />
-                <CardContent className="bg-white">
+                <CardContent className="bg-white" style={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h6" component="div" className="font-semibold text-lg">
                     {produit.nom}
                   </Typography>
@@ -75,16 +50,16 @@ export default function Produits() {
                     {produit.prix.toFixed(2)} €
                   </Typography>
                 </CardContent>
-                <CardActions className="bg-white pb-3">
-                  <Button variant="contained" color="primary" className="!bg-pink-500 hover:!bg-pink-600 rounded-full px-6 shadow-none" onClick={() => addToCart(produit)}>
+                <CardActions className="bg-white pb-3" style={{ justifyContent: 'center' }}>
+                  <Button variant="contained" color="primary" className="!bg-pink-500 hover:!bg-pink-600 rounded-full px-6 shadow-none" onClick={(e) => { e.preventDefault(); addToCart(produit); }}>
                     Ajouter au panier
                   </Button>
                 </CardActions>
               </Card>
-            </motion.div>
-          </Grid>
+            </Link>
+          </motion.div>
         ))}
-      </Grid>
+      </Masonry>
     </div>
   );
 } 

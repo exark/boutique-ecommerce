@@ -8,12 +8,14 @@ import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useCart } from '../cartContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { cart, removeFromCart } = useCart();
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const navigate = useNavigate();
 
   // Génération du message WhatsApp
   function getWhatsappMessage() {
@@ -28,14 +30,27 @@ export default function Navbar() {
   const whatsappNumber = '21695495874'; // sans +
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${getWhatsappMessage()}`;
 
+  // Handler pour le logo : refresh complet vers /home
+  function handleLogoClick() {
+    window.location.href = '/home';
+  }
+
+  // Handler pour Accueil : navigation SPA + scroll smooth
+  function handleAccueilClick(e) {
+    e.preventDefault();
+    navigate('/home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setMenuOpen(false); // ferme le menu mobile si besoin
+  }
+
   return (
     <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}`}>
       <div className="navbar__left">
-        <div className="navbar__logo">
+        <div className="navbar__logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo Solène" />
         </div>
         <ul className="navbar__menu">
-          <li><a href="#">Accueil</a></li>
+          <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li>
           <li><a href="#">Boutique</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
@@ -55,7 +70,7 @@ export default function Navbar() {
           <CloseIcon fontSize="large" />
         </button>
         <ul>
-          <li><a href="#" onClick={() => setMenuOpen(false)}>Accueil</a></li>
+          <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li>
           <li><a href="#" onClick={() => setMenuOpen(false)}>Boutique</a></li>
           <li><a href="#" onClick={() => setMenuOpen(false)}>Contact</a></li>
         </ul>

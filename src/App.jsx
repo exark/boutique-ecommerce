@@ -1,16 +1,22 @@
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Produits from './views/Produits.jsx';
 import { CartProvider } from './cartContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProduitDetail from './views/ProduitDetail';
+import Home from './views/Home';
 
 function App() {
   return (
     <CartProvider>
-      <Navbar />
-      <div style={{ paddingTop: '80px' }}>
-        <Hero />
-        <Produits />
-      </div>
+      <Router>
+        <Navbar />
+        <div style={{ paddingTop: '80px' }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/produit/:id" element={<ProduitDetail />} />
+          </Routes>
+        </div>
+      </Router>
     </CartProvider>
   );
 }
