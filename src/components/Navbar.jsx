@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import logo from '../assets/logo-solene.png';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -11,9 +11,40 @@ import CartDrawer from './CartDrawer';
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const { cart } = useCart();
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const navigate = useNavigate();
+
+  // Gestion du scroll pour masquer/afficher la navbar sur mobile
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Seulement sur mobile (largeur < 900px)
+      if (window.innerWidth <= 900) {
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          // Scroll vers le bas et pas tout en haut
+          setIsNavbarHidden(true);
+        } else if (currentScrollY < lastScrollY) {
+          // Scroll vers le haut
+          setIsNavbarHidden(false);
+        }
+      } else {
+        // Sur desktop, toujours visible
+        setIsNavbarHidden(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   // Handler pour le logo : refresh complet vers /home
   function handleLogoClick() {
@@ -30,7 +61,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}`}>
+    <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}${isNavbarHidden ? ' navbar--hidden' : ''}`}>
       <div className="navbar__left">
         <div className="navbar__logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo Solène" />

@@ -11,12 +11,14 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import StraightenIcon from '@mui/icons-material/Straighten';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SizeSelectionModal from '../components/SizeSelectionModal';
 
 export default function ProduitDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [loading, setLoading] = useState(false);
+  const [sizeModalOpen, setSizeModalOpen] = useState(false);
   const produit = produits.find(p => p.id === parseInt(id));
 
   const handleRetour = () => {
@@ -24,6 +26,44 @@ export default function ProduitDetail() {
     setTimeout(() => {
       navigate('/');
     }, 1000);
+  };
+
+  const handleAddToCartClick = () => {
+    // Vérifier si le produit a des tailles disponibles
+    const availableSizes = produit.tailles.filter(t => t.stock > 0);
+    
+    if (availableSizes.length === 0) {
+      // Aucune taille disponible
+      return;
+    } else if (availableSizes.length === 1) {
+      // Une seule taille disponible, ajouter directement
+      const sizeData = availableSizes[0];
+      addToCart({
+        ...produit,
+        selectedSize: sizeData.taille,
+        stock: sizeData.stock
+      });
+    } else {
+      // Plusieurs tailles, ouvrir le modal
+      setSizeModalOpen(true);
+    }
+  };
+
+  const handleSizeModalClose = () => {
+    setSizeModalOpen(false);
+  };
+
+  const handleSizeModalAddToCart = (productWithSize) => {
+    addToCart(productWithSize);
+    handleSizeModalClose();
+  };
+
+  const hasAvailableSizes = (produit) => {
+    return produit.tailles.some(t => t.stock > 0);
+  };
+
+  const getAvailableSizesCount = (produit) => {
+    return produit.tailles.filter(t => t.stock > 0).length;
   };
 
   if (!produit) {
@@ -87,8 +127,14 @@ export default function ProduitDetail() {
                 <div className="produit-detail-infos">
                   <div className="produit-detail-info"><Inventory2Icon sx={{ color: '#e91e63', mr: 1 }} /> <b>Matière :</b> {produit.matiere}</div>
                   <div className="produit-detail-info"><ColorLensIcon sx={{ color: '#e91e63', mr: 1 }} /> <b>Couleur :</b> {produit.couleur}</div>
-                  <div className="produit-detail-info"><StraightenIcon sx={{ color: '#e91e63', mr: 1 }} /> <b>Tailles :</b> {produit.tailles && produit.tailles.join(', ')}</div>
-                  <div className="produit-detail-info"><CheckCircleIcon sx={{ color: '#e91e63', mr: 1 }} /> <b>Disponibilité :</b> {produit.disponibilite}</div>
+                  <div className="produit-detail-info">
+                    <StraightenIcon sx={{ color: '#e91e63', mr: 1 }} /> 
+                    <b>Tailles disponibles :</b> {getAvailableSizesCount(produit)} taille{getAvailableSizesCount(produit) > 1 ? 's' : ''}
+                  </div>
+                  <div className="produit-detail-info">
+                    <CheckCircleIcon sx={{ color: '#e91e63', mr: 1 }} /> 
+                    <b>Disponibilité :</b> {hasAvailableSizes(produit) ? 'En stock' : 'Rupture de stock'}
+                  </div>
                 </div>
                 <motion.div
                   className="produit-detail-price"
@@ -101,11 +147,12 @@ export default function ProduitDetail() {
                 <Button
                   variant="contained"
                   color="primary"
-                  className="produit-detail-btn"
-                  onClick={() => addToCart(produit)}
+                  className={`produit-detail-btn ${!hasAvailableSizes(produit) ? 'produit-detail-btn-disabled' : ''}`}
+                  onClick={handleAddToCartClick}
+                  disabled={!hasAvailableSizes(produit)}
                   size="large"
                 >
-                  Ajouter au panier
+                  {hasAvailableSizes(produit) ? 'Ajouter au panier' : 'Rupture de stock'}
                 </Button>
                 <Button
                   variant="text"
@@ -119,6 +166,13 @@ export default function ProduitDetail() {
           </motion.div>
         </div>
       </div>
+
+      <SizeSelectionModal
+        open={sizeModalOpen}
+        onClose={handleSizeModalClose}
+        produit={produit}
+        onAddToCart={handleSizeModalAddToCart}
+      />
     </div>
   );
 } 

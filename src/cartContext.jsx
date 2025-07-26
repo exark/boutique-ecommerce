@@ -7,25 +7,39 @@ export function CartProvider({ children }) {
 
   function addToCart(product) {
     setCart((prevCart) => {
-      const existing = prevCart.find((item) => item.id === product.id);
+      // Vérifier si le produit existe déjà avec la même taille
+      const existing = prevCart.find((item) => 
+        item.id === product.id && item.selectedSize === product.selectedSize
+      );
+      
       if (existing) {
+        // Augmenter la quantité si même produit et même taille
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id && item.selectedSize === product.selectedSize 
+            ? { ...item, quantity: item.quantity + 1 } 
+            : item
         );
       } else {
+        // Ajouter comme nouvel article avec la taille sélectionnée
         return [...prevCart, { ...product, quantity: 1 }];
       }
     });
   }
 
-  function removeFromCart(id) {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  function removeFromCart(id, selectedSize) {
+    setCart((prevCart) => 
+      prevCart.filter((item) => 
+        !(item.id === id && item.selectedSize === selectedSize)
+      )
+    );
   }
 
-  function updateQuantity(id, newQuantity) {
+  function updateQuantity(id, selectedSize, newQuantity) {
     setCart((prevCart) => 
       prevCart.map((item) => 
-        item.id === id ? { ...item, quantity: newQuantity } : item
+        item.id === id && item.selectedSize === selectedSize 
+          ? { ...item, quantity: newQuantity } 
+          : item
       )
     );
   }

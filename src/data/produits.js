@@ -2,13 +2,18 @@
 const produits = [
   {
     id: 1,
-    nom: 'Robe d’été fleurie',
+    nom: 'Robe d\'été fleurie',
     prix: 49.99,
     image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-    description: 'Une robe légère et fleurie parfaite pour l’été. Tissu doux, coupe flatteuse et motif délicat.',
+    description: 'Une robe légère et fleurie parfaite pour l\'été. Tissu doux, coupe flatteuse et motif délicat.',
     matiere: 'Coton bio',
     couleur: 'Rose pastel',
-    tailles: ['S', 'M', 'L'],
+    tailles: [
+      { taille: 'S', stock: 5 },
+      { taille: 'M', stock: 0 },
+      { taille: 'L', stock: 2 },
+      { taille: 'XL', stock: 8 }
+    ],
     disponibilite: 'En stock',
     nouveaute: true
   },
@@ -20,7 +25,12 @@ const produits = [
     description: 'Blouse fluide et élégante, idéale pour les journées ensoleillées ou les soirées décontractées.',
     matiere: 'Viscose',
     couleur: 'Blanc cassé',
-    tailles: ['XS', 'S', 'M', 'L'],
+    tailles: [
+      { taille: 'XS', stock: 3 },
+      { taille: 'S', stock: 7 },
+      { taille: 'M', stock: 4 },
+      { taille: 'L', stock: 0 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -32,7 +42,12 @@ const produits = [
     description: 'Jean moderne à taille haute, confortable et stylé pour toutes les morphologies.',
     matiere: 'Denim',
     couleur: 'Bleu clair',
-    tailles: ['S', 'M', 'L', 'XL'],
+    tailles: [
+      { taille: 'S', stock: 2 },
+      { taille: 'M', stock: 6 },
+      { taille: 'L', stock: 4 },
+      { taille: 'XL', stock: 1 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -44,7 +59,10 @@ const produits = [
     description: 'Veste en jean intemporelle, parfaite pour compléter toutes vos tenues.',
     matiere: 'Denim',
     couleur: 'Bleu',
-    tailles: ['M', 'L'],
+    tailles: [
+      { taille: 'M', stock: 3 },
+      { taille: 'L', stock: 1 }
+    ],
     disponibilite: 'Stock limité',
     nouveaute: true
   },
@@ -56,7 +74,13 @@ const produits = [
     description: 'T-shirt simple et confortable, un indispensable du dressing.',
     matiere: 'Coton',
     couleur: 'Blanc',
-    tailles: ['XS', 'S', 'M', 'L', 'XL'],
+    tailles: [
+      { taille: 'XS', stock: 8 },
+      { taille: 'S', stock: 12 },
+      { taille: 'M', stock: 15 },
+      { taille: 'L', stock: 10 },
+      { taille: 'XL', stock: 6 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -68,7 +92,11 @@ const produits = [
     description: 'Jupe élégante et féminine, idéale pour toutes les occasions.',
     matiere: 'Polyester recyclé',
     couleur: 'Noir',
-    tailles: ['S', 'M', 'L'],
+    tailles: [
+      { taille: 'S', stock: 4 },
+      { taille: 'M', stock: 0 },
+      { taille: 'L', stock: 3 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -80,7 +108,12 @@ const produits = [
     description: 'Pull doux et chaud, parfait pour la mi-saison.',
     matiere: 'Laine mérinos',
     couleur: 'Beige',
-    tailles: ['S', 'M', 'L', 'XL'],
+    tailles: [
+      { taille: 'S', stock: 6 },
+      { taille: 'M', stock: 8 },
+      { taille: 'L', stock: 5 },
+      { taille: 'XL', stock: 3 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -92,7 +125,11 @@ const produits = [
     description: 'Chemise élégante à rayures, à porter au bureau ou en sortie.',
     matiere: 'Coton',
     couleur: 'Rayé bleu et blanc',
-    tailles: ['S', 'M', 'L'],
+    tailles: [
+      { taille: 'S', stock: 3 },
+      { taille: 'M', stock: 7 },
+      { taille: 'L', stock: 4 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -104,7 +141,11 @@ const produits = [
     description: 'Pantalon léger et fluide, pour un confort optimal.',
     matiere: 'Lin',
     couleur: 'Beige clair',
-    tailles: ['M', 'L', 'XL'],
+    tailles: [
+      { taille: 'M', stock: 5 },
+      { taille: 'L', stock: 8 },
+      { taille: 'XL', stock: 3 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -116,7 +157,11 @@ const produits = [
     description: 'Cardigan doux et élégant, facile à assortir.',
     matiere: 'Acrylique',
     couleur: 'Beige',
-    tailles: ['S', 'M', 'L'],
+    tailles: [
+      { taille: 'S', stock: 4 },
+      { taille: 'M', stock: 6 },
+      { taille: 'L', stock: 2 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -125,10 +170,14 @@ const produits = [
     nom: 'Short en lin',
     prix: 24.99,
     image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=81',
-    description: 'Short léger en lin, parfait pour l’été.',
+    description: 'Short léger en lin, parfait pour l\'été.',
     matiere: 'Lin',
     couleur: 'Blanc',
-    tailles: ['S', 'M', 'L'],
+    tailles: [
+      { taille: 'S', stock: 8 },
+      { taille: 'M', stock: 10 },
+      { taille: 'L', stock: 6 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -140,7 +189,11 @@ const produits = [
     description: 'Manteau long et chaud, pour un hiver stylé.',
     matiere: 'Laine',
     couleur: 'Camel',
-    tailles: ['M', 'L', 'XL'],
+    tailles: [
+      { taille: 'M', stock: 2 },
+      { taille: 'L', stock: 1 },
+      { taille: 'XL', stock: 0 }
+    ],
     disponibilite: 'Stock limité',
     nouveaute: true
   },
@@ -152,7 +205,11 @@ const produits = [
     description: 'Débardeur tendance, à porter seul ou sous une veste.',
     matiere: 'Coton',
     couleur: 'Rose poudré',
-    tailles: ['XS', 'S', 'M'],
+    tailles: [
+      { taille: 'XS', stock: 5 },
+      { taille: 'S', stock: 8 },
+      { taille: 'M', stock: 6 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },
@@ -164,7 +221,11 @@ const produits = [
     description: 'Combinaison élégante, idéale pour les soirées.',
     matiere: 'Polyester',
     couleur: 'Noir',
-    tailles: ['S', 'M', 'L'],
+    tailles: [
+      { taille: 'S', stock: 3 },
+      { taille: 'M', stock: 5 },
+      { taille: 'L', stock: 2 }
+    ],
     disponibilite: 'En stock',
     nouveaute: true
   },
@@ -176,7 +237,12 @@ const produits = [
     description: 'Sweat confortable et stylé, pour un look décontracté.',
     matiere: 'Coton',
     couleur: 'Gris chiné',
-    tailles: ['S', 'M', 'L', 'XL'],
+    tailles: [
+      { taille: 'S', stock: 7 },
+      { taille: 'M', stock: 10 },
+      { taille: 'L', stock: 8 },
+      { taille: 'XL', stock: 4 }
+    ],
     disponibilite: 'En stock',
     nouveaute: false
   },

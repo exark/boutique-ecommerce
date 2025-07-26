@@ -2,6 +2,7 @@ import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Chip } from '@mui/material';
 import { useCart } from '../cartContext';
 import { useNavigate } from 'react-router-dom';
 import './CartDrawer.css';
@@ -15,7 +16,8 @@ export default function CartDrawer({ open, onClose }) {
     if (cart.length === 0) return '';
     let msg = 'Nouvelle commande :%0A';
     cart.forEach(item => {
-      msg += `- ${item.nom} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
+      const sizeInfo = item.selectedSize ? ` (Taille: ${item.selectedSize})` : '';
+      msg += `- ${item.nom}${sizeInfo} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
     });
     msg += `%0ATotal : ` + cart.reduce((acc, item) => acc + item.prix * item.quantity, 0).toFixed(2) + ' €';
     return msg;
@@ -42,7 +44,7 @@ export default function CartDrawer({ open, onClose }) {
             <>
               <div className="cart-drawer__items">
                 {cart.map((item) => (
-                  <div key={item.id} className="cart-drawer__item">
+                  <div key={`${item.id}-${item.selectedSize}`} className="cart-drawer__item">
                     <img 
                       src={item.image} 
                       alt={item.nom} 
@@ -52,6 +54,13 @@ export default function CartDrawer({ open, onClose }) {
                       <Typography variant="subtitle1" className="cart-drawer__item-name">
                         {item.nom}
                       </Typography>
+                      {item.selectedSize && (
+                        <Chip 
+                          label={`Taille: ${item.selectedSize}`}
+                          size="small"
+                          className="cart-drawer__size-chip"
+                        />
+                      )}
                       <Typography variant="body2" color="text.secondary" className="cart-drawer__item-price">
                         {item.quantity} x {item.prix.toFixed(2)} €
                       </Typography>
@@ -59,7 +68,7 @@ export default function CartDrawer({ open, onClose }) {
                     <Button 
                       size="small" 
                       color="error" 
-                      onClick={() => removeFromCart(item.id)} 
+                      onClick={() => removeFromCart(item.id, item.selectedSize)} 
                       className="cart-drawer__remove-btn"
                     >
                       ✕

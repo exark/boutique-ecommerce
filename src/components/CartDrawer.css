@@ -72,6 +72,16 @@
   line-height: 1.3 !important;
 }
 
+.cart-drawer__size-chip {
+  background: var(--color-accent) !important;
+  color: white !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+  border-radius: 6px !important;
+  height: 18px !important;
+}
+
 .cart-drawer__item-price {
   color: var(--color-accent) !important;
   font-weight: 500 !important;

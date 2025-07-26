@@ -163,6 +163,18 @@
   box-shadow: 0 4px 24px #e91e63a0 !important;
 }
 
+.produit-detail-btn-disabled {
+  background: #ccc !important;
+  color: #999 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+.produit-detail-btn-disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 .produit-detail-retour {
   margin-top: 10px !important;
   color: #e91e63 !important;

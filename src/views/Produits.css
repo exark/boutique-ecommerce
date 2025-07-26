@@ -27,14 +27,39 @@ body {
   font-family: 'Quicksand', system-ui, sans-serif;
 }
 
+/* Layout principal - Desktop et Tablette */
+.produits-layout {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+/* Sidebar des filtres */
+.filters-sidebar {
+  flex-shrink: 0;
+  width: 300px;
+  position: sticky;
+  top: 6rem;
+  height: fit-content;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+}
+
+/* Zone des produits */
+.products-section {
+  flex: 1;
+  min-width: 0;
+}
+
 /* Styles pour react-masonry-css */
 .masonry-grid {
   display: flex;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  justify-content: center;
-  overflow-x: visible;
+  margin: 0;
+  justify-content: flex-start;
 }
 .masonry-grid_column {
   padding-left: 8px; /* gutter size */
@@ -46,4 +71,125 @@ body {
 }
 .masonry-grid_column > div {
   margin-bottom: 16px;
+}
+
+/* Responsive - Tablette */
+@media (max-width: 1024px) {
+  .produits-layout {
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+  }
+  
+  .filters-sidebar {
+    width: 250px;
+  }
+}
+
+/* Responsive - Mobile (retour au layout vertical) */
+@media (max-width: 767px) {
+  .produits-layout {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .filters-sidebar {
+    width: 100%;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+  
+  .products-section {
+    width: 100%;
+  }
+  
+  .masonry-grid {
+    justify-content: center;
+  }
+}
+
+/* Bouton flottant mobile */
+.mobile-filters-button {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  left: 1rem;
+  z-index: 1000;
+}
+
+.mobile-filter-toggle {
+  background: #374151 !important;
+  color: white !important;
+  width: 56px !important;
+  height: 56px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 50% !important;
+  transition: all 0.3s ease !important;
+}
+
+.mobile-filter-toggle:hover {
+  background: #1f2937 !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Drawer mobile */
+.mobile-filters-drawer {
+  display: none;
+}
+
+.mobile-filters-paper {
+  width: 85% !important;
+  max-width: 320px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(12px) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.mobile-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(247, 86, 124, 0.02);
+}
+
+.mobile-filters-title {
+  font-weight: 600 !important;
+  color: var(--color-accent) !important;
+  font-family: 'Quicksand', system-ui, sans-serif !important;
+}
+
+.mobile-filters-close {
+  color: #666 !important;
+  transition: all 0.2s ease !important;
+}
+
+.mobile-filters-close:hover {
+  color: var(--color-accent) !important;
+  transform: scale(1.1) !important;
+}
+
+.mobile-filters-content {
+  padding: 1rem;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* Afficher les éléments mobile uniquement sur mobile */
+@media (max-width: 767px) {
+  .mobile-filters-button {
+    display: block;
+  }
+  
+  .mobile-filters-drawer {
+    display: block;
+  }
+  
+  /* Masquer la sidebar desktop sur mobile */
+  .filters-sidebar {
+    display: none;
+  }
 } 

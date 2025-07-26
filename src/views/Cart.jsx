@@ -10,7 +10,8 @@ import {
   TextField,
   Divider,
   Box,
-  Alert
+  Alert,
+  Chip
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -29,14 +30,14 @@ export default function Cart() {
   const discount = couponApplied ? subtotal * 0.1 : 0; // 10% de réduction
   const total = subtotal + shipping - discount;
 
-  const handleQuantityChange = (itemId, newQuantity) => {
+  const handleQuantityChange = (itemId, selectedSize, newQuantity) => {
     if (newQuantity > 0) {
-      updateQuantity(itemId, newQuantity);
+      updateQuantity(itemId, selectedSize, newQuantity);
     }
   };
 
-  const handleRemoveItem = (itemId) => {
-    removeFromCart(itemId);
+  const handleRemoveItem = (itemId, selectedSize) => {
+    removeFromCart(itemId, selectedSize);
   };
 
   const handleApplyCoupon = () => {
@@ -49,7 +50,8 @@ export default function Cart() {
     // Génération du message WhatsApp
     let msg = 'Nouvelle commande :%0A';
     cart.forEach(item => {
-      msg += `- ${item.nom} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
+      const sizeInfo = item.selectedSize ? ` (Taille: ${item.selectedSize})` : '';
+      msg += `- ${item.nom}${sizeInfo} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
     });
     msg += `%0ASous-total : ${subtotal.toFixed(2)} €`;
     if (shipping > 0) msg += `%0ALivraison : ${shipping.toFixed(2)} €`;
@@ -97,7 +99,7 @@ export default function Cart() {
       <div className="cart-content">
         <div className="cart-items">
           {cart.map((item) => (
-            <Card key={item.id} className="cart-item">
+            <Card key={`${item.id}-${item.selectedSize}`} className="cart-item">
               <CardContent className="cart-item__content">
                 <img 
                   src={item.image} 
@@ -109,6 +111,13 @@ export default function Cart() {
                   <Typography variant="h6" className="cart-item__name">
                     {item.nom}
                   </Typography>
+                  {item.selectedSize && (
+                    <Chip 
+                      label={`Taille: ${item.selectedSize}`}
+                      size="small"
+                      className="cart-item__size-chip"
+                    />
+                  )}
                   <Typography variant="body2" className="cart-item__price">
                     {item.prix.toFixed(2)} €
                   </Typography>
@@ -116,7 +125,7 @@ export default function Cart() {
 
                 <div className="cart-item__quantity">
                   <IconButton 
-                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    onClick={() => handleQuantityChange(item.id, item.selectedSize, item.quantity - 1)}
                     disabled={item.quantity <= 1}
                     className="quantity-btn"
                   >
@@ -126,7 +135,7 @@ export default function Cart() {
                     {item.quantity}
                   </Typography>
                   <IconButton 
-                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    onClick={() => handleQuantityChange(item.id, item.selectedSize, item.quantity + 1)}
                     className="quantity-btn"
                   >
                     <AddIcon />
@@ -140,7 +149,7 @@ export default function Cart() {
                 </div>
 
                 <IconButton 
-                  onClick={() => handleRemoveItem(item.id)}
+                  onClick={() => handleRemoveItem(item.id, item.selectedSize)}
                   className="remove-btn"
                   color="error"
                 >
