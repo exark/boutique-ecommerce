@@ -11,7 +11,7 @@ body {
   background: var(--color-dominante);
   overflow: hidden;
   box-sizing: border-box;
-  height: 550px;
+  height: 480px;
 }
 
 .embla {
@@ -164,7 +164,7 @@ body {
 
 @media (max-width: 900px) {
   .hero-carousel {
-    height: 280px;
+    height: 260px;
   }
   .embla__slide {
     height: 260px;

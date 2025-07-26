@@ -123,13 +123,13 @@ export default function Produits() {
                 style={{ marginBottom: 24 }}
               >
                 <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none' }}>
-                  <Card className="rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-200" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <Card className="rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <CardMedia
                       component="img"
                       image={produit.image}
                       alt={produit.nom}
                       sx={{ objectFit: 'cover' }}
-                      className="object-cover rounded-t-2xl"
+                      className="object-cover"
                     />
                     <CardContent className="bg-white" style={{ flexGrow: 1 }}>
                       <Typography gutterBottom variant="h6" component="div" className="font-semibold text-lg">

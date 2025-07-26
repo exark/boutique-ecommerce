@@ -160,7 +160,7 @@ export default function SearchFilters({ onFiltersChange, produits }) {
         <Box className="filters-content">
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6">Filtres avancés</Typography>
+              <Typography variant="h6">Affinez votre sélection</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Box className="filters-grid">
