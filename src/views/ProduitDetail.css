@@ -217,17 +217,16 @@
   position: fixed !important;
   top: 90px;
   left: 32px;
-  background: #fff8fc !important;
-  border-color: #e91e63 !important;
   color: #e91e63 !important;
-  font-weight: 600 !important;
+  background: rgba(233, 30, 99, 0.1) !important;
   border-radius: 12px !important;
-  box-shadow: 0 2px 12px #ffe4ef, 0 1px 4px #e91e6322 !important;
+  transition: all 0.2s ease !important;
   z-index: 2000;
-  transition: background 0.2s, border 0.2s, box-shadow 0.2s;
-  padding: 6px 22px !important;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+}
+
+.produit-detail-retour-haut:hover {
+  background: rgba(233, 30, 99, 0.2) !important;
+  transform: translateX(-2px);
 }
 
 @media (max-width: 900px) {
@@ -237,11 +236,6 @@
     left: unset;
     margin-top: 12px;
     margin-bottom: 12px;
-    padding: 2px 8px !important;
-    font-size: 0.90rem !important;
-    min-width: unset;
-    min-height: unset;
-    border-radius: 8px !important;
     z-index: 2000;
     display: inline-block;
   }

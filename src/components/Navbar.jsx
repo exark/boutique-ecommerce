@@ -20,10 +20,11 @@ export default function Navbar() {
     window.location.href = '/home';
   }
 
-  // Handler pour Accueil : navigation SPA + scroll smooth
+  // Handler pour Accueil : navigation SPA + smooth scroll
   function handleAccueilClick(e) {
     e.preventDefault();
     navigate('/home');
+    // Smooth scroll vers le haut, même si on est déjà sur la page home
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setMenuOpen(false); // ferme le menu mobile si besoin
   }

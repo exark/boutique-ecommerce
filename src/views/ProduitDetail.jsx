@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, IconButton } from '@mui/material';
 import { useCart } from '../cartContext';
 import './ProduitDetail.css';
 import produits from '../data/produits';
@@ -10,7 +10,7 @@ import FiberNewIcon from '@mui/icons-material/FiberNew';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import StraightenIcon from '@mui/icons-material/Straighten';
-import CategoryIcon from '@mui/icons-material/Category';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function ProduitDetail() {
   const { id } = useParams();
@@ -33,15 +33,13 @@ export default function ProduitDetail() {
   return (
     <div className="produit-detail-global">
       {/* Bouton retour en haut à gauche, hors de la carte */}
-      <Button
-        variant="outlined"
-        className="produit-detail-retour-haut"
+      <IconButton
         onClick={handleRetour}
-        startIcon={<CategoryIcon />}
+        className="produit-detail-retour-haut"
         disabled={loading}
       >
-        Retour
-      </Button>
+        <ArrowBackIcon />
+      </IconButton>
       {loading && (
         <div className="produit-detail-loading-overlay">
           <CircularProgress size={60} thickness={4} style={{ color: '#e91e63' }} />

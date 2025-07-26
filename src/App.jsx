@@ -5,11 +5,14 @@ import ProduitDetail from './views/ProduitDetail';
 import Home from './views/Home';
 import Produits from './views/Produits';
 import Cart from './views/Cart';
+import ScrollToTop from './components/ScrollToTop';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 function App() {
   return (
     <CartProvider>
       <Router>
+        <ScrollToTop />
         <Navbar />
         <div style={{ paddingTop: '80px' }}>
           <Routes>
@@ -20,6 +23,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
           </Routes>
         </div>
+        <ScrollToTopButton />
       </Router>
     </CartProvider>
   );
