@@ -1,0 +1,219 @@
+.search-filters {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  flex: 1;
+}
+
+.search-input .MuiOutlinedInput-root {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.search-input .MuiOutlinedInput-root:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 2px 8px rgba(247, 86, 124, 0.1);
+}
+
+.search-input .MuiOutlinedInput-root.Mui-focused {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 16px rgba(247, 86, 124, 0.15);
+}
+
+.filter-toggle {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  color: var(--color-texte) !important;
+  transition: all 0.2s ease !important;
+}
+
+.filter-toggle:hover {
+  background: rgba(247, 86, 124, 0.05) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent) !important;
+}
+
+.filter-toggle.active {
+  background: var(--color-accent) !important;
+  color: white !important;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 4px 16px rgba(247, 86, 124, 0.2) !important;
+}
+
+.clear-filters {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  color: #666 !important;
+  transition: all 0.2s ease !important;
+}
+
+.clear-filters:hover {
+  background: rgba(255, 0, 0, 0.05) !important;
+  border-color: #ff4444 !important;
+  color: #ff4444 !important;
+}
+
+.filters-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.filters-content .MuiAccordion-root {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.filters-content .MuiAccordionSummary-root {
+  padding: 1rem 1.5rem;
+  background: rgba(247, 86, 124, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.filters-content .MuiAccordionSummary-content {
+  margin: 0 !important;
+}
+
+.filters-content .MuiAccordionDetails-root {
+  padding: 1.5rem;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.price-slider {
+  margin-top: 0.5rem;
+}
+
+.price-slider .MuiSlider-track {
+  background: var(--color-accent) !important;
+  border: none !important;
+}
+
+.price-slider .MuiSlider-thumb {
+  background: var(--color-accent) !important;
+  border: 2px solid white !important;
+  box-shadow: 0 2px 8px rgba(247, 86, 124, 0.3) !important;
+}
+
+.price-slider .MuiSlider-thumb:hover {
+  box-shadow: 0 4px 16px rgba(247, 86, 124, 0.4) !important;
+}
+
+.price-slider .MuiSlider-rail {
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Indicateur de recherche pour le slider */
+.filter-section .searching-indicator {
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  margin-left: 8px;
+  opacity: 0.8;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.filter-section .MuiFormControl-root {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.filter-section .MuiFormControl-root:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section .MuiOutlinedInput-root {
+  border-radius: 8px;
+}
+
+.filter-section .MuiOutlinedInput-root.Mui-focused {
+  border-color: var(--color-accent) !important;
+}
+
+.filter-section .MuiChip-root {
+  background: var(--color-accent) !important;
+  color: white !important;
+  font-size: 0.75rem !important;
+  height: 20px !important;
+}
+
+.filter-section .MuiChip-deleteIcon {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 14px !important;
+}
+
+.filter-section .MuiChip-deleteIcon:hover {
+  color: white !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .filters-content .MuiAccordionDetails-root {
+    padding: 1rem;
+  }
+}
+
+/* Animation pour l'ouverture/fermeture des filtres */
+.filters-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 

@@ -1,0 +1,234 @@
+import React, { useState } from 'react';
+import { useCart } from '../cartContext';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  IconButton, 
+  TextField,
+  Divider,
+  Box,
+  Alert
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import './Cart.css';
+
+export default function Cart() {
+  const { cart, removeFromCart, updateQuantity } = useCart();
+  const navigate = useNavigate();
+  const [couponCode, setCouponCode] = useState('');
+  const [couponApplied, setCouponApplied] = useState(false);
+
+  const subtotal = cart.reduce((acc, item) => acc + item.prix * item.quantity, 0);
+  const shipping = subtotal > 50 ? 0 : 5.99;
+  const discount = couponApplied ? subtotal * 0.1 : 0; // 10% de réduction
+  const total = subtotal + shipping - discount;
+
+  const handleQuantityChange = (itemId, newQuantity) => {
+    if (newQuantity > 0) {
+      updateQuantity(itemId, newQuantity);
+    }
+  };
+
+  const handleRemoveItem = (itemId) => {
+    removeFromCart(itemId);
+  };
+
+  const handleApplyCoupon = () => {
+    if (couponCode.toLowerCase() === 'solene10') {
+      setCouponApplied(true);
+    }
+  };
+
+  const handleCheckout = () => {
+    // Génération du message WhatsApp
+    let msg = 'Nouvelle commande :%0A';
+    cart.forEach(item => {
+      msg += `- ${item.nom} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
+    });
+    msg += `%0ASous-total : ${subtotal.toFixed(2)} €`;
+    if (shipping > 0) msg += `%0ALivraison : ${shipping.toFixed(2)} €`;
+    if (discount > 0) msg += `%0ARéduction : -${discount.toFixed(2)} €`;
+    msg += `%0ATotal : ${total.toFixed(2)} €`;
+    
+    const whatsappNumber = '21695495874';
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${msg}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  if (cart.length === 0) {
+    return (
+      <div className="cart-page">
+        <div className="cart-empty">
+          <Typography variant="h4" className="cart-empty__title">
+            Votre panier est vide
+          </Typography>
+          <Typography variant="body1" className="cart-empty__subtitle">
+            Découvrez nos produits et commencez vos achats !
+          </Typography>
+          <Button 
+            variant="contained" 
+            onClick={() => navigate('/produits')}
+            className="cart-empty__btn"
+          >
+            Voir nos produits
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="cart-page">
+      <div className="cart-header">
+        <IconButton onClick={() => navigate(-1)} className="cart-back-btn">
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h4" className="cart-title">
+          Votre panier ({cart.length} article{cart.length > 1 ? 's' : ''})
+        </Typography>
+      </div>
+
+      <div className="cart-content">
+        <div className="cart-items">
+          {cart.map((item) => (
+            <Card key={item.id} className="cart-item">
+              <CardContent className="cart-item__content">
+                <img 
+                  src={item.image} 
+                  alt={item.nom} 
+                  className="cart-item__image" 
+                />
+                
+                <div className="cart-item__details">
+                  <Typography variant="h6" className="cart-item__name">
+                    {item.nom}
+                  </Typography>
+                  <Typography variant="body2" className="cart-item__price">
+                    {item.prix.toFixed(2)} €
+                  </Typography>
+                </div>
+
+                <div className="cart-item__quantity">
+                  <IconButton 
+                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    disabled={item.quantity <= 1}
+                    className="quantity-btn"
+                  >
+                    <RemoveIcon />
+                  </IconButton>
+                  <Typography variant="body1" className="quantity-text">
+                    {item.quantity}
+                  </Typography>
+                  <IconButton 
+                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    className="quantity-btn"
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </div>
+
+                <div className="cart-item__total">
+                  <Typography variant="h6" className="item-total">
+                    {(item.prix * item.quantity).toFixed(2)} €
+                  </Typography>
+                </div>
+
+                <IconButton 
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="remove-btn"
+                  color="error"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="cart-summary">
+          <Card className="summary-card">
+            <CardContent>
+              <Typography variant="h6" className="summary-title">
+                Résumé de la commande
+              </Typography>
+
+              <div className="coupon-section">
+                <Typography variant="body2" className="coupon-label">
+                  Code promo
+                </Typography>
+                <div className="coupon-input">
+                  <TextField
+                    size="small"
+                    placeholder="SOLENE10"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    disabled={couponApplied}
+                    className="coupon-field"
+                  />
+                  <Button 
+                    variant="outlined" 
+                    onClick={handleApplyCoupon}
+                    disabled={couponApplied || !couponCode}
+                    className="coupon-btn"
+                  >
+                    {couponApplied ? 'Appliqué' : 'Appliquer'}
+                  </Button>
+                </div>
+                {couponApplied && (
+                  <Alert severity="success" className="coupon-alert">
+                    Code promo appliqué ! -10% sur votre commande
+                  </Alert>
+                )}
+              </div>
+
+              <Divider className="summary-divider" />
+
+              <div className="summary-details">
+                <div className="summary-row">
+                  <Typography>Sous-total</Typography>
+                  <Typography>{subtotal.toFixed(2)} €</Typography>
+                </div>
+                
+                <div className="summary-row">
+                  <Typography>Livraison</Typography>
+                  <Typography>
+                    {shipping === 0 ? 'Gratuit' : `${shipping.toFixed(2)} €`}
+                  </Typography>
+                </div>
+
+                {discount > 0 && (
+                  <div className="summary-row discount">
+                    <Typography>Réduction</Typography>
+                    <Typography>-{discount.toFixed(2)} €</Typography>
+                  </div>
+                )}
+
+                <Divider className="summary-divider" />
+
+                <div className="summary-row total">
+                  <Typography variant="h6">Total</Typography>
+                  <Typography variant="h6">{total.toFixed(2)} €</Typography>
+                </div>
+              </div>
+
+              <Button 
+                variant="contained" 
+                onClick={handleCheckout}
+                className="checkout-btn"
+                fullWidth
+              >
+                Commander maintenant
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+} 
