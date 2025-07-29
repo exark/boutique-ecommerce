@@ -113,13 +113,71 @@
   color: #ff4444 !important;
 }
 
+/* Conteneur principal des filtres */
 .filters-content {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 16px 24px 10px 24px;
+}
+
+/* Titre des filtres */
+.filters-content .MuiTypography-h6 {
+  font-size: 1.13rem;
+  font-weight: 500;
+  margin-bottom: 18px;
+  color: var(--color-accent, #e91e63);
+}
+
+/* Grille des filtres */
+.filters-grid {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Section individuelle de filtre */
+.filter-section {
+  margin: 0 0 0 0;
+  padding: 0 0 8px 0;
+}
+
+/* Menus déroulants plus compacts */
+.filter-section .MuiFormControl-root {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: 48px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Slider prix plus discret */
+.price-slider .MuiSlider-thumb {
+  width: 16px;
+  height: 16px;
+  background: #e91e63;
+  box-shadow: 0 2px 8px rgba(233,30,99,0.13);
+}
+.price-slider .MuiSlider-rail {
+  height: 4px;
+  background: #f3e6ea;
+}
+.price-slider .MuiSlider-track {
+  height: 4px;
+  background: #e91e63;
+}
+
+/* Espacement entre les filtres */
+.filter-section + .filter-section {
+  margin-top: 8px;
 }
 
 /* Styles spécifiques pour la sidebar */
@@ -174,26 +232,25 @@
   padding: 1.5rem;
 }
 
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-/* Grille adaptée pour la sidebar */
-.filters-sidebar .filters-grid {
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
 .price-slider {
-  margin-top: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 0 auto;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .filters-grid {
+    max-width: 100%;
+    padding: 0;
+  }
+  .filters-content {
+    padding: 18px 10px 10px 10px;
+  }
+  .price-slider {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 .price-slider .MuiSlider-track {
@@ -299,4 +356,11 @@
     opacity: 1;
     transform: translateY(0);
   }
+} 
+
+.filters-sidebar,
+.filters-content,
+.filters-grid {
+  overflow: visible !important;
+  max-height: none !important;
 } 

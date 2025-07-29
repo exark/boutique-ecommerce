@@ -7,6 +7,7 @@ import Produits from './views/Produits';
 import Cart from './views/Cart';
 import ScrollToTop from './components/ScrollToTop';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import Categories from './views/Categories';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/produits" element={<Produits />} />
             <Route path="/produit/:id" element={<ProduitDetail />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/categories" element={<Categories />} />
           </Routes>
         </div>
         <ScrollToTopButton />

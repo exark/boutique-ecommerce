@@ -26,7 +26,7 @@ import {
 import { useDebounce } from '../hooks/useDebounce';
 import './SearchFilters.css';
 
-export default function SearchFilters({ onFiltersChange, produits }) {
+export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 200]);
@@ -143,126 +143,225 @@ export default function SearchFilters({ onFiltersChange, produits }) {
           }}
           className="search-input"
         />
-        <IconButton 
-          onClick={() => setShowFilters(!showFilters)}
-          className={`filter-toggle ${hasActiveFilters ? 'active' : ''}`}
-        >
-          <FilterIcon />
-        </IconButton>
-        {hasActiveFilters && (
+        {!alwaysOpen && (
+          <IconButton 
+            onClick={() => setShowFilters(!showFilters)}
+            className={`filter-toggle ${hasActiveFilters ? 'active' : ''}`}
+          >
+            <FilterIcon />
+          </IconButton>
+        )}
+        {hasActiveFilters && !alwaysOpen && (
           <IconButton onClick={clearFilters} className="clear-filters">
             <ClearIcon />
           </IconButton>
         )}
       </Box>
-
-      <Collapse in={showFilters}>
+      {alwaysOpen ? (
         <Box className="filters-content">
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6">Affinez votre sélection</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box className="filters-grid">
-                {/* Filtre par prix */}
-                <Box className="filter-section">
-                  <Typography gutterBottom variant="subtitle1">
-                    Prix : {priceRange[0]}€ - {priceRange[1]}€
-                    {debouncedPriceRange[0] !== priceRange[0] || debouncedPriceRange[1] !== priceRange[1] ? (
-                      <span className="searching-indicator">
-                        ⏳ Recherche...
-                      </span>
-                    ) : null}
-                  </Typography>
-                  <Slider
-                    value={priceRange}
-                    onChange={handlePriceChange}
-                    valueLabelDisplay="auto"
-                    min={0}
-                    max={200}
-                    className="price-slider"
-                  />
-                </Box>
-
-                {/* Filtre par catégorie/matière */}
-                <Box className="filter-section">
-                  <FormControl fullWidth>
-                    <InputLabel>Matière</InputLabel>
-                    <Select
-                      multiple
-                      value={selectedCategories}
-                      onChange={handleCategoryChange}
-                      renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip key={value} label={value} size="small" />
-                          ))}
-                        </Box>
-                      )}
-                    >
-                      {categories.map((category) => (
-                        <MenuItem key={category} value={category}>
-                          {category}
-                        </MenuItem>
+          <Typography variant="h6" style={{ marginBottom: 16, fontWeight: 600 }}>
+            Affinez votre sélection
+          </Typography>
+          <Box className="filters-grid">
+            {/* Filtre par prix */}
+            <Box className="filter-section">
+              <Typography gutterBottom variant="subtitle1">
+                Prix : {priceRange[0]}€ - {priceRange[1]}€
+                {debouncedPriceRange[0] !== priceRange[0] || debouncedPriceRange[1] !== priceRange[1] ? (
+                  <span className="searching-indicator">
+                    ⏳ Recherche...
+                  </span>
+                ) : null}
+              </Typography>
+              <Slider
+                value={priceRange}
+                onChange={handlePriceChange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={200}
+                className="price-slider"
+              />
+            </Box>
+            {/* Filtre par catégorie/matière */}
+            <Box className="filter-section">
+              <FormControl fullWidth>
+                <InputLabel>Matière</InputLabel>
+                <Select
+                  multiple
+                  value={selectedCategories}
+                  onChange={handleCategoryChange}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} size="small" />
                       ))}
-                    </Select>
-                  </FormControl>
-                </Box>
-
-                {/* Filtre par couleur */}
-                <Box className="filter-section">
-                  <FormControl fullWidth>
-                    <InputLabel>Couleur</InputLabel>
-                    <Select
-                      multiple
-                      value={selectedColors}
-                      onChange={handleColorChange}
-                      renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip key={value} label={value} size="small" />
-                          ))}
-                        </Box>
-                      )}
-                    >
-                      {colors.map((color) => (
-                        <MenuItem key={color} value={color}>
-                          {color}
-                        </MenuItem>
+                    </Box>
+                  )}
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            {/* Filtre par couleur */}
+            <Box className="filter-section">
+              <FormControl fullWidth>
+                <InputLabel>Couleur</InputLabel>
+                <Select
+                  multiple
+                  value={selectedColors}
+                  onChange={handleColorChange}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} size="small" />
                       ))}
-                    </Select>
-                  </FormControl>
-                </Box>
-
-                {/* Filtre par taille */}
-                <Box className="filter-section">
-                  <FormControl fullWidth>
-                    <InputLabel>Taille</InputLabel>
-                    <Select
-                      multiple
-                      value={selectedSizes}
-                      onChange={handleSizeChange}
-                      renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip key={value} label={value} size="small" />
-                          ))}
-                        </Box>
-                      )}
-                    >
-                      {sizes.map((size) => (
-                        <MenuItem key={size} value={size}>
-                          {size}
-                        </MenuItem>
+                    </Box>
+                  )}
+                >
+                  {colors.map((color) => (
+                    <MenuItem key={color} value={color}>
+                      {color}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            {/* Filtre par taille */}
+            <Box className="filter-section">
+              <FormControl fullWidth>
+                <InputLabel>Taille</InputLabel>
+                <Select
+                  multiple
+                  value={selectedSizes}
+                  onChange={handleSizeChange}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} size="small" />
                       ))}
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
+                    </Box>
+                  )}
+                >
+                  {sizes.map((size) => (
+                    <MenuItem key={size} value={size}>
+                      {size}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
         </Box>
-      </Collapse>
+      ) : (
+        <Collapse in={showFilters}>
+          <Box className="filters-content">
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="h6">Affinez votre sélection</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box className="filters-grid">
+                  {/* Filtre par prix */}
+                  <Box className="filter-section">
+                    <Typography gutterBottom variant="subtitle1">
+                      Prix : {priceRange[0]}€ - {priceRange[1]}€
+                      {debouncedPriceRange[0] !== priceRange[0] || debouncedPriceRange[1] !== priceRange[1] ? (
+                        <span className="searching-indicator">
+                          ⏳ Recherche...
+                        </span>
+                      ) : null}
+                    </Typography>
+                    <Slider
+                      value={priceRange}
+                      onChange={handlePriceChange}
+                      valueLabelDisplay="auto"
+                      min={0}
+                      max={200}
+                      className="price-slider"
+                    />
+                  </Box>
+                  {/* Filtre par catégorie/matière */}
+                  <Box className="filter-section">
+                    <FormControl fullWidth>
+                      <InputLabel>Matière</InputLabel>
+                      <Select
+                        multiple
+                        value={selectedCategories}
+                        onChange={handleCategoryChange}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} size="small" />
+                            ))}
+                          </Box>
+                        )}
+                      >
+                        {categories.map((category) => (
+                          <MenuItem key={category} value={category}>
+                            {category}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  {/* Filtre par couleur */}
+                  <Box className="filter-section">
+                    <FormControl fullWidth>
+                      <InputLabel>Couleur</InputLabel>
+                      <Select
+                        multiple
+                        value={selectedColors}
+                        onChange={handleColorChange}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} size="small" />
+                            ))}
+                          </Box>
+                        )}
+                      >
+                        {colors.map((color) => (
+                          <MenuItem key={color} value={color}>
+                            {color}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  {/* Filtre par taille */}
+                  <Box className="filter-section">
+                    <FormControl fullWidth>
+                      <InputLabel>Taille</InputLabel>
+                      <Select
+                        multiple
+                        value={selectedSizes}
+                        onChange={handleSizeChange}
+                        renderValue={(selected) => (
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} size="small" />
+                            ))}
+                          </Box>
+                        )}
+                      >
+                        {sizes.map((size) => (
+                          <MenuItem key={size} value={size}>
+                            {size}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        </Collapse>
+      )}
     </div>
   );
 } 

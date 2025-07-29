@@ -116,27 +116,40 @@ export default function Produits() {
           </button>
         </div>
       )}
-      
-      {/* Bouton flottant pour mobile */}
-      <div className="mobile-filters-button">
-        <IconButton
-          onClick={handleMobileFiltersToggle}
-          className="mobile-filter-toggle"
-          aria-label="Ouvrir les filtres"
-        >
-          <FilterIcon />
-        </IconButton>
+      {/* Barre sticky avec texte filtre/trier pour mobile/tablette */}
+      <div className="filters-sticky-mobile-bar">
+        <span className="filters-open-text" onClick={() => setMobileFiltersOpen(true)}>
+          Filtrer et trier
+        </span>
       </div>
-
+      <Drawer
+        anchor="left"
+        open={mobileFiltersOpen}
+        onClose={() => setMobileFiltersOpen(false)}
+        className="mobile-filters-drawer"
+        PaperProps={{ className: 'mobile-filters-paper' }}
+      >
+        <div className="mobile-filters-header">
+          <span className="mobile-filters-title">Filtres & Tri</span>
+          <button className="mobile-filters-close" onClick={() => setMobileFiltersOpen(false)} aria-label="Fermer">✕</button>
+        </div>
+        <div className="mobile-filters-content">
+          <SearchFilters 
+            onFiltersChange={handleFiltersChange}
+            produits={produits}
+            alwaysOpen={true}
+          />
+        </div>
+      </Drawer>
       <div className="produits-layout">
-        {/* Sidebar des filtres - Desktop/Tablette */}
+        {/* Sidebar des filtres - Desktop uniquement */}
         <div className="filters-sidebar">
           <SearchFilters 
             onFiltersChange={handleFiltersChange}
             produits={produits}
+            alwaysOpen={true}
           />
         </div>
-        
         {/* Zone des produits */}
         <div className="products-section">
           <Masonry
@@ -193,37 +206,6 @@ export default function Produits() {
           </Masonry>
         </div>
       </div>
-
-      {/* Drawer mobile pour les filtres */}
-      <Drawer
-        anchor="left"
-        open={mobileFiltersOpen}
-        onClose={handleMobileFiltersClose}
-        className="mobile-filters-drawer"
-        PaperProps={{
-          className: 'mobile-filters-paper'
-        }}
-      >
-        <div className="mobile-filters-header">
-          <Typography variant="h6" className="mobile-filters-title">
-            Filtres
-          </Typography>
-          <IconButton
-            onClick={handleMobileFiltersClose}
-            className="mobile-filters-close"
-            aria-label="Fermer les filtres"
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <div className="mobile-filters-content">
-          <SearchFilters 
-            onFiltersChange={handleFiltersChange}
-            produits={produits}
-          />
-        </div>
-      </Drawer>
-
       <SizeSelectionModal
         open={sizeModalOpen}
         onClose={handleSizeModalClose}

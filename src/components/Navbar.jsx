@@ -24,33 +24,7 @@ export default function Navbar() {
   const categories = Array.from(new Set(produits.map(p => p.categorie))).sort();
 
   // Gestion du scroll pour masquer/afficher la navbar sur mobile
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Seulement sur mobile (largeur < 900px)
-      if (window.innerWidth <= 900) {
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-          // Scroll vers le bas et pas tout en haut
-          setIsNavbarHidden(true);
-        } else if (currentScrollY < lastScrollY) {
-          // Scroll vers le haut
-          setIsNavbarHidden(false);
-        }
-      } else {
-        // Sur desktop, toujours visible
-        setIsNavbarHidden(false);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY]);
+  // useEffect supprimé car la navbar doit toujours être visible
 
   // Handler pour le logo : refresh complet vers /home
   function handleLogoClick() {
@@ -81,7 +55,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}${isNavbarHidden ? ' navbar--hidden' : ''}`}>
+    <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}`}>
       <div className="navbar__left">
         <div className="navbar__logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo Solène" />
@@ -95,9 +69,8 @@ export default function Navbar() {
             {/* <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li> */}
             <li><a href="/home" onClick={(e) => { e.preventDefault(); navigate('/home'); setMenuOpen(false); }}>Notre collection</a></li>
             <li>
-              <a href="#" onClick={e => e.preventDefault()}>Catégories</a>
+              <a href="/categories" onClick={e => { e.preventDefault(); navigate('/categories'); setMenuOpen(false); }}>Catégories</a>
             </li>
-            <li><a href="#">Contact</a></li>
           </ul>
           <SidebarCategories
             open={categoriesOpen}
@@ -127,23 +100,19 @@ export default function Navbar() {
         <hr style={{ margin: '24px 0 12px 0', border: 'none', borderTop: '1px solid #eee' }} />
         <div style={{ margin: '0 0 8px 0', fontWeight: 600, color: '#e91e63', fontSize: '1.1rem', paddingLeft: 2 }}>Catégories</div>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {categories.map(cat => (
-            <li key={cat}>
-              <a
-                href="#"
-                style={{ display: 'block', padding: '10px 0 10px 2px', color: '#333', fontWeight: 500, textDecoration: 'none', borderRadius: 8, transition: 'background 0.15s' }}
-                onClick={e => { e.preventDefault(); handleMobileSelectCategory(cat); }}
-                onKeyDown={e => { if (e.key === 'Enter') handleMobileSelectCategory(cat); }}
-              >
-                {cat}
-              </a>
-            </li>
-          ))}
+          <li>
+            <a
+              href="/categories"
+              style={{ display: 'block', padding: '10px 0 10px 2px', color: '#333', fontWeight: 500, textDecoration: 'none', borderRadius: 8, transition: 'background 0.15s' }}
+              onClick={e => { e.preventDefault(); navigate('/categories'); setMenuOpen(false); }}
+              onKeyDown={e => { if (e.key === 'Enter') { navigate('/categories'); setMenuOpen(false); } }}
+            >
+              Catégories
+            </a>
+          </li>
         </ul>
         <hr style={{ margin: '24px 0 12px 0', border: 'none', borderTop: '1px solid #eee' }} />
-        <ul>
-          <li><a href="#" onClick={() => setMenuOpen(false)}>Contact</a></li>
-        </ul>
+        {/* Lien Contact supprimé */}
       </div>
       {menuOpen && <div className="navbar__backdrop" onClick={() => setMenuOpen(false)} />}
       
