@@ -111,13 +111,12 @@ export default function CartDrawer({ open, onClose }) {
           {cart.length > 0 && (
             <Button
               variant="contained"
-              color="success"
               className="cart-drawer__whatsapp-btn"
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Commander rapidement
+              Envoyer commande
             </Button>
           )}
         </div>

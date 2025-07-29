@@ -4,6 +4,7 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [notification, setNotification] = useState({ open: false, productName: '', selectedSize: '' });
 
   function addToCart(product) {
     setCart((prevCart) => {
@@ -23,6 +24,13 @@ export function CartProvider({ children }) {
         // Ajouter comme nouvel article avec la taille sélectionnée
         return [...prevCart, { ...product, quantity: 1 }];
       }
+    });
+    
+    // Afficher la notification
+    setNotification({
+      open: true,
+      productName: product.nom,
+      selectedSize: product.selectedSize || ''
     });
   }
 
@@ -44,8 +52,12 @@ export function CartProvider({ children }) {
     );
   }
 
+  function closeNotification() {
+    setNotification({ open: false, productName: '', selectedSize: '' });
+  }
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, notification, closeNotification }}>
       {children}
     </CartContext.Provider>
   );

@@ -54,17 +54,23 @@ body {
 .products-section {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1400px; /* Permet d'utiliser toute la largeur */
 }
 
 /* Styles pour react-masonry-css */
 .masonry-grid {
   display: flex;
-  width: 100%;
-  margin: 0;
-  justify-content: flex-start;
+  width: auto;
+  margin: 0 auto;
+  justify-content: center;
 }
 .masonry-grid_column {
-  padding-left: 8px; /* gutter size */
+  padding-left: 2px; /* gap minimal */
   background-clip: padding-box;
   box-sizing: border-box;
 }
@@ -72,7 +78,7 @@ body {
   padding-left: 0; /* Pas de padding sur la première colonne */
 }
 .masonry-grid_column > div {
-  margin-bottom: 16px;
+  margin-bottom: 8px; /* cards plus rapprochées verticalement */
 }
 
 /* Responsive - Tablette */
@@ -132,7 +138,7 @@ body {
     padding-right: 0.5rem;
     background: rgba(255,255,255,0.85);
     backdrop-filter: blur(8px);
-    border-radius: 0 0 18px 18px !important;
+    border-radius: 0 !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
@@ -229,4 +235,63 @@ body {
 .filters-open-text:hover {
   color: #b71c47;
   text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .filters-sticky-mobile-bar {
+    background: transparent;
+    box-shadow: none;
+    /* L'effet glass/blur sera réappliqué uniquement en sticky plus bas */
+  }
+  .filters-open-text {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .filters-sticky-mobile-bar.sticky-glass {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    border-radius: 0 !important;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+}
+
+/* Pour appliquer la classe sticky-glass dynamiquement, il faut l'ajouter en JS si besoin, sinon on peut cibler via :not(:not(.sticky)) si sticky est déjà utilisé. */
+@media (max-width: 1024px) {
+  .display-toggle-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    margin-left: auto;
+    margin-right: 0;
+    width: auto;
+  }
+}
+@media (min-width: 1025px) {
+  .display-toggle-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    margin-left: auto;
+    margin-right: 0;
+    width: auto;
+  }
+}
+@media (min-width: 1025px) {
+  .filters-open-text {
+    display: none !important;
+  }
+}
+.masonry-grid_column-tight {
+  padding-left: 2px !important;
+}
+.masonry-grid_column-tight:first-child {
+  padding-left: 0 !important;
+}
+.masonry-grid-left {
+  justify-content: flex-start !important;
 }

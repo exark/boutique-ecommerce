@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-css';
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Drawer, IconButton } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, CardActions, Button, Drawer, IconButton, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
 import { FilterList as FilterIcon, Close as CloseIcon } from '@mui/icons-material';
 import './Produits.css';
@@ -9,6 +9,9 @@ import { Link, useLocation } from 'react-router-dom';
 import produits from '../data/produits';
 import SearchFilters from '../components/SearchFilters';
 import SizeSelectionModal from '../components/SizeSelectionModal';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import AddIcon from '@mui/icons-material/Add';
+import { useTheme } from '@mui/material/styles';
 
 export default function Produits() {
   const { addToCart } = useCart();
@@ -19,6 +22,12 @@ export default function Produits() {
   const [sizeModalOpen, setSizeModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const filtersBarRef = useRef(null);
+  const [isSticky, setIsSticky] = useState(false);
+  const isMobileOrTablet = useMediaQuery('(max-width:1024px)');
+  const [columns, setColumns] = useState(isMobileOrTablet ? 1 : 2); // 1 colonne par défaut sur mobile, 2 (4 colonnes) sur desktop
+  const theme = useTheme();
+  const [hoveredProductId, setHoveredProductId] = useState(null);
   
   // Filtrage par catégorie si sélectionnée
   useEffect(() => {
@@ -36,12 +45,40 @@ export default function Produits() {
     }
   }, [location.state]);
 
+  useEffect(() => {
+    const ref = filtersBarRef.current;
+    if (!ref) return;
+
+    // On crée un élément sentinelle juste avant la barre
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '0px';
+    sentinel.style.width = '1px';
+    sentinel.style.height = '1px';
+    ref.parentNode.insertBefore(sentinel, ref);
+
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        // Si la sentinelle n'est plus visible, la barre est sticky
+        setIsSticky(!entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0,
+      }
+    );
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+      if (sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
+    };
+  }, []);
+
   // Breakpoints pour le responsive masonry
-  const breakpointColumnsObj = {
-    default: 3,
-    1100: 2,
-    700: 1
-  };
+  const breakpointColumnsObj = isMobileOrTablet
+    ? { default: columns === 1 ? 1 : columns } // Si "liste", forcer 1 colonne sur mobile
+    : { default: columns === 1 ? 2 : columns === 2 ? 4 : columns, 1100: 2, 700: 1 }; // columns 2 = 4 colonnes
 
   const handleFiltersChange = (filteredProducts) => {
     setIsFiltering(true);
@@ -104,7 +141,60 @@ export default function Produits() {
 
   return (
     <div className="produits-container">
-      <h2 className="produits-title">Nos produits</h2>
+      {/* Ligne titre + boutons d'ajustement - Desktop uniquement */}
+      <div style={{ display: isMobileOrTablet ? 'none' : 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 2rem' }}>
+        <h2 className="produits-title" style={{ marginBottom: 0 }}>Nos produits</h2>
+        <div className="display-toggle-buttons" style={{ gap: 18 }}>
+          {[1, 2].map((col, idx) => (
+            <button
+              key={col}
+              onClick={() => setColumns(col)}
+              aria-label={`Afficher ${col === 1 ? 2 : 4} produits par ligne`}
+              className={columns === col ? 'toggle-btn-active' : ''}
+              style={{
+                background: 'none',
+                border: 'none',
+                borderRadius: 0,
+                padding: 0,
+                margin: 0,
+                cursor: 'pointer',
+                outline: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                opacity: columns === col ? 1 : 0.7,
+                transition: 'opacity 0.2s',
+                height: 38,
+                width: 38,
+                position: 'relative',
+              }}
+            >
+              {/* Icônes SVG personnalisées */}
+              {col === 1 && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="#222" strokeWidth="2" fill="none" />
+                </svg>
+              )}
+              {col === 2 && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="4" y="4" width="7.5" height="16" rx="2" stroke="#222" strokeWidth="2" fill="none" />
+                  <rect x="12.5" y="4" width="7.5" height="16" rx="2" stroke="#222" strokeWidth="2" fill="none" />
+                </svg>
+              )}
+              {/* Underline effet actif */}
+              <span style={{
+                display: 'block',
+                height: columns === col ? 4 : 0,
+                width: 28,
+                marginTop: 2,
+                background: columns === col ? '#222' : 'transparent',
+                borderRadius: 2,
+                transition: 'all 0.18s',
+              }} />
+            </button>
+          ))}
+        </div>
+      </div>
       {selectedCategory && (
         <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontWeight: 600, color: '#e91e63' }}>Catégorie : {selectedCategory}</span>
@@ -117,10 +207,66 @@ export default function Produits() {
         </div>
       )}
       {/* Barre sticky avec texte filtre/trier pour mobile/tablette */}
-      <div className="filters-sticky-mobile-bar">
+      <div
+        className={`filters-sticky-mobile-bar${isSticky ? ' sticky-glass' : ''}`}
+        ref={filtersBarRef}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+      >
         <span className="filters-open-text" onClick={() => setMobileFiltersOpen(true)}>
           Filtrer et trier
         </span>
+        {isMobileOrTablet && (
+          <div className="display-toggle-buttons" style={{ gap: 12 }}>
+            {[1, 2].map((col) => (
+              <button
+                key={col}
+                onClick={() => setColumns(col)}
+                aria-label={`Afficher ${col === 1 ? 1 : 2} produits par ligne`}
+                className={columns === col ? 'toggle-btn-active' : ''}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  borderRadius: 0,
+                  padding: 0,
+                  margin: 0,
+                  cursor: 'pointer',
+                  outline: 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  opacity: columns === col ? 1 : 0.7,
+                  transition: 'opacity 0.2s',
+                  height: 32,
+                  width: 32,
+                  position: 'relative',
+                }}
+              >
+                {/* Icônes SVG personnalisées */}
+                {col === 1 && (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="#e91e63" strokeWidth="2" fill="none" />
+                  </svg>
+                )}
+                {col === 2 && (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="7.5" height="16" rx="2" stroke="#e91e63" strokeWidth="2" fill="none" />
+                    <rect x="12.5" y="4" width="7.5" height="16" rx="2" stroke="#e91e63" strokeWidth="2" fill="none" />
+                  </svg>
+                )}
+                {/* Underline effet actif */}
+                <span style={{
+                  display: 'block',
+                  height: columns === col ? 3 : 0,
+                  width: 20,
+                  marginTop: 2,
+                  background: columns === col ? '#e91e63' : 'transparent',
+                  borderRadius: 2,
+                  transition: 'all 0.18s',
+                }} />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <Drawer
         anchor="left"
@@ -151,58 +297,184 @@ export default function Produits() {
           />
         </div>
         {/* Zone des produits */}
-        <div className="products-section">
+        <div className="products-section" style={{ transition: 'all 0.4s cubic-bezier(0.4,0.2,0.2,1)', padding: 0, margin: 0 }}>
           <Masonry
             breakpointCols={breakpointColumnsObj}
-            className="masonry-grid"
-            columnClassName="masonry-grid_column"
+            className={`masonry-grid${columns === 2 ? ' masonry-grid-left' : ''}`}
+            columnClassName="masonry-grid_column masonry-grid_column-tight"
           >
-            {filteredProducts.map((produit, i) => (
-              <motion.div
-                key={`${produit.id}-${isFiltering}`}
-                initial={isFiltering ? { opacity: 0, scale: 0.9 } : { opacity: 1, scale: 1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ 
-                  duration: 0.3, 
-                  delay: isFiltering ? i * 0.03 : 0,
-                  ease: [0.4, 0.2, 0.2, 1] 
-                }}
-                style={{ marginBottom: 24 }}
-              >
-                <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none' }}>
-                  <Card className="rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            {filteredProducts.map((produit, i) => {
+              const availableSizes = produit.tailles ? produit.tailles.filter(t => t.stock > 0) : [];
+              return (
+                <Card
+                  key={`${produit.id}-${isFiltering}-${columns}`}
+                  elevation={0}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    width: '100%',
+                    maxWidth: columns === 1 ? 400 : columns === 2 ? '99%' : 320, // Card prend presque toute la colonne en mode 4 par ligne
+                    height: columns === 1 ? 600 : columns === 2 ? 540 : 370, // Card plus haute en mode 4 par ligne
+                    background: 'none',
+                    border: 'none',
+                    boxShadow: 'none',
+                    margin: 0,
+                    padding: 0,
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                  onMouseEnter={() => !isMobileOrTablet && setHoveredProductId(produit.id)}
+                  onMouseLeave={() => !isMobileOrTablet && setHoveredProductId(null)}
+                >
+                  <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <CardMedia
                       component="img"
                       image={produit.image}
                       alt={produit.nom}
-                      sx={{ objectFit: 'cover' }}
-                      className="object-cover"
+                      sx={{
+                        width: '100%',
+                        height: columns === 1 ? 440 : columns === 2 ? 390 : 220, // Image plus haute en mode 4 par ligne
+                        objectFit: 'cover',
+                        display: 'block',
+                        border: 'none',
+                        margin: 0,
+                        padding: 0,
+                        cursor: 'pointer',
+                        transition: 'transform 0.2s ease',
+                        '&:hover': {
+                          transform: 'scale(1.02)',
+                        },
+                      }}
                     />
-                    <CardContent className="bg-white" style={{ flexGrow: 1 }}>
-                      <Typography gutterBottom variant="h6" component="div" className="font-semibold text-lg">
-                        {produit.nom}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" className="mb-2">
-                        {produit.prix.toFixed(2)} €
-                      </Typography>
-                    </CardContent>
-                    <CardActions className="bg-white pb-3" style={{ justifyContent: 'center' }}>
-                      <Button 
-                        variant="contained" 
-                        color="primary" 
-                        className={`!bg-pink-500 hover:!bg-pink-600 rounded-full px-6 shadow-none ${
-                          !hasAvailableSizes(produit) ? '!bg-gray-400 !cursor-not-allowed' : ''
-                        }`}
-                        onClick={(e) => handleAddToCartClick(e, produit)}
-                        disabled={!hasAvailableSizes(produit)}
-                      >
-                        {hasAvailableSizes(produit) ? 'Ajouter au panier' : 'Rupture de stock'}
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
+                  </Link>
+                  <CardContent sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    alignItems: 'stretch',
+                    background: 'none',
+                    border: 'none',
+                    margin: 0,
+                    padding: '12px 8px 0 8px',
+                  }}>
+                    {isMobileOrTablet ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: '100%' }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1, minWidth: 0 }}>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '1.08rem', mb: 0.5, wordBreak: 'break-word' }}>{produit.nom}</Typography>
+                            <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
+                          </div>
+                          {columns === 2 && (
+                            <Button
+                              variant="text"
+                              color="inherit"
+                              style={{ 
+                                minWidth: 36, 
+                                height: 36, 
+                                borderRadius: '50%', 
+                                background: 'transparent', 
+                                boxShadow: 'none', 
+                                padding: 0, 
+                                margin: 0,
+                                flexShrink: 0,
+                                marginLeft: 8
+                              }}
+                              onClick={(e) => handleAddToCartClick(e, produit)}
+                              disabled={!hasAvailableSizes(produit)}
+                              aria-label="Ajouter au panier"
+                            >
+                              <AddIcon style={{ color: '#222', fontSize: 28 }} />
+                            </Button>
+                          )}
+                        </div>
+                        {columns === 1 && (
+                          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
+                            <Button
+                              variant="contained"
+                              style={{ 
+                                background: '#000', 
+                                color: '#fff', 
+                                borderRadius: '8px', 
+                                padding: '8px 16px',
+                                textTransform: 'none',
+                                fontWeight: 600,
+                                boxShadow: 'none'
+                              }}
+                              onClick={(e) => handleAddToCartClick(e, produit)}
+                              disabled={!hasAvailableSizes(produit)}
+                            >
+                              {hasAvailableSizes(produit) ? 'Ajouter au panier' : 'Rupture de stock'}
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '1.08rem', mb: 0.5 }}>{produit.nom}</Typography>
+                        <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
+                      </>
+                    )}
+                  </CardContent>
+                  {/* OVERLAY GLASS DESKTOP : tailles au hover, collé en bas de l'image */}
+                  {!isMobileOrTablet && hoveredProductId === produit.id && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: '140px', // 200px (img) - 60px (overlay)
+                        height: 60,
+                        width: '100%',
+                        background: 'rgba(255,255,255,0.85)',
+                        backdropFilter: 'blur(8px)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 2,
+                        boxShadow: '0 -2px 16px rgba(0,0,0,0.07)',
+                        transition: 'all 0.18s',
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                        borderTopLeftRadius: 0,
+                        borderTopRightRadius: 0,
+                      }}
+                    >
+                      {availableSizes.length > 0 ? (
+                        <div style={{ display: 'flex', gap: 28, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                          {availableSizes.map((t) => (
+                            <span
+                              key={t.taille}
+                              style={{
+                                fontWeight: 500,
+                                fontSize: '1.18rem',
+                                color: '#222',
+                                cursor: 'pointer',
+                                padding: '2px 8px',
+                                borderRadius: 4,
+                                transition: 'color 0.15s, text-decoration 0.15s',
+                                userSelect: 'none',
+                              }}
+                              onClick={() => {
+                                addToCart({ ...produit, selectedSize: t.taille, stock: t.stock });
+                                setHoveredProductId(null);
+                              }}
+                              onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'}
+                              onMouseOut={e => e.currentTarget.style.textDecoration = 'none'}
+                            >
+                              {t.taille}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span style={{ color: '#b71c47', fontWeight: 600 }}>Rupture de stock</span>
+                      )}
+                    </div>
+                  )}
+                </Card>
+              );
+            })}
           </Masonry>
         </div>
       </div>
