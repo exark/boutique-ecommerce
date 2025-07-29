@@ -5,19 +5,37 @@ import { motion } from 'framer-motion';
 import { FilterList as FilterIcon, Close as CloseIcon } from '@mui/icons-material';
 import './Produits.css';
 import { useCart } from '../cartContext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import produits from '../data/produits';
 import SearchFilters from '../components/SearchFilters';
 import SizeSelectionModal from '../components/SizeSelectionModal';
 
 export default function Produits() {
   const { addToCart } = useCart();
+  const location = useLocation();
+  const [selectedCategory, setSelectedCategory] = useState(location.state?.categorie || null);
   const [filteredProducts, setFilteredProducts] = useState(produits);
   const [isFiltering, setIsFiltering] = useState(false);
   const [sizeModalOpen, setSizeModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   
+  // Filtrage par catégorie si sélectionnée
+  useEffect(() => {
+    if (selectedCategory) {
+      setFilteredProducts(produits.filter(p => p.categorie === selectedCategory));
+    } else {
+      setFilteredProducts(produits);
+    }
+  }, [selectedCategory]);
+
+  // Si navigation avec state (depuis la navbar)
+  useEffect(() => {
+    if (location.state?.categorie) {
+      setSelectedCategory(location.state.categorie);
+    }
+  }, [location.state]);
+
   // Breakpoints pour le responsive masonry
   const breakpointColumnsObj = {
     default: 3,
@@ -27,7 +45,12 @@ export default function Produits() {
 
   const handleFiltersChange = (filteredProducts) => {
     setIsFiltering(true);
-    setFilteredProducts(filteredProducts);
+    // Si une catégorie est sélectionnée, on filtre d'abord par catégorie
+    if (selectedCategory) {
+      setFilteredProducts(filteredProducts.filter(p => p.categorie === selectedCategory));
+    } else {
+      setFilteredProducts(filteredProducts);
+    }
     
     // Reset l'état de filtrage après l'animation
     setTimeout(() => setIsFiltering(false), 100);
@@ -82,6 +105,17 @@ export default function Produits() {
   return (
     <div className="produits-container">
       <h2 className="produits-title">Nos produits</h2>
+      {selectedCategory && (
+        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontWeight: 600, color: '#e91e63' }}>Catégorie : {selectedCategory}</span>
+          <button
+            style={{ background: '#eee', border: 'none', borderRadius: 16, padding: '4px 14px', cursor: 'pointer', color: '#e91e63', fontWeight: 500 }}
+            onClick={() => setSelectedCategory(null)}
+          >
+            Réinitialiser
+          </button>
+        </div>
+      )}
       
       {/* Bouton flottant pour mobile */}
       <div className="mobile-filters-button">

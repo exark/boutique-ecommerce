@@ -7,6 +7,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useCart } from '../cartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import CartDrawer from './CartDrawer';
+import SidebarCategories from './SidebarCategories';
+import produits from '../data/produits';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,6 +18,10 @@ export default function Navbar() {
   const { cart } = useCart();
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const navigate = useNavigate();
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+
+  // Extraire dynamiquement les catégories uniques
+  const categories = Array.from(new Set(produits.map(p => p.categorie))).sort();
 
   // Gestion du scroll pour masquer/afficher la navbar sur mobile
   useEffect(() => {
@@ -60,17 +66,45 @@ export default function Navbar() {
     setMenuOpen(false); // ferme le menu mobile si besoin
   }
 
+  // Handler pour la sélection d'une catégorie
+  function handleSelectCategory(cat) {
+    setCategoriesOpen(false);
+    setMenuOpen(false);
+    navigate('/produits', { state: { categorie: cat } });
+  }
+
+  // Handler pour la sélection d'une catégorie (mobile)
+  function handleMobileSelectCategory(cat) {
+    setMenuOpen(false);
+    setCategoriesOpen(false);
+    navigate('/produits', { state: { categorie: cat } });
+  }
+
   return (
     <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}${isNavbarHidden ? ' navbar--hidden' : ''}`}>
       <div className="navbar__left">
         <div className="navbar__logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo Solène" />
         </div>
-        <ul className="navbar__menu">
-          <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li>
-          <li><a href="/produits" onClick={(e) => { e.preventDefault(); navigate('/produits'); setMenuOpen(false); }}>Produits</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
+        <div
+          style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+          onMouseEnter={() => setCategoriesOpen(true)}
+          onMouseLeave={() => setCategoriesOpen(false)}
+        >
+          <ul className="navbar__menu">
+            {/* <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li> */}
+            <li><a href="/home" onClick={(e) => { e.preventDefault(); navigate('/home'); setMenuOpen(false); }}>Notre collection</a></li>
+            <li>
+              <a href="#" onClick={e => e.preventDefault()}>Catégories</a>
+            </li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <SidebarCategories
+            open={categoriesOpen}
+            onClose={() => setCategoriesOpen(false)}
+            onSelectCategory={handleSelectCategory}
+          />
+        </div>
       </div>
       <div className="navbar__right">
         <div className="navbar__cart" onClick={() => setCartOpen(true)}>
@@ -87,8 +121,27 @@ export default function Navbar() {
           <CloseIcon fontSize="large" />
         </button>
         <ul>
-          <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li>
-          <li><a href="/produits" onClick={(e) => { e.preventDefault(); navigate('/produits'); setMenuOpen(false); }}>Produits</a></li>
+          {/* <li><a href="/home" onClick={handleAccueilClick}>Accueil</a></li> */}
+          <li><a href="/home" onClick={(e) => { e.preventDefault(); navigate('/home'); setMenuOpen(false); }}>Notre collection</a></li>
+        </ul>
+        <hr style={{ margin: '24px 0 12px 0', border: 'none', borderTop: '1px solid #eee' }} />
+        <div style={{ margin: '0 0 8px 0', fontWeight: 600, color: '#e91e63', fontSize: '1.1rem', paddingLeft: 2 }}>Catégories</div>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          {categories.map(cat => (
+            <li key={cat}>
+              <a
+                href="#"
+                style={{ display: 'block', padding: '10px 0 10px 2px', color: '#333', fontWeight: 500, textDecoration: 'none', borderRadius: 8, transition: 'background 0.15s' }}
+                onClick={e => { e.preventDefault(); handleMobileSelectCategory(cat); }}
+                onKeyDown={e => { if (e.key === 'Enter') handleMobileSelectCategory(cat); }}
+              >
+                {cat}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <hr style={{ margin: '24px 0 12px 0', border: 'none', borderTop: '1px solid #eee' }} />
+        <ul>
           <li><a href="#" onClick={() => setMenuOpen(false)}>Contact</a></li>
         </ul>
       </div>

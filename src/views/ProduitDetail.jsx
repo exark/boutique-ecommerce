@@ -116,6 +116,9 @@ export default function ProduitDetail() {
                 >
                   {produit.nom}
                 </motion.h2>
+                <div style={{ color: '#e91e63', fontWeight: 500, marginBottom: 8, fontSize: '1.08rem' }}>
+                  Catégorie : {produit.categorie}
+                </div>
                 <motion.p
                   className="produit-detail-desc"
                   initial={{ opacity: 0, x: 30 }}

@@ -5,6 +5,7 @@ const produits = [
   {
     id: 2,
     nom: 'Blouse légère',
+    categorie: 'Blouses',
     prix: 29.99,
     image: '/images/pexels-polina-tankilevitch-4725105.jpg',
     description: 'Blouse fluide et élégante, idéale pour les journées ensoleillées ou les soirées décontractées.',
@@ -22,6 +23,7 @@ const produits = [
   {
     id: 3,
     nom: 'Jean taille haute',
+    categorie: 'Pantalons',
     prix: 59.99,
     image: '/images/pexels-payamrafiei56-6567927.jpg',
     description: 'Jean moderne à taille haute, confortable et stylé pour toutes les morphologies.',
@@ -39,6 +41,7 @@ const produits = [
   {
     id: 4,
     nom: 'Veste en jean',
+    categorie: 'Vestes',
     prix: 69.99,
     image: '/images/denim-jacket-6240825.jpg',
     description: 'Veste en jean intemporelle, parfaite pour compléter toutes vos tenues.',
@@ -54,6 +57,7 @@ const produits = [
   {
     id: 5,
     nom: 'T-shirt basique',
+    categorie: 'T-shirts',
     prix: 19.99,
     image: '/images/pexels-david-manzyk-253085053-20426347.jpg',
     description: 'T-shirt simple et confortable, un indispensable du dressing.',
@@ -72,6 +76,7 @@ const produits = [
   {
     id: 6,
     nom: 'Jupe plissée',
+    categorie: 'Jupes',
     prix: 39.99,
     image: '/images/pexels-miyatavictor-19327673.jpg',
     description: 'Jupe élégante et féminine, idéale pour toutes les occasions.',
@@ -88,6 +93,7 @@ const produits = [
   {
     id: 7,
     nom: 'Pull en maille',
+    categorie: 'Pulls',
     prix: 44.99,
     image: '/images/pexels-vlada-karpovich-9968525.jpg',
     description: 'Pull doux et chaud, parfait pour la mi-saison.',
@@ -105,6 +111,7 @@ const produits = [
   {
     id: 8,
     nom: 'Chemise rayée',
+    categorie: 'Chemises',
     prix: 34.99,
     image: '/images/pexels-28488111-7945745.jpg',
     description: 'Chemise élégante à rayures, à porter au bureau ou en sortie.',
@@ -121,6 +128,7 @@ const produits = [
   {
     id: 9,
     nom: 'Pantalon fluide',
+    categorie: 'Pantalons',
     prix: 54.99,
     image: '/images/pexels-cottonbro-9861655.jpg',
     description: 'Pantalon léger et fluide, pour un confort optimal.',
@@ -137,6 +145,7 @@ const produits = [
   {
     id: 10,
     nom: 'Cardigan beige',
+    categorie: 'Cardigans',
     prix: 39.99,
     image: '/images/pexels-valeriya-31747192.jpg',
     description: 'Cardigan doux et élégant, facile à assortir.',
@@ -153,6 +162,7 @@ const produits = [
   {
     id: 11,
     nom: 'Short en lin',
+    categorie: 'Shorts',
     prix: 24.99,
     image: '/images/pexels-nai-de-vogue-2150938492-31410215.jpg',
     description: "Short léger en lin, parfait pour l'été.",
@@ -169,6 +179,7 @@ const produits = [
   {
     id: 12,
     nom: 'Manteau long',
+    categorie: 'Manteaux',
     prix: 89.99,
     image: '/images/woman-4290853.jpg',
     description: 'Manteau long et chaud, pour un hiver stylé.',
@@ -185,6 +196,7 @@ const produits = [
   {
     id: 13,
     nom: 'Débardeur côtelé',
+    categorie: 'Débardeurs',
     prix: 17.99,
     image: '/images/woman-4390055.jpg',
     description: 'Débardeur tendance, à porter seul ou sous une veste.',
@@ -201,6 +213,7 @@ const produits = [
   {
     id: 14,
     nom: 'Combinaison chic',
+    categorie: 'Combinaisons',
     prix: 64.99,
     image: '/images/woman-6540891.jpg',
     description: 'Combinaison élégante, idéale pour les soirées.',
@@ -217,6 +230,7 @@ const produits = [
   {
     id: 15,
     nom: 'Sweat à capuche',
+    categorie: 'Sweats',
     prix: 42.99,
     image: '/images/fashion-3555648.jpg',
     description: 'Sweat confortable et stylé, pour un look décontracté.',
@@ -235,6 +249,7 @@ const produits = [
   {
     id: 16,
     nom: 'Pull en maille rayé',
+    categorie: 'Pulls',
     prix: 49.99,
     image: '/images/fashion-1283863.jpg',
     description: 'Pull rayé en maille épaisse aux couleurs contrastées. Confortable et tendance, idéal pour les journées fraîches.',
@@ -252,6 +267,7 @@ const produits = [
   {
     id: 17,
     nom: 'Robe noire ceinturée',
+    categorie: 'Robes',
     prix: 64.99,
     image: '/images/fashion-3555648.jpg',
     description: 'Robe courte sans manches avec encolure en V et ceinture métal. Chic et polyvalente pour la journée comme pour les soirées.',
@@ -268,6 +284,7 @@ const produits = [
   {
     id: 18,
     nom: 'Hoodie oversize beige',
+    categorie: 'Sweats',
     prix: 44.99,
     image: '/images/pexels-28488111-7945745.jpg',
     description: 'Sweat à capuche oversize au style décontracté. Tissu doux et confortable, avec poche kangourou et capuche ajustable.',
@@ -285,6 +302,7 @@ const produits = [
   {
     id: 19,
     nom: 'Blazer orange',
+    categorie: 'Blazers',
     prix: 74.99,
     image: '/images/pexels-cottonbro-9861655.jpg',
     description: 'Blazer tailleur élégant en tissu structuré. Coupe moderne et couleur vive pour dynamiser votre garde-robe professionnelle.',
@@ -303,6 +321,7 @@ const produits = [
   {
     id: 21,
     nom: 'Robe drapée verte',
+    categorie: 'Robes',
     prix: 69.99,
     image: '/images/pexels-miyatavictor-19327673.jpg',
     description: 'Robe longue drapée avec ceinture nouée à la taille. Coupe fluide et couleur vibrante pour un look sophistiqué.',
@@ -319,6 +338,7 @@ const produits = [
   {
     id: 22,
     nom: 'Combishort élégant',
+    categorie: 'Combinaisons',
     prix: 59.99,
     image: '/images/pexels-nai-de-vogue-2150938492-31410215.jpg',
     description: 'Combishort noir avec épaules dénudées et bretelles ornées. Idéal pour des soirées chics ou des sorties estivales.',
@@ -335,6 +355,7 @@ const produits = [
   {
     id: 23,
     nom: 'Chemise blanche oversize',
+    categorie: 'Chemises',
     prix: 39.99,
     image: '/images/pexels-payamrafiei56-6567927.jpg',
     description: 'Chemise en coton ample à manches longues, à porter rentrée dans une jupe ou un pantalon pour un style minimaliste.',
