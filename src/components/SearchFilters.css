@@ -3,6 +3,8 @@
   max-width: 1200px;
   margin: 0 auto 2rem auto;
   padding: 0 1rem;
+  z-index: 50;
+  position: relative;
 }
 
 /* Styles pour la sidebar */
@@ -10,6 +12,8 @@
   max-width: none;
   margin: 0;
   padding: 0;
+  z-index: 50;
+  position: relative;
 }
 
 /* Styles pour le drawer mobile */
@@ -339,6 +343,17 @@
   
   .filters-content .MuiAccordionDetails-root {
     padding: 1rem;
+  }
+  
+  /* S'assurer que les filtres ne dépassent pas le menu mobile */
+  .search-filters {
+    z-index: 50;
+  }
+  
+  /* Quand le menu mobile est ouvert, masquer les filtres */
+  .navbar--menu-open ~ .search-filters,
+  .navbar--menu-open .search-filters {
+    z-index: 10;
   }
 }
 

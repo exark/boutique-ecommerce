@@ -23,6 +23,20 @@ export default function Navbar() {
   // Extraire dynamiquement les catégories uniques
   const categories = Array.from(new Set(produits.map(p => p.categorie))).sort();
 
+  // Désactiver le scroll quand le menu mobile est ouvert
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    // Nettoyer lors du démontage du composant
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
   // Gestion du scroll pour masquer/afficher la navbar sur mobile
   // useEffect supprimé car la navbar doit toujours être visible
 

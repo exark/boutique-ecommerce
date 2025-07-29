@@ -144,6 +144,12 @@ body {
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
     transition: background 0.2s, box-shadow 0.2s;
   }
+  
+  /* Masquer la barre sticky quand le menu mobile est ouvert */
+  .navbar--menu-open ~ .filters-sticky-mobile-bar,
+  .navbar--menu-open .filters-sticky-mobile-bar {
+    display: none !important;
+  }
   .filters-open-btn {
     background: #f47b9b;
     color: #fff;
@@ -168,6 +174,12 @@ body {
 @media (max-width: 900px) {
   .filters-sticky-mobile-bar {
     top: 62px; /* mobile navbar */
+  }
+  
+  /* Masquer la barre sticky quand le menu mobile est ouvert */
+  .navbar--menu-open ~ .filters-sticky-mobile-bar,
+  .navbar--menu-open .filters-sticky-mobile-bar {
+    display: none !important;
   }
 }
 /* Drawer mobile/tablette plein écran */

@@ -28,6 +28,28 @@ export default function Produits() {
   const [columns, setColumns] = useState(isMobileOrTablet ? 1 : 2); // 1 colonne par défaut sur mobile, 2 (4 colonnes) sur desktop
   const theme = useTheme();
   const [hoveredProductId, setHoveredProductId] = useState(null);
+  const [isNavbarMenuOpen, setIsNavbarMenuOpen] = useState(false);
+  
+  // Détecter si le menu navbar est ouvert
+  useEffect(() => {
+    const checkNavbarMenu = () => {
+      const navbar = document.querySelector('.navbar');
+      setIsNavbarMenuOpen(navbar?.classList.contains('navbar--menu-open') || false);
+    };
+    
+    // Vérifier immédiatement
+    checkNavbarMenu();
+    
+    // Observer les changements de classe sur la navbar
+    const observer = new MutationObserver(checkNavbarMenu);
+    const navbar = document.querySelector('.navbar');
+    
+    if (navbar) {
+      observer.observe(navbar, { attributes: true, attributeFilter: ['class'] });
+    }
+    
+    return () => observer.disconnect();
+  }, []);
   
   // Filtrage par catégorie si sélectionnée
   useEffect(() => {
@@ -142,7 +164,7 @@ export default function Produits() {
   return (
     <div className="produits-container">
       {/* Ligne titre + boutons d'ajustement - Desktop uniquement */}
-      <div style={{ display: isMobileOrTablet ? 'none' : 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 2rem' }}>
+      <div style={{ display: (isMobileOrTablet || isNavbarMenuOpen) ? 'none' : 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 2rem' }}>
         <h2 className="produits-title" style={{ marginBottom: 0 }}>Nos produits</h2>
         <div className="display-toggle-buttons" style={{ gap: 18 }}>
           {[1, 2].map((col, idx) => (
@@ -210,7 +232,11 @@ export default function Produits() {
       <div
         className={`filters-sticky-mobile-bar${isSticky ? ' sticky-glass' : ''}`}
         ref={filtersBarRef}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        style={{ 
+          display: (mobileFiltersOpen || isNavbarMenuOpen) ? 'none' : 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between' 
+        }}
       >
         <span className="filters-open-text" onClick={() => setMobileFiltersOpen(true)}>
           Filtrer et trier
