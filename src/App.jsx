@@ -3,7 +3,6 @@ import { CartProvider, useCart } from './cartContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProduitDetail from './views/ProduitDetail';
 import Home from './views/Home';
-import Produits from './views/Produits';
 import Cart from './views/Cart';
 import ScrollToTop from './components/ScrollToTop';
 import ScrollToTopButton from './components/ScrollToTopButton';
@@ -22,7 +21,6 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/produits" element={<Produits />} />
           <Route path="/produit/:id" element={<ProduitDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/categories" element={<Categories />} />

@@ -163,12 +163,12 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     // Les filtres seront appliqués automatiquement par le useEffect
   };
 
-  const hasActiveFilters = searchTerm || 
+  const hasActiveFilters = Boolean(searchTerm || 
     priceRange[0] > 0 || 
     priceRange[1] < 200 || 
     selectedCategories.length > 0 || 
     selectedColors.length > 0 || 
-    selectedSizes.length > 0;
+    selectedSizes.length > 0);
 
   return (
     <div className="search-filters">
@@ -182,9 +182,13 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
           autoComplete="off"
           InputProps={{
             startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />,
-            endAdornment: isSearching ? (
-              <CircularProgress size={20} sx={{ color: 'var(--color-accent)', mr: 1 }} />
-            ) : null,
+            endAdornment: (
+              <Box sx={{ width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 1 }}>
+                {isSearching && (
+                  <CircularProgress size={16} sx={{ color: 'var(--color-accent)' }} />
+                )}
+              </Box>
+            ),
           }}
           className="search-input"
         />
@@ -196,11 +200,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
             <FilterIcon />
           </IconButton>
         )}
-        {hasActiveFilters && !alwaysOpen && (
-          <IconButton onClick={clearFilters} className="clear-filters">
-            <ClearIcon />
-          </IconButton>
-        )}
+
       </Box>
       {alwaysOpen ? (
         <Box className="filters-content">
@@ -208,24 +208,25 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
             <Typography variant="h6" style={{ fontWeight: 600 }}>
               Affinez votre sélection
             </Typography>
-            {hasActiveFilters && (
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={clearFilters}
-                startIcon={<ClearIcon />}
-                style={{
-                  color: '#666',
-                  borderColor: '#e0e0e0',
-                  textTransform: 'none',
-                  fontWeight: 400,
-                  fontSize: '0.8rem',
-                  padding: '6px 12px'
-                }}
-              >
-                Réinitialiser
-              </Button>
-            )}
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={clearFilters}
+              startIcon={<ClearIcon />}
+              style={{
+                color: '#666',
+                borderColor: '#e0e0e0',
+                textTransform: 'none',
+                fontWeight: 400,
+                fontSize: '0.8rem',
+                padding: '6px 12px',
+                opacity: hasActiveFilters ? 1 : 0,
+                visibility: hasActiveFilters ? 'visible' : 'hidden',
+                transition: 'opacity 0.2s ease, visibility 0.2s ease'
+              }}
+            >
+              Réinitialiser
+            </Button>
           </Box>
           <Box className="filters-grid">
             {/* Filtre par prix */}

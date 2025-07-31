@@ -5,6 +5,11 @@
   padding: 0 1rem;
   z-index: 50;
   position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  will-change: auto;
+  transform: translateZ(0);
 }
 
 /* Styles pour la sidebar */
@@ -26,8 +31,8 @@
 
 .mobile-filters-content .search-header {
   flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .mobile-filters-content .search-input {
@@ -43,22 +48,24 @@
 
 .mobile-filters-content .filters-grid {
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.mobile-filters-content .filter-section {
-  gap: 0.75rem;
-}
+.mobile-filters-content   .filter-section {
+    gap: 0.25rem;
+  }
 
-.mobile-filters-content .MuiAccordionDetails-root {
-  padding: 1rem 0;
-}
+.mobile-filters-content   .MuiAccordionDetails-root {
+    padding: 0.5rem 0;
+  }
 
 .search-header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  min-height: 48px;
+  flex-shrink: 0;
 }
 
 .search-input {
@@ -71,6 +78,9 @@
   border: 1px solid #e0e0e0;
   transition: all 0.2s ease;
   font-size: 0.9rem;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
 }
 
 .search-input .MuiOutlinedInput-root:hover {
@@ -84,6 +94,18 @@
 
 .search-input .MuiOutlinedInput-input {
   padding: 12px 16px;
+  min-height: 20px;
+}
+
+.search-input .MuiOutlinedInput-root {
+  border-radius: 0;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
 }
 
 .filter-toggle {
@@ -94,6 +116,7 @@
   transition: all 0.2s ease !important;
   min-width: 48px;
   height: 48px;
+  flex-shrink: 0;
 }
 
 .filter-toggle:hover {
@@ -116,6 +139,20 @@
   transition: all 0.2s ease !important;
   min-width: 48px;
   height: 48px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.clear-filters.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.clear-filters.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 .clear-filters:hover {
@@ -130,14 +167,16 @@
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  padding: 24px 0;
+  padding: 12px 0;
+  min-height: 150px;
+  flex: 1;
 }
 
 /* Titre des filtres */
 .filters-content .MuiTypography-h6 {
   font-size: 0.9rem;
   font-weight: 400;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   color: #333;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -154,13 +193,17 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 12px;
+  min-height: 120px;
 }
 
 /* Section individuelle de filtre */
 .filter-section {
   margin: 0;
   padding: 0;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Menus déroulants plus compacts */
@@ -247,7 +290,7 @@
     padding: 0;
   }
   .filters-content {
-    padding: 24px 0;
+    padding: 12px 0;
   }
   .price-slider {
     max-width: 100%;
@@ -374,11 +417,11 @@
   
   .filters-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.5rem;
   }
   
   .filters-content .MuiAccordionDetails-root {
-    padding: 1rem;
+    padding: 0.5rem;
   }
   
   /* S'assurer que les filtres ne dépassent pas le menu mobile */
@@ -396,6 +439,8 @@
 /* Animation pour l'ouverture/fermeture des filtres */
 .filters-content {
   animation: fadeIn 0.3s ease-out;
+  will-change: auto;
+  transform: translateZ(0);
 }
 
 @keyframes fadeIn {
@@ -417,8 +462,11 @@
 /* Styles pour les headers de filtres sur mobile */
 .filter-header {
   transition: all 0.2s ease;
-  padding: 8px 0;
+  padding: 4px 0;
   border-bottom: 1px solid transparent;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
 
 .filter-header:hover {
@@ -436,10 +484,12 @@
   .filter-section {
     border: 1px solid #f0f0f0;
     border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 8px;
+    padding: 6px;
+    margin-bottom: 4px;
     background: #fff;
     transition: all 0.2s ease;
+    will-change: auto;
+    transform: translateZ(0);
   }
   
   .filter-section:hover {
@@ -467,7 +517,7 @@
   
   /* Améliorer l'apparence des selects sur mobile */
   .filter-section .MuiFormControl-root {
-    margin-top: 8px;
+    margin-top: 2px;
   }
   
   .filter-section .MuiOutlinedInput-root {

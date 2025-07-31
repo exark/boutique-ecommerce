@@ -16,6 +16,8 @@ body {
   margin-left: 0;
   margin-right: 0;
   position: relative;
+  will-change: auto;
+  transform: translateZ(0);
 }
 
 
@@ -60,25 +62,114 @@ body {
   padding: 0;
   margin: 0 auto;
   max-width: 1400px; /* Permet d'utiliser toute la largeur */
+  min-height: 400px;
+  will-change: auto;
+  transform: translateZ(0);
 }
 
 /* Styles pour react-masonry-css */
 .masonry-grid {
   display: flex;
   width: auto;
-  margin: 0 auto;
-  justify-content: center;
+  margin: 0;
+  justify-content: flex-start;
+  min-height: 300px;
+  will-change: auto;
+  transform: translateZ(0);
 }
-.masonry-grid_column {
-  padding-left: 2px; /* gap minimal */
-  background-clip: padding-box;
-  box-sizing: border-box;
+
+/* Desktop - Espacement intelligent et alignement à gauche */
+@media (min-width: 1025px) {
+  .masonry-grid {
+    justify-content: flex-start;
+    gap: 0;
+  }
+  
+  .masonry-grid_column {
+    padding-left: var(--optimal-gap, 4px); /* Espacement dynamique très serré */
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+  
+  .masonry-grid_column:first-child {
+    padding-left: 0; /* Pas de padding sur la première colonne */
+  }
+  
+  .masonry-grid_column > div {
+    margin-bottom: 8px; /* Espacement vertical plus serré */
+  }
+  
+  /* Mode 4 colonnes - espacement ultra-minimal */
+  .masonry-grid.masonry-grid-4cols .masonry-grid_column {
+    padding-left: var(--optimal-gap, 2px); /* Espacement ultra-minimal pour 4 colonnes */
+  }
+  
+  /* Mode 2 colonnes - espacement très serré */
+  
 }
-.masonry-grid_column:first-child {
-  padding-left: 0; /* Pas de padding sur la première colonne */
+
+/* Tablette - Adaptation intelligente */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .masonry-grid {
+    justify-content: flex-start;
+    gap: 0;
+  }
+  
+  .masonry-grid_column {
+    padding-left: var(--optimal-gap, 3px); /* Espacement dynamique très serré pour tablette */
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+  
+  .masonry-grid_column:first-child {
+    padding-left: 0;
+  }
+  
+  .masonry-grid_column > div {
+    margin-bottom: 8px; /* Espacement vertical plus serré */
+  }
+  
+  /* Mode 2 colonnes sur tablette */
+  .masonry-grid.masonry-grid-2cols-tablet .masonry-grid_column {
+    padding-left: var(--optimal-gap, 4px);
+  }
+  
+  /* Mode 1 colonne sur tablette */
+  .masonry-grid.masonry-grid-1col-tablet .masonry-grid_column {
+    padding-left: 0;
+  }
 }
-.masonry-grid_column > div {
-  margin-bottom: 8px; /* cards plus rapprochées verticalement */
+
+/* Mobile - Maximum 2 par ligne */
+@media (max-width: 767px) {
+  .masonry-grid {
+    justify-content: center; /* Centré sur mobile pour meilleur équilibre */
+    gap: 0;
+  }
+  
+  .masonry-grid_column {
+    padding-left: var(--optimal-gap, 2px); /* Espacement dynamique très serré sur mobile */
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+  
+  .masonry-grid_column:first-child {
+    padding-left: 0;
+  }
+  
+  .masonry-grid_column > div {
+    margin-bottom: 12px; /* Espacement vertical plus serré sur mobile */
+  }
+  
+  /* Mode 2 colonnes sur mobile */
+  .masonry-grid.masonry-grid-2cols-mobile .masonry-grid_column {
+    padding-left: var(--optimal-gap, 3px);
+  }
+  
+  /* Mode 1 colonne sur mobile */
+  .masonry-grid.masonry-grid-1col-mobile .masonry-grid_column {
+    padding-left: 0;
+  }
 }
 
 /* Responsive - Tablette */
@@ -90,6 +181,11 @@ body {
   
   .filters-sidebar {
     width: 250px;
+  }
+  
+  /* Optimisation de la hauteur des cartes pour tablette */
+  .products-section {
+    padding: 0 8px;
   }
 }
 
@@ -111,15 +207,14 @@ body {
   .products-section {
     width: 100%;
   }
-  
-  .masonry-grid {
-    justify-content: center;
-  }
 }
 
 /* Barre sticky filtre mobile/tablette */
 .filters-sticky-mobile-bar {
   display: none;
+  min-height: 60px;
+  will-change: auto;
+  transform: translateZ(0);
 }
 @media (max-width: 1024px) {
   .filters-sticky-mobile-bar {
@@ -239,7 +334,7 @@ body {
   border: none;
   border-radius: 0;
   padding: 0;
-  margin-left: 0;
+  margin-left: 12px;
   transition: color 0.15s;
   display: inline-block;
   text-align: left;
@@ -253,6 +348,9 @@ body {
   .filters-sticky-mobile-bar {
     background: transparent;
     box-shadow: none;
+    min-height: 60px;
+    will-change: auto;
+    transform: translateZ(0);
     /* L'effet glass/blur sera réappliqué uniquement en sticky plus bas */
   }
   .filters-open-text {
@@ -277,8 +375,22 @@ body {
     justify-content: flex-end;
     gap: 18px;
     margin-left: auto;
-    margin-right: 0;
+    margin-right: 12px;
     width: auto;
+    min-height: 32px;
+    will-change: auto;
+    transform: translateZ(0);
+  }
+  
+  /* Optimisations spécifiques pour les boutons d'ajustement sur tablette */
+  .display-toggle-buttons button {
+    height: 36px;
+    width: 36px;
+  }
+  
+  .display-toggle-buttons svg {
+    width: 22px;
+    height: 22px;
   }
 }
 @media (min-width: 1025px) {
@@ -291,6 +403,9 @@ body {
     margin-left: auto;
     margin-right: 0;
     width: auto;
+    min-height: 38px;
+    will-change: auto;
+    transform: translateZ(0);
   }
 }
 @media (min-width: 1025px) {
@@ -298,12 +413,32 @@ body {
     display: none !important;
   }
 }
-.masonry-grid_column-tight {
-  padding-left: 2px !important;
-}
-.masonry-grid_column-tight:first-child {
-  padding-left: 0 !important;
-}
+/* Classes utilitaires pour l'espacement intelligent */
 .masonry-grid-left {
   justify-content: flex-start !important;
+}
+
+/* Classes spécifiques pour les différents modes d'affichage */
+.masonry-grid-4cols {
+  /* Mode 4 colonnes - espacement ultra-minimal */
+}
+
+.masonry-grid-2cols {
+  /* Mode 2 colonnes - espacement modéré */
+}
+
+.masonry-grid-2cols-tablet {
+  /* Mode 2 colonnes sur tablette */
+}
+
+.masonry-grid-1col-tablet {
+  /* Mode 1 colonne sur tablette */
+}
+
+.masonry-grid-2cols-mobile {
+  /* Mode 2 colonnes sur mobile */
+}
+
+.masonry-grid-1col-mobile {
+  /* Mode 1 colonne sur mobile */
 }
