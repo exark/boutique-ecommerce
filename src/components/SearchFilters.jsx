@@ -15,7 +15,8 @@ import {
   AccordionDetails,
   IconButton,
   Collapse,
-  CircularProgress
+  CircularProgress,
+  useMediaQuery
 } from '@mui/material';
 import { 
   Search as SearchIcon,
@@ -26,7 +27,7 @@ import {
 import { useDebounce } from '../hooks/useDebounce';
 import './SearchFilters.css';
 
-export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false }) {
+export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false, resetTrigger = 0 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 200]);
@@ -34,6 +35,15 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [expandedFilters, setExpandedFilters] = useState({
+    price: true,
+    categories: true,
+    colors: true,
+    sizes: true
+  });
+
+  // Détecter si on est sur mobile
+  const isMobile = useMediaQuery('(max-width:1024px)');
 
   // Debounce le terme de recherche avec 400ms de délai
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
@@ -53,10 +63,17 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     }
   }, [debouncedSearchTerm, debouncedPriceRange, selectedCategories, selectedColors, selectedSizes]);
 
+  // Réinitialiser les filtres quand resetTrigger change
+  useEffect(() => {
+    if (resetTrigger > 0) {
+      clearFilters();
+    }
+  }, [resetTrigger]);
+
   // Extraction des options uniques depuis les produits
   const categories = [...new Set(produits.map(p => p.matiere))];
   const colors = [...new Set(produits.map(p => p.couleur))];
-  const sizes = [...new Set(produits.flatMap(p => p.tailles))];
+  const sizes = [...new Set(produits.flatMap(p => p.tailles.map(t => t.taille)))];
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
@@ -71,16 +88,44 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   const handleCategoryChange = (event) => {
     const value = event.target.value;
     setSelectedCategories(value);
+    
+    // Sur mobile, fermer automatiquement le filtre après sélection
+    if (isMobile && !alwaysOpen) {
+      setTimeout(() => {
+        setExpandedFilters(prev => ({ ...prev, categories: false }));
+      }, 300); // Délai pour permettre à l'animation de se terminer
+    }
   };
 
   const handleColorChange = (event) => {
     const value = event.target.value;
     setSelectedColors(value);
+    
+    // Sur mobile, fermer automatiquement le filtre après sélection
+    if (isMobile && !alwaysOpen) {
+      setTimeout(() => {
+        setExpandedFilters(prev => ({ ...prev, colors: false }));
+      }, 300);
+    }
   };
 
   const handleSizeChange = (event) => {
     const value = event.target.value;
     setSelectedSizes(value);
+    
+    // Sur mobile, fermer automatiquement le filtre après sélection
+    if (isMobile && !alwaysOpen) {
+      setTimeout(() => {
+        setExpandedFilters(prev => ({ ...prev, sizes: false }));
+      }, 300);
+    }
+  };
+
+  const toggleFilter = (filterName) => {
+    setExpandedFilters(prev => ({
+      ...prev,
+      [filterName]: !prev[filterName]
+    }));
   };
 
   const applyFilters = (search, price, categories, colors, sizes) => {
@@ -101,7 +146,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
 
       // Filtre par taille
       const matchesSize = sizes.length === 0 || 
-        sizes.some(size => produit.tailles.includes(size));
+        sizes.some(size => produit.tailles.some(t => t.taille === size));
 
       return matchesSearch && matchesPrice && matchesCategory && matchesColor && matchesSize;
     });
@@ -159,105 +204,265 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
       </Box>
       {alwaysOpen ? (
         <Box className="filters-content">
-          <Typography variant="h6" style={{ marginBottom: 16, fontWeight: 600 }}>
-            Affinez votre sélection
-          </Typography>
+          <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <Typography variant="h6" style={{ fontWeight: 600 }}>
+              Affinez votre sélection
+            </Typography>
+            {hasActiveFilters && (
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={clearFilters}
+                startIcon={<ClearIcon />}
+                style={{
+                  color: '#666',
+                  borderColor: '#e0e0e0',
+                  textTransform: 'none',
+                  fontWeight: 400,
+                  fontSize: '0.8rem',
+                  padding: '6px 12px'
+                }}
+              >
+                Réinitialiser
+              </Button>
+            )}
+          </Box>
           <Box className="filters-grid">
             {/* Filtre par prix */}
             <Box className="filter-section">
-              <Typography gutterBottom variant="subtitle1">
-                Prix : {priceRange[0]}€ - {priceRange[1]}€
-                {debouncedPriceRange[0] !== priceRange[0] || debouncedPriceRange[1] !== priceRange[1] ? (
-                  <span className="searching-indicator">
-                    ⏳ Recherche...
-                  </span>
-                ) : null}
-              </Typography>
-              <Slider
-                value={priceRange}
-                onChange={handlePriceChange}
-                valueLabelDisplay="auto"
-                min={0}
-                max={200}
-                className="price-slider"
-              />
+              <Box 
+                className="filter-header"
+                onClick={() => isMobile && toggleFilter('price')}
+                style={{ cursor: isMobile ? 'pointer' : 'default' }}
+              >
+                <Typography 
+                  variant="subtitle2" 
+                  style={{ 
+                    fontWeight: 600, 
+                    color: '#333', 
+                    marginBottom: 12,
+                    fontSize: '0.9rem',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  Prix : {priceRange[0]}€ - {priceRange[1]}€
+                  {isMobile && (
+                    <ExpandMoreIcon 
+                      style={{ 
+                        transform: expandedFilters.price ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.3s ease'
+                      }} 
+                    />
+                  )}
+                  {debouncedPriceRange[0] !== priceRange[0] || debouncedPriceRange[1] !== priceRange[1] ? (
+                    <span className="searching-indicator">
+                      ⏳ Recherche...
+                    </span>
+                  ) : null}
+                </Typography>
+              </Box>
+              <Collapse in={!isMobile || expandedFilters.price} timeout={300} easing="ease-in-out">
+                <Slider
+                  value={priceRange}
+                  onChange={handlePriceChange}
+                  valueLabelDisplay="auto"
+                  min={0}
+                  max={200}
+                  className="price-slider"
+                />
+              </Collapse>
             </Box>
+            
             {/* Filtre par catégorie/matière */}
             <Box className="filter-section">
-              <FormControl fullWidth>
-                <InputLabel>Matière</InputLabel>
-                <Select
-                  multiple
-                  value={selectedCategories}
-                  onChange={handleCategoryChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} size="small" />
-                      ))}
-                    </Box>
-                  )}
+              <Box 
+                className="filter-header"
+                onClick={() => isMobile && toggleFilter('categories')}
+                style={{ cursor: isMobile ? 'pointer' : 'default' }}
+              >
+                <Typography 
+                  variant="subtitle2" 
+                  style={{ 
+                    fontWeight: 600, 
+                    color: '#333', 
+                    marginBottom: 8,
+                    fontSize: '0.9rem',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  {categories.map((category) => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Matière
+                  {isMobile && (
+                    <ExpandMoreIcon 
+                      style={{ 
+                        transform: expandedFilters.categories ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.3s ease'
+                      }} 
+                    />
+                  )}
+                </Typography>
+              </Box>
+              <Collapse in={!isMobile || expandedFilters.categories} timeout={300} easing="ease-in-out">
+                <FormControl fullWidth>
+                  <Select
+                    multiple
+                    value={selectedCategories}
+                    onChange={handleCategoryChange}
+                    displayEmpty
+                    renderValue={(selected) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.length === 0 ? (
+                          <span style={{ color: '#999', fontSize: '0.9rem' }}>Sélectionner une matière</span>
+                        ) : (
+                          selected.map((value) => (
+                            <Chip key={value} label={value} size="small" />
+                          ))
+                        )}
+                      </Box>
+                    )}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category} value={category}>
+                        {category}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Collapse>
             </Box>
+            
             {/* Filtre par couleur */}
             <Box className="filter-section">
-              <FormControl fullWidth>
-                <InputLabel>Couleur</InputLabel>
-                <Select
-                  multiple
-                  value={selectedColors}
-                  onChange={handleColorChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} size="small" />
-                      ))}
-                    </Box>
-                  )}
+              <Box 
+                className="filter-header"
+                onClick={() => isMobile && toggleFilter('colors')}
+                style={{ cursor: isMobile ? 'pointer' : 'default' }}
+              >
+                <Typography 
+                  variant="subtitle2" 
+                  style={{ 
+                    fontWeight: 600, 
+                    color: '#333', 
+                    marginBottom: 8,
+                    fontSize: '0.9rem',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  {colors.map((color) => (
-                    <MenuItem key={color} value={color}>
-                      {color}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Couleur
+                  {isMobile && (
+                    <ExpandMoreIcon 
+                      style={{ 
+                        transform: expandedFilters.colors ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.3s ease'
+                      }} 
+                    />
+                  )}
+                </Typography>
+              </Box>
+              <Collapse in={!isMobile || expandedFilters.colors} timeout={300} easing="ease-in-out">
+                <FormControl fullWidth>
+                  <Select
+                    multiple
+                    value={selectedColors}
+                    onChange={handleColorChange}
+                    displayEmpty
+                    renderValue={(selected) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.length === 0 ? (
+                          <span style={{ color: '#999', fontSize: '0.9rem' }}>Sélectionner une couleur</span>
+                        ) : (
+                          selected.map((value) => (
+                            <Chip key={value} label={value} size="small" />
+                          ))
+                        )}
+                      </Box>
+                    )}
+                  >
+                    {colors.map((color) => (
+                      <MenuItem key={color} value={color}>
+                        {color}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Collapse>
             </Box>
+            
             {/* Filtre par taille */}
             <Box className="filter-section">
-              <FormControl fullWidth>
-                <InputLabel>Taille</InputLabel>
-                <Select
-                  multiple
-                  value={selectedSizes}
-                  onChange={handleSizeChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} size="small" />
-                      ))}
-                    </Box>
-                  )}
+              <Box 
+                className="filter-header"
+                onClick={() => isMobile && toggleFilter('sizes')}
+                style={{ cursor: isMobile ? 'pointer' : 'default' }}
+              >
+                <Typography 
+                  variant="subtitle2" 
+                  style={{ 
+                    fontWeight: 600, 
+                    color: '#333', 
+                    marginBottom: 8,
+                    fontSize: '0.9rem',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  {sizes.map((size) => (
-                    <MenuItem key={size} value={size}>
-                      {size}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Taille
+                  {isMobile && (
+                    <ExpandMoreIcon 
+                      style={{ 
+                        transform: expandedFilters.sizes ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.3s ease'
+                      }} 
+                    />
+                  )}
+                </Typography>
+              </Box>
+              <Collapse in={!isMobile || expandedFilters.sizes} timeout={300} easing="ease-in-out">
+                <FormControl fullWidth>
+                  <Select
+                    multiple
+                    value={selectedSizes}
+                    onChange={handleSizeChange}
+                    displayEmpty
+                    renderValue={(selected) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.length === 0 ? (
+                          <span style={{ color: '#999', fontSize: '0.9rem' }}>Sélectionner une taille</span>
+                        ) : (
+                          selected.map((value) => (
+                            <Chip key={value} label={value} size="small" />
+                          ))
+                        )}
+                      </Box>
+                    )}
+                  >
+                    {sizes.map((size) => (
+                      <MenuItem key={size} value={size}>
+                        {size}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Collapse>
             </Box>
           </Box>
         </Box>
       ) : (
-        <Collapse in={showFilters}>
+        <Collapse in={showFilters} timeout={300} easing="ease-in-out">
           <Box className="filters-content">
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -267,7 +472,17 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                 <Box className="filters-grid">
                   {/* Filtre par prix */}
                   <Box className="filter-section">
-                    <Typography gutterBottom variant="subtitle1">
+                    <Typography 
+                      variant="subtitle2" 
+                      style={{ 
+                        fontWeight: 600, 
+                        color: '#333', 
+                        marginBottom: 12,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.5px',
+                        textTransform: 'uppercase'
+                      }}
+                    >
                       Prix : {priceRange[0]}€ - {priceRange[1]}€
                       {debouncedPriceRange[0] !== priceRange[0] || debouncedPriceRange[1] !== priceRange[1] ? (
                         <span className="searching-indicator">
@@ -286,17 +501,34 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   </Box>
                   {/* Filtre par catégorie/matière */}
                   <Box className="filter-section">
+                    <Typography 
+                      variant="subtitle2" 
+                      style={{ 
+                        fontWeight: 600, 
+                        color: '#333', 
+                        marginBottom: 8,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.5px',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      Matière
+                    </Typography>
                     <FormControl fullWidth>
-                      <InputLabel>Matière</InputLabel>
                       <Select
                         multiple
                         value={selectedCategories}
                         onChange={handleCategoryChange}
+                        displayEmpty
                         renderValue={(selected) => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                              <Chip key={value} label={value} size="small" />
-                            ))}
+                            {selected.length === 0 ? (
+                              <span style={{ color: '#999', fontSize: '0.9rem' }}>Sélectionner une matière</span>
+                            ) : (
+                              selected.map((value) => (
+                                <Chip key={value} label={value} size="small" />
+                              ))
+                            )}
                           </Box>
                         )}
                       >
@@ -310,17 +542,34 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   </Box>
                   {/* Filtre par couleur */}
                   <Box className="filter-section">
+                    <Typography 
+                      variant="subtitle2" 
+                      style={{ 
+                        fontWeight: 600, 
+                        color: '#333', 
+                        marginBottom: 8,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.5px',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      Couleur
+                    </Typography>
                     <FormControl fullWidth>
-                      <InputLabel>Couleur</InputLabel>
                       <Select
                         multiple
                         value={selectedColors}
                         onChange={handleColorChange}
+                        displayEmpty
                         renderValue={(selected) => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                              <Chip key={value} label={value} size="small" />
-                            ))}
+                            {selected.length === 0 ? (
+                              <span style={{ color: '#999', fontSize: '0.9rem' }}>Sélectionner une couleur</span>
+                            ) : (
+                              selected.map((value) => (
+                                <Chip key={value} label={value} size="small" />
+                              ))
+                            )}
                           </Box>
                         )}
                       >
@@ -334,17 +583,34 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   </Box>
                   {/* Filtre par taille */}
                   <Box className="filter-section">
+                    <Typography 
+                      variant="subtitle2" 
+                      style={{ 
+                        fontWeight: 600, 
+                        color: '#333', 
+                        marginBottom: 8,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.5px',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      Taille
+                    </Typography>
                     <FormControl fullWidth>
-                      <InputLabel>Taille</InputLabel>
                       <Select
                         multiple
                         value={selectedSizes}
                         onChange={handleSizeChange}
+                        displayEmpty
                         renderValue={(selected) => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                              <Chip key={value} label={value} size="small" />
-                            ))}
+                            {selected.length === 0 ? (
+                              <span style={{ color: '#999', fontSize: '0.9rem' }}>Sélectionner une taille</span>
+                            ) : (
+                              selected.map((value) => (
+                                <Chip key={value} label={value} size="small" />
+                              ))
+                            )}
                           </Box>
                         )}
                       >
