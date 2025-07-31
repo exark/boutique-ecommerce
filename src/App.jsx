@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import Categories from './views/Categories';
 import CartNotification from './components/CartNotification';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function AppContent() {
   const { notification, closeNotification } = useCart();
