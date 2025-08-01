@@ -1,4 +1,5 @@
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import { CartProvider, useCart } from './cartContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProduitDetail from './views/ProduitDetail';
@@ -17,7 +18,7 @@ function AppContent() {
     <Router>
       <ScrollToTop />
       <Navbar />
-      <div style={{ paddingTop: '80px' }}>
+      <div style={{ paddingTop: '80px', minHeight: 'calc(100vh - 80px - 400px)' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -26,6 +27,7 @@ function AppContent() {
           <Route path="/categories" element={<Categories />} />
         </Routes>
       </div>
+      <Footer />
       <ScrollToTopButton />
       <CartNotification 
         open={notification.open}

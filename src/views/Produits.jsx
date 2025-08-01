@@ -30,6 +30,17 @@ export default function Produits() {
   // Utiliser les colonnes sélectionnées par l'utilisateur, sans forcer de changement
   const effectiveColumns = columns;
   
+  // Mettre à jour les colonnes quand on change de device (mobile/desktop)
+  useEffect(() => {
+    if (isMobileOrTablet && columns === 2) {
+      // Si on passe sur mobile/tablette et qu'on était en mode 2 colonnes (desktop), passer à 1 colonne
+      setColumns(1);
+    } else if (!isMobileOrTablet && columns === 1) {
+      // Si on passe sur desktop et qu'on était en mode 1 colonne (mobile), passer à 2 colonnes
+      setColumns(2);
+    }
+  }, [isMobileOrTablet]); // Retirer 'columns' des dépendances pour éviter la boucle infinie
+  
   // Désactiver les boutons d'ajustement quand il n'y a que 1 produit
   const shouldDisableToggleButtons = filteredProducts.length === 1;
   const theme = useTheme();
@@ -126,7 +137,7 @@ export default function Produits() {
     ? { 
         default: effectiveColumns === 1 ? 1 : 2, // Maximum 2 colonnes sur mobile/tablette
         768: effectiveColumns === 1 ? 1 : 2, // Tablette
-        480: 1 // Mobile petit écran
+        480: effectiveColumns === 1 ? 1 : 2 // Mobile petit écran - respecter le choix utilisateur
       }
     : { 
         default: effectiveColumns === 1 ? 3 : 4, // Desktop: 3 ou 4 colonnes pour rapprocher les produits
@@ -214,9 +225,9 @@ export default function Produits() {
       if (effectiveColumns === 1) {
         // Mode 3 colonnes sur desktop - espacement très serré
         const cardWidth = 300; // Largeur fixe pour 3 colonnes
-        const totalCardsWidth = cardWidth * 3;
+        const totalCardsWidth = cardWidth * 10;
         const remainingSpace = availableWidth - totalCardsWidth;
-        const optimalGap = Math.max(4, Math.min(12, remainingSpace / 4)); // Entre 4px et 12px (plus serré)
+        const optimalGap = Math.max(4, Math.min(12, remainingSpace / 12)); // Entre 4px et 12px (plus serré)
         
         return {
           '--optimal-gap': `${optimalGap}px`,
@@ -239,7 +250,7 @@ export default function Produits() {
       const cardWidth = effectiveColumns === 1 ? 350 : 280;
       const totalCardsWidth = cardWidth * (effectiveColumns === 1 ? 1 : 2);
       const remainingSpace = availableWidth - totalCardsWidth;
-      const optimalGap = Math.max(3, Math.min(10, remainingSpace / 4)); // Entre 3px et 10px (plus serré)
+      const optimalGap = Math.max(3, Math.min(10, remainingSpace / 2)); // Entre 3px et 10px (plus serré)
       
       return {
         '--optimal-gap': `${optimalGap}px`,
@@ -247,10 +258,10 @@ export default function Produits() {
       };
     } else {
       // Mobile - espacement minimal
-      const cardWidth = effectiveColumns === 1 ? 320 : 160;
+      const cardWidth = effectiveColumns === 1 ? 320 : 280;
       const totalCardsWidth = cardWidth * (effectiveColumns === 1 ? 1 : 2);
       const remainingSpace = availableWidth - totalCardsWidth;
-      const optimalGap = Math.max(2, Math.min(6, remainingSpace / 4)); // Entre 2px et 6px (très serré)
+      const optimalGap = Math.max(2, Math.min(6, remainingSpace / 2)); // Entre 2px et 6px (très serré)
       
       return {
         '--optimal-gap': `${optimalGap}px`,
@@ -372,7 +383,18 @@ export default function Produits() {
           justifyContent: 'space-between' 
         }}
       >
-        <span className="filters-open-text" onClick={() => setMobileFiltersOpen(true)}>
+        <span 
+          className="filters-open-text" 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setMobileFiltersOpen(true);
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
           Filtrer et trier
         </span>
         {isMobileOrTablet && (

@@ -26,6 +26,12 @@
   height: 100%;
 }
 
+@media (max-width: 400px) { 
+  .navbar__left {
+    gap: 16px;
+  }
+}
+
 .navbar__logo {
   display: flex;
   align-items: center;
@@ -33,13 +39,11 @@
 }
 
 .navbar__logo img {
-  height: 48px;
-  width: auto;
+  height: auto;
+  width: 150px;
   display: block;
-  border-radius: 8px;
-  background: var(--color-secondaire);
-  padding: 2px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  background: transparent;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -113,11 +117,11 @@
 
 .navbar__logo img {
   border-radius: 12px;
-  transition: box-shadow 0.2s;
+  transition: transform 0.2s ease;
 }
 
 .navbar__logo img:hover {
-  box-shadow: 0 4px 16px rgba(247,86,124,0.13);
+  transform: scale(1.05);
 }
 
 /* Badge panier */
@@ -225,7 +229,7 @@
 /* Responsive */
 @media (max-width: 900px) {
   .navbar {
-    padding: 0 12px 0 12px;
+    padding: 0 8px 0 8px;
     height: 62px;
     border-radius: 0 !important;
     /* Suppression de flex-direction: row-reverse et justify-content: flex-end */
@@ -237,6 +241,7 @@
     justify-content: flex-start;
     width: auto;
     order: 1;
+    margin-left: -8px;
   }
   .navbar__cart {
     margin-left: auto;
@@ -280,3 +285,5 @@
     order: 2;
   }
 } 
+
+ 

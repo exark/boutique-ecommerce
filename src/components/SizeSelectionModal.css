@@ -1,29 +1,32 @@
-/* Modal de sélection des tailles */
+/* Modal de sélection des tailles - Design élégant et sobre avec rose néon */
 .size-modal-paper {
-  border-radius: 24px !important;
-  box-shadow: 0 16px 48px rgba(233, 30, 99, 0.15) !important;
-  background: linear-gradient(135deg, #fff 0%, #fff5f8 100%) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 182, 193, 0.1) !important;
+  background: #ffffff !important;
   overflow: hidden;
+  border: 1px solid rgba(255, 182, 193, 0.2) !important;
 }
 
 .size-modal-title {
-  background: linear-gradient(135deg, #e91e63 0%, #f06292 100%);
-  color: white !important;
-  padding: 24px 32px 20px 32px !important;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffeef2 100%) !important;
+  color: #2c3e50 !important;
+  padding: 28px 32px 24px 32px !important;
   text-align: center;
+  border-bottom: 1px solid rgba(255, 182, 193, 0.15) !important;
 }
 
 .size-modal-title-text {
-  color: white !important;
-  font-weight: 700 !important;
-  font-size: 1.5rem !important;
-  margin-bottom: 4px !important;
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 1.4rem !important;
+  margin-bottom: 6px !important;
+  letter-spacing: -0.02em !important;
 }
 
 .size-modal-subtitle {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-size: 1rem !important;
-  font-weight: 500 !important;
+  color: #6c757d !important;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
 }
 
 .size-modal-content {
@@ -33,85 +36,94 @@
 
 .size-modal-sizes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
   margin-bottom: 24px;
 }
 
 .size-button {
-  height: 80px !important;
-  border-radius: 16px !important;
-  border: 2px solid !important;
-  transition: all 0.3s cubic-bezier(0.4, 0.2, 0.2, 1) !important;
+  height: 72px !important;
+  border-radius: 12px !important;
+  border: 1.5px solid !important;
+  transition: all 0.2s ease !important;
   position: relative;
   overflow: hidden;
+  background: #ffffff !important;
 }
 
 .size-button-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
 .size-text {
-  font-weight: 700 !important;
-  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
   color: inherit !important;
 }
 
 .stock-chip {
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  height: 20px !important;
-  border-radius: 10px !important;
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+  height: 18px !important;
+  border-radius: 8px !important;
+  padding: 0 8px !important;
 }
 
-/* États des boutons de taille */
+/* États des boutons de taille - Design sobre avec rose néon */
 .size-button.disponible {
-  border-color: #e91e63 !important;
-  color: #e91e63 !important;
-  background: rgba(233, 30, 99, 0.05) !important;
+  border-color: #ffeef2 !important;
+  color: #495057 !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.1) !important;
 }
 
 .size-button.disponible:hover {
-  background: #e91e63 !important;
-  color: white !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(233, 30, 99, 0.3) !important;
+  background: #fff5f7 !important;
+  color: #2c3e50 !important;
+  border-color: #ffb6c1 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 182, 193, 0.2) !important;
 }
 
 .size-button.disponible.selected {
-  background: #e91e63 !important;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 16px rgba(233, 30, 99, 0.4) !important;
+  border-color: #ffb6c1 !important;
+  box-shadow: 0 4px 20px rgba(255, 182, 193, 0.4) !important;
 }
 
 .size-button.limite {
-  border-color: #ff9800 !important;
-  color: #ff9800 !important;
-  background: rgba(255, 152, 0, 0.05) !important;
+  border-color: #fff3cd !important;
+  color: #856404 !important;
+  background: #fffbf0 !important;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.1) !important;
 }
 
 .size-button.limite:hover {
-  background: #ff9800 !important;
-  color: white !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 152, 0, 0.3) !important;
+  background: #fff8e1 !important;
+  color: #6f4e37 !important;
+  border-color: #ffeaa7 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 193, 7, 0.2) !important;
 }
 
 .size-button.limite.selected {
-  background: #ff9800 !important;
+  background: #f39c12 !important;
   color: white !important;
-  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.4) !important;
+  border-color: #f39c12 !important;
+  box-shadow: 0 4px 20px rgba(243, 156, 18, 0.3) !important;
 }
 
 .size-button.rupture {
-  border-color: #ccc !important;
-  color: #999 !important;
-  background: #f5f5f5 !important;
+  border-color: #f1f3f4 !important;
+  color: #bdc3c7 !important;
+  background: #f8f9fa !important;
   cursor: not-allowed !important;
+  box-shadow: none !important;
 }
 
 .size-button.rupture:hover {
@@ -119,115 +131,125 @@
   box-shadow: none !important;
 }
 
-/* Chips de statut */
+/* Chips de statut - Design sobre */
 .stock-chip.disponible {
-  background: #4caf50 !important;
-  color: white !important;
+  background: #d4edda !important;
+  color: #155724 !important;
 }
 
 .stock-chip.limite {
-  background: #ff9800 !important;
-  color: white !important;
+  background: #fff3cd !important;
+  color: #856404 !important;
 }
 
 .stock-chip.rupture {
-  background: #f44336 !important;
-  color: white !important;
+  background: #f8d7da !important;
+  color: #721c24 !important;
 }
 
 /* Alertes */
 .size-modal-alert {
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   margin-bottom: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 .size-modal-selection {
-  border-radius: 12px !important;
-  background: rgba(233, 30, 99, 0.1) !important;
-  border: 1px solid rgba(233, 30, 99, 0.2) !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #ffeef2 0%, #fff5f7 100%) !important;
+  border: 1px solid rgba(255, 182, 193, 0.3) !important;
   color: #e91e63 !important;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.15) !important;
 }
 
 /* Actions */
 .size-modal-actions {
   padding: 24px 32px 32px 32px !important;
-  background: white;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffeef2 100%) !important;
   gap: 12px;
+  border-top: 1px solid rgba(255, 182, 193, 0.15) !important;
 }
 
 .size-modal-cancel-btn {
-  color: #666 !important;
-  border-radius: 12px !important;
+  color: #6c757d !important;
+  border-radius: 8px !important;
   padding: 12px 24px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   text-transform: none !important;
   transition: all 0.2s ease !important;
+  border: 1px solid #dee2e6 !important;
+  background: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
 }
 
 .size-modal-cancel-btn:hover {
-  background: rgba(0, 0, 0, 0.05) !important;
-  color: #333 !important;
+  background: #f8f9fa !important;
+  color: #495057 !important;
+  border-color: #adb5bd !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
 .size-modal-add-btn {
-  background: #e91e63 !important;
+  background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) !important;
   color: white !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   padding: 12px 32px !important;
-  font-weight: 700 !important;
-  font-size: 1rem !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
   text-transform: none !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 16px rgba(233, 30, 99, 0.3) !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 16px rgba(255, 182, 193, 0.3) !important;
+  border: 1px solid #ffb6c1 !important;
 }
 
 .size-modal-add-btn:hover {
-  background: #d13a63 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4) !important;
+  background: linear-gradient(135deg, #ffa5b3 0%, #ffb6c1 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 182, 193, 0.4) !important;
 }
 
 .size-modal-add-btn:disabled {
-  background: #ccc !important;
-  color: #999 !important;
+  background: #e9ecef !important;
+  color: #adb5bd !important;
   box-shadow: none !important;
   transform: none !important;
+  border-color: #e9ecef !important;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
   .size-modal-paper {
     margin: 16px !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
   }
   
   .size-modal-title {
-    padding: 20px 24px 16px 24px !important;
+    padding: 24px 20px 20px 20px !important;
   }
   
   .size-modal-title-text {
-    font-size: 1.3rem !important;
+    font-size: 1.2rem !important;
   }
   
   .size-modal-content {
-    padding: 24px !important;
+    padding: 24px 20px !important;
   }
   
   .size-modal-sizes {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   
   .size-button {
-    height: 70px !important;
+    height: 64px !important;
   }
   
   .size-text {
-    font-size: 1.1rem !important;
+    font-size: 1rem !important;
   }
   
   .size-modal-actions {
-    padding: 20px 24px 24px 24px !important;
+    padding: 20px 20px 24px 20px !important;
     flex-direction: column;
   }
   
@@ -237,15 +259,15 @@
   }
 }
 
-/* Animation d'entrée */
+/* Animation d'entrée - Plus subtile */
 .size-modal-paper {
-  animation: modalSlideIn 0.3s cubic-bezier(0.4, 0.2, 0.2, 1);
+  animation: modalSlideIn 0.25s ease-out;
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(20px);
+    transform: scale(0.95) translateY(10px);
   }
   to {
     opacity: 1;

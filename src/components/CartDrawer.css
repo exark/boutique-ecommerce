@@ -128,24 +128,25 @@
 }
 
 .cart-drawer__close-btn {
-  background: #6c757d !important;
-  color: white !important;
+  background: white !important;
+  color: var(--color-texte) !important;
   border-radius: 8px !important;
   padding: 12px 24px !important;
   font-weight: 500 !important;
   text-transform: none !important;
   transition: all 0.2s ease !important;
-  border: none !important;
+  border: 1px solid #e8e8e8 !important;
 }
 
 .cart-drawer__close-btn:hover {
-  background: #5a6268 !important;
+  background: #f8f9fa !important;
+  border-color: #d0d0d0 !important;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
 }
 
 .cart-drawer__whatsapp-btn {
-  background: #000000 !important;
+  background: var(--color-accent) !important;
   color: white !important;
   border-radius: 8px !important;
   padding: 12px 24px !important;
@@ -156,14 +157,14 @@
 }
 
 .cart-drawer__whatsapp-btn:hover {
-  background: #333333 !important;
+  background: #d13a63 !important;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(247, 86, 124, 0.2) !important;
 }
 
 .cart-drawer__view-cart-btn {
-  border-color: #6c757d !important;
-  color: #6c757d !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent) !important;
   border-radius: 8px !important;
   padding: 12px 24px !important;
   font-weight: 500 !important;
@@ -173,10 +174,10 @@
 }
 
 .cart-drawer__view-cart-btn:hover {
-  background: #6c757d !important;
+  background: var(--color-accent) !important;
   color: white !important;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(247, 86, 124, 0.2) !important;
 }
 
 /* Responsive */
