@@ -11,10 +11,8 @@ export function CartProvider({ children }) {
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('cart');
-      console.log('Chargement depuis localStorage:', savedCart);
       if (savedCart) {
         const parsedCart = JSON.parse(savedCart);
-        console.log('Panier parsé:', parsedCart);
         setCart(parsedCart);
       }
     } catch (error) {
@@ -30,7 +28,6 @@ export function CartProvider({ children }) {
   useEffect(() => {
     if (isInitialized) {
       try {
-        console.log('Sauvegarde du panier dans localStorage:', cart);
         localStorage.setItem('cart', JSON.stringify(cart));
       } catch (error) {
         console.error('Erreur lors de la sauvegarde du panier dans localStorage:', error);
@@ -44,7 +41,6 @@ export function CartProvider({ children }) {
       return;
     }
 
-    console.log('Ajout au panier:', product);
     setCart((prevCart) => {
       // Vérifier si le produit existe déjà avec la même taille
       const existing = prevCart.find((item) => 
@@ -78,7 +74,6 @@ export function CartProvider({ children }) {
       return;
     }
 
-    console.log('Suppression du panier:', id, selectedSize);
     setCart((prevCart) => 
       prevCart.filter((item) => 
         !(item.id === id && item.selectedSize === selectedSize)
@@ -92,7 +87,6 @@ export function CartProvider({ children }) {
       return;
     }
 
-    console.log('Mise à jour quantité:', id, selectedSize, newQuantity);
     setCart((prevCart) => 
       prevCart.map((item) => 
         item.id === id && item.selectedSize === selectedSize 
@@ -108,7 +102,6 @@ export function CartProvider({ children }) {
 
   // Fonction pour vider complètement le panier
   function clearCart() {
-    console.log('Vidage du panier');
     setCart([]);
   }
 

@@ -14,14 +14,12 @@ export default function Categories() {
   });
 
   function handleCategoryClick(cat) {
-    console.log('Navigating to products with category:', cat);
     navigate('/produits', { state: { categorie: cat } });
   }
 
   function handleSeeAllClick(e, cat) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('See all clicked for category:', cat);
     navigate('/produits', { state: { categorie: cat } });
   }
 

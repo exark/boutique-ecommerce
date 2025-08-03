@@ -473,7 +473,6 @@ export default function Produits() {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Filter button clicked');
             setMobileFiltersOpen(true);
           }}
           onTouchStart={(e) => {

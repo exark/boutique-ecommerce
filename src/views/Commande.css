@@ -36,6 +36,7 @@
   color: var(--color-texte) !important;
   font-weight: 700 !important;
   margin: 0 !important;
+  flex: 1;
 }
 
 .commande-content {

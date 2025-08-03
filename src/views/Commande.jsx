@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../cartContext';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -15,7 +15,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Snackbar
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -42,6 +43,63 @@ export default function Commande() {
   const [livraison, setLivraison] = useState('domicile');
   const [paiement, setPaiement] = useState('especes');
   const [errors, setErrors] = useState({});
+  const [showRestoreNotification, setShowRestoreNotification] = useState(false);
+
+  // Charger les données sauvegardées au montage du composant
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('commandeFormData');
+    const savedLivraison = localStorage.getItem('commandeLivraison');
+    const savedPaiement = localStorage.getItem('commandePaiement');
+    
+    let hasRestoredData = false;
+    
+    if (savedFormData) {
+      try {
+        const parsedData = JSON.parse(savedFormData);
+        
+        // Vérifier si les données ne sont pas vides
+        const hasValidData = Object.values(parsedData).some(value => value && value.trim() !== '');
+        
+        if (hasValidData) {
+          setFormData(parsedData);
+          hasRestoredData = true;
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des données sauvegardées:', error);
+      }
+    }
+    
+    if (savedLivraison && savedLivraison !== 'domicile') {
+      setLivraison(savedLivraison);
+      hasRestoredData = true;
+    }
+    
+    if (savedPaiement && savedPaiement !== 'especes') {
+      setPaiement(savedPaiement);
+      hasRestoredData = true;
+    }
+    
+    // Afficher la notification seulement si des données ont été restaurées
+    if (hasRestoredData) {
+      setShowRestoreNotification(true);
+    }
+  }, []);
+
+  // Sauvegarder les données à chaque modification
+  useEffect(() => {
+    // Vérifier si les données ne sont pas toutes vides avant de sauvegarder
+    const hasValidData = Object.values(formData).some(value => value && value.trim() !== '');
+    
+    if (hasValidData) {
+      localStorage.setItem('commandeFormData', JSON.stringify(formData));
+    } else {
+      // Si toutes les données sont vides, supprimer les données sauvegardées
+      localStorage.removeItem('commandeFormData');
+    }
+    
+    localStorage.setItem('commandeLivraison', livraison);
+    localStorage.setItem('commandePaiement', paiement);
+  }, [formData, livraison, paiement]);
 
   // Calculs du panier
   const subtotal = cart.reduce((acc, item) => acc + item.prix * item.quantity, 0);
@@ -123,10 +181,15 @@ export default function Commande() {
     
     const whatsappNumber = '21695495874';
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${msg}`;
+    
+    // Ouvrir WhatsApp
     window.open(whatsappUrl, '_blank');
     
     // Vider le panier après la commande
     clearCart();
+    
+    // Ne pas effacer les données automatiquement - l'utilisateur peut vouloir refaire une commande
+    // Les données seront conservées pour la prochaine commande
     
     // Rediriger vers la page d'accueil avec un message de succès
     navigate('/', { state: { orderSuccess: true } });
@@ -408,6 +471,15 @@ export default function Commande() {
           </Card>
         </div>
       </div>
+
+      {/* Notification de restauration des données */}
+      <Snackbar
+        open={showRestoreNotification}
+        autoHideDuration={4000}
+        onClose={() => setShowRestoreNotification(false)}
+        message="Vos informations précédentes ont été restaurées"
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      />
     </div>
   );
 }
