@@ -1,5 +1,8 @@
 name: Mise à jour automatique des produits
 
+permissions:
+  contents: write  #(commit/push)
+
 on:
   schedule:
     - cron: "*/5 * * * *"  # Toutes les 5 minutes
