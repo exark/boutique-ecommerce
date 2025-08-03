@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Masonry from 'react-masonry-css';
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, Drawer, IconButton, Grid } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,30 +24,81 @@ export default function Produits() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const filtersBarRef = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
+  const isMobile = useMediaQuery('(max-width:767px)');
+  const isTablet = useMediaQuery('(min-width:768px) and (max-width:1024px)');
   const isMobileOrTablet = useMediaQuery('(max-width:1024px)');
-  const [columns, setColumns] = useState(isMobileOrTablet ? 1 : 2); // 1 colonne par défaut sur mobile, 2 (4 colonnes) sur desktop
+  const [columns, setColumns] = useState(() => {
+    if (isMobile) return 1; // Mobile: 2 produits par ligne
+    if (isTablet) return 2; // Tablette: 4 produits par ligne
+    return 2; // Desktop: 4 produits par ligne par défaut
+  }); // 1=2cols, 2=4cols, 3=mosaïque
   
   // Utiliser les colonnes sélectionnées par l'utilisateur, sans forcer de changement
   const effectiveColumns = columns;
   
-  // Mettre à jour les colonnes quand on change de device (mobile/desktop)
+  // Mettre à jour les colonnes quand on change de device (mobile/tablette/desktop)
   useEffect(() => {
-    if (isMobileOrTablet && columns === 2) {
-      // Si on passe sur mobile/tablette et qu'on était en mode 2 colonnes (desktop), passer à 1 colonne
-      setColumns(1);
-    } else if (!isMobileOrTablet && columns === 1) {
-      // Si on passe sur desktop et qu'on était en mode 1 colonne (mobile), passer à 2 colonnes
-      setColumns(2);
-    }
-  }, [isMobileOrTablet]); // Retirer 'columns' des dépendances pour éviter la boucle infinie
+    setColumns(prevColumns => {
+      if (isMobile && prevColumns > 3) {
+        // Mobile: limiter au mode 3 max (mosaïque)
+        return 3;
+      } else if (isTablet && prevColumns > 3) {
+        // Tablette: limiter au mode 3 max (mosaïque)
+        return 3;
+      } else if (!isMobileOrTablet && prevColumns === 1) {
+        // Desktop: si on était en mode mobile, passer au mode 2 (4 colonnes)
+        return 2;
+      }
+      return prevColumns; // Pas de changement
+    });
+  }, [isMobile, isTablet, isMobileOrTablet]); // Pas de columns dans les dépendances
   
   // Désactiver les boutons d'ajustement quand il n'y a que 1 produit
   const shouldDisableToggleButtons = filteredProducts.length === 1;
+  
   const theme = useTheme();
   const [hoveredProductId, setHoveredProductId] = useState(null);
   const [isNavbarMenuOpen, setIsNavbarMenuOpen] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [showAdaptiveNotification, setShowAdaptiveNotification] = useState(false);
+  
+  // Fonction pour calculer le nombre optimal de colonnes selon le nombre de produits (pure function)
+  const getAdaptiveColumns = (productCount, selectedColumns) => {
+    let adaptedColumns = selectedColumns;
+    
+    // Si très peu de produits (1-2), forcer un affichage plus large
+    if (productCount <= 2) {
+      if (isMobileOrTablet) {
+        adaptedColumns = 1; // 1 colonne sur mobile pour 1-2 produits
+      } else {
+        adaptedColumns = 2; // Max 2 colonnes desktop pour 1-2 produits
+      }
+    }
+    // Si peu de produits (3-6), adapter selon le mode
+    else if (productCount <= 6) {
+      if (isMobileOrTablet && selectedColumns === 3) {
+        adaptedColumns = 2; // Limiter mosaïque à 2 colonnes
+      }
+    }
+    
+    return adaptedColumns;
+  };
+
+  // Colonnes adaptatives basées sur le nombre de produits filtrés (mémorisé pour éviter les re-rendus)
+  const adaptiveColumns = useMemo(() => {
+    return getAdaptiveColumns(filteredProducts.length, effectiveColumns);
+  }, [filteredProducts.length, effectiveColumns, isMobileOrTablet]);
+  
+  // Gérer la notification d'adaptation dans un useEffect séparé
+  useEffect(() => {
+    const wasAdapted = adaptiveColumns !== effectiveColumns;
+    if (wasAdapted && filteredProducts.length > 0) {
+      setShowAdaptiveNotification(true);
+      const timer = setTimeout(() => setShowAdaptiveNotification(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [adaptiveColumns, effectiveColumns, filteredProducts.length]);
   const productsSectionRef = useRef(null);
   
   // Calculer la largeur du conteneur pour l'espacement optimal
@@ -132,17 +183,18 @@ export default function Produits() {
     };
   }, []);
 
-  // Breakpoints pour le responsive masonry avec espacement intelligent
+  // Breakpoints pour le responsive masonry avec espacement intelligent (adaptatif)
   const breakpointColumnsObj = isMobileOrTablet
     ? { 
-        default: effectiveColumns === 1 ? 1 : 2, // Maximum 2 colonnes sur mobile/tablette
-        768: effectiveColumns === 1 ? 1 : 2, // Tablette
-        480: effectiveColumns === 1 ? 1 : 2 // Mobile petit écran - respecter le choix utilisateur
+        default: adaptiveColumns === 1 ? 1 : adaptiveColumns === 2 ? 2 : 3, // 1, 2 ou 3 colonnes sur mobile/tablette
+        768: adaptiveColumns === 1 ? 1 : adaptiveColumns === 2 ? 2 : 3, // Tablette
+        480: adaptiveColumns === 1 ? 1 : adaptiveColumns === 2 ? 2 : 3 // Mobile petit écran - respecter le choix utilisateur
       }
     : { 
-        default: effectiveColumns === 1 ? 3 : 4, // Desktop: 3 ou 4 colonnes pour rapprocher les produits
-        1200: effectiveColumns === 1 ? 3 : 4,
-        900: effectiveColumns === 1 ? 3 : 4, // Écran moyen
+        // Desktop: 1=2cols, 2=4cols, 3=mosaïque (6 colonnes) - adaptatif
+        default: adaptiveColumns === 1 ? 2 : adaptiveColumns === 2 ? 4 : 6,
+        1200: adaptiveColumns === 1 ? 2 : adaptiveColumns === 2 ? 4 : 5,
+        900: adaptiveColumns === 1 ? 2 : adaptiveColumns === 2 ? 3 : 4, // Écran moyen
         600: 2 // Écran petit
       };
 
@@ -223,22 +275,33 @@ export default function Produits() {
     
     if (isDesktop) {
       if (effectiveColumns === 1) {
-        // Mode 3 colonnes sur desktop - espacement très serré
-        const cardWidth = 300; // Largeur fixe pour 3 colonnes
-        const totalCardsWidth = cardWidth * 10;
+        // Mode 2 colonnes sur desktop - espacement confortable
+        const cardWidth = 350; // Largeur fixe pour 2 colonnes
+        const totalCardsWidth = cardWidth * 2;
         const remainingSpace = availableWidth - totalCardsWidth;
-        const optimalGap = Math.max(4, Math.min(12, remainingSpace / 12)); // Entre 4px et 12px (plus serré)
+        const optimalGap = Math.max(8, Math.min(20, remainingSpace / 3)); // Entre 8px et 20px
+        
+        return {
+          '--optimal-gap': `${optimalGap}px`,
+          '--optimal-gap-half': `${optimalGap / 2}px`
+        };
+      } else if (effectiveColumns === 2) {
+        // Mode 4 colonnes sur desktop - espacement serré
+        const cardWidth = 280; // Largeur fixe pour 4 colonnes
+        const totalCardsWidth = cardWidth * 4;
+        const remainingSpace = availableWidth - totalCardsWidth;
+        const optimalGap = Math.max(4, Math.min(12, remainingSpace / 5)); // Entre 4px et 12px
         
         return {
           '--optimal-gap': `${optimalGap}px`,
           '--optimal-gap-half': `${optimalGap / 2}px`
         };
       } else {
-        // Mode 4 colonnes sur desktop - espacement ultra-minimal
-        const cardWidth = 280; // Largeur fixe pour 4 colonnes
-        const totalCardsWidth = cardWidth * 4;
+        // Mode mosaïque (6 colonnes) - espacement minimal
+        const cardWidth = 200; // Largeur fixe pour 6 colonnes
+        const totalCardsWidth = cardWidth * 6;
         const remainingSpace = availableWidth - totalCardsWidth;
-        const optimalGap = Math.max(2, Math.min(8, remainingSpace / 6)); // Entre 2px et 8px (très serré)
+        const optimalGap = Math.max(2, Math.min(6, remainingSpace / 7)); // Entre 2px et 6px (ultra-serré)
         
         return {
           '--optimal-gap': `${optimalGap}px`,
@@ -301,65 +364,87 @@ export default function Produits() {
          transform: 'translateZ(0)'
        }}>
          <div className="display-toggle-buttons" style={{ gap: 18, minHeight: '38px' }}>
-          {[1, 2].map((col, idx) => (
-            <button
-              key={col}
-              onClick={() => setColumns(col)}
-              aria-label={`Afficher ${col === 1 ? 2 : 4} produits par ligne`}
-              className={effectiveColumns === col ? 'toggle-btn-active' : ''}
-                                            disabled={shouldDisableToggleButtons}
-               style={{
-                 background: 'none',
-                 border: 'none',
-                 borderRadius: 0,
-                 padding: 0,
-                 margin: 0,
-                 cursor: shouldDisableToggleButtons ? 'default' : 'pointer',
-                 outline: 'none',
-                 display: 'flex',
-                 flexDirection: 'column',
-                 alignItems: 'center',
-                 opacity: shouldDisableToggleButtons ? 0.3 : (effectiveColumns === col ? 1 : 0.6),
-                 transition: 'all 0.2s ease',
-                 height: 38,
-                 width: 38,
-                 position: 'relative',
-                 willChange: 'auto',
-                 transform: 'translateZ(0)',
-               }}
-               onMouseEnter={(e) => {
-                 if (!shouldDisableToggleButtons && effectiveColumns !== col) {
-                   e.currentTarget.style.transform = 'scale(1.1)';
-                 }
-               }}
+          {[1, 2, 3].map((col, idx) => {
+            const getLabel = (mode) => {
+              switch(mode) {
+                case 1: return '2 produits par ligne';
+                case 2: return '4 produits par ligne';
+                case 3: return 'Affichage mosaïque';
+                default: return '';
+              }
+            };
+            
+            return (
+              <button
+                key={col}
+                onClick={() => setColumns(col)}
+                aria-label={getLabel(col)}
+                className={effectiveColumns === col ? 'toggle-btn-active' : ''}
+                disabled={shouldDisableToggleButtons}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  borderRadius: 0,
+                  padding: 0,
+                  margin: 0,
+                  cursor: shouldDisableToggleButtons ? 'default' : 'pointer',
+                  outline: 'none',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  opacity: shouldDisableToggleButtons ? 0.3 : (effectiveColumns === col ? 1 : 0.6),
+                  transition: 'all 0.2s ease',
+                  height: 38,
+                  width: 38,
+                  position: 'relative',
+                  willChange: 'auto',
+                  transform: 'translateZ(0)',
+                }}
+                onMouseEnter={(e) => {
+                  if (!shouldDisableToggleButtons && effectiveColumns !== col) {
+                    e.currentTarget.style.transform = 'scale(1.1)';
+                  }
+                }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
                 }}
-            >
-              {/* Icônes SVG personnalisées */}
-              {col === 1 && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="3" width="18" height="18" rx="1.5" stroke="#222" strokeWidth="1.5" fill="none" />
-                </svg>
-              )}
-              {col === 2 && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="3" width="8" height="18" rx="1.5" stroke="#222" strokeWidth="1.5" fill="none" />
-                  <rect x="13" y="3" width="8" height="18" rx="1.5" stroke="#222" strokeWidth="1.5" fill="none" />
-                </svg>
-              )}
-              {/* Underline effet actif */}
-              <span style={{
-                display: 'block',
-                height: effectiveColumns === col ? 4 : 0,
-                width: 28,
-                marginTop: 2,
-                background: effectiveColumns === col ? '#222' : 'transparent',
-                borderRadius: 2,
-                transition: 'all 0.18s',
-              }} />
-            </button>
-          ))}
+              >
+                {/* Icônes SVG style Mango */}
+                {col === 1 && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="8" height="18" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="13" y="3" width="8" height="18" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                  </svg>
+                )}
+                {col === 2 && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="3" width="4.5" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="7.75" y="3" width="4.5" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="13.5" y="3" width="4.5" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="19.25" y="3" width="2.75" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                  </svg>
+                )}
+                {col === 3 && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="13" y="3" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="3" y="13" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                    <rect x="13" y="13" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                  </svg>
+                )}
+                {/* Underline effet actif */}
+                <span style={{
+                  display: 'block',
+                  height: effectiveColumns === col ? 4 : 0,
+                  width: 28,
+                  marginTop: 2,
+                  background: effectiveColumns === col ? '#222' : 'transparent',
+                  borderRadius: 2,
+                  transition: 'all 0.18s',
+                }} />
+              </button>
+            );
+          })}
         </div>
       </div>
       {selectedCategory && (
@@ -374,20 +459,21 @@ export default function Produits() {
         </div>
       )}
       {/* Barre sticky avec texte filtre/trier pour mobile/tablette */}
-      <div
-        className={`filters-sticky-mobile-bar${isSticky ? ' sticky-glass' : ''}`}
-        ref={filtersBarRef}
-        style={{ 
-          display: (mobileFiltersOpen || isNavbarMenuOpen) ? 'none' : 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between' 
-        }}
-      >
-        <span 
+      {isMobileOrTablet && (
+        <div
+          className={`filters-sticky-mobile-bar${isSticky ? ' sticky-glass' : ''}`}
+          ref={filtersBarRef}
+          style={{ 
+            display: (mobileFiltersOpen || isNavbarMenuOpen) ? 'none' : undefined,
+          }}
+        >
+        <button 
           className="filters-open-text" 
+          type="button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Filter button clicked');
             setMobileFiltersOpen(true);
           }}
           onTouchStart={(e) => {
@@ -396,71 +482,81 @@ export default function Produits() {
           }}
         >
           Filtrer et trier
-        </span>
-        {isMobileOrTablet && (
-          <div className="display-toggle-buttons" style={{ gap: 12, minHeight: '32px' }}>
-            {[1, 2].map((col) => (
-              <button
-                key={col}
-                onClick={() => setColumns(col)}
-                aria-label={`Afficher ${col === 1 ? 1 : 2} produits par ligne`}
-                                 className={effectiveColumns === col ? 'toggle-btn-active' : ''}
-                 disabled={shouldDisableToggleButtons}
-                 style={{
-                   background: 'none',
-                   border: 'none',
-                   borderRadius: 0,
-                   padding: 0,
-                   margin: 0,
-                   cursor: shouldDisableToggleButtons ? 'default' : 'pointer',
-                   outline: 'none',
-                   display: 'flex',
-                   flexDirection: 'column',
-                   alignItems: 'center',
-                   opacity: shouldDisableToggleButtons ? 0.3 : (effectiveColumns === col ? 1 : 0.6),
-                   transition: 'all 0.2s ease',
-                   height: 32,
-                   width: 32,
-                   position: 'relative',
-                   willChange: 'auto',
-                   transform: 'translateZ(0)',
-                 }}
-                 onMouseEnter={(e) => {
-                   if (!shouldDisableToggleButtons && effectiveColumns !== col) {
-                     e.currentTarget.style.transform = 'scale(1.1)';
-                   }
-                 }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-              >
-                {/* Icônes SVG personnalisées */}
-                {col === 1 && (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="3" width="18" height="18" rx="1.5" stroke="#e91e63" strokeWidth="1.5" fill="none" />
-                  </svg>
-                )}
-                {col === 2 && (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="3" width="8" height="18" rx="1.5" stroke="#e91e63" strokeWidth="1.5" fill="none" />
-                    <rect x="13" y="3" width="8" height="18" rx="1.5" stroke="#e91e63" strokeWidth="1.5" fill="none" />
-                  </svg>
-                )}
-                {/* Underline effet actif */}
-                <span style={{
-                  display: 'block',
-                  height: effectiveColumns === col ? 3 : 0,
-                  width: 20,
-                  marginTop: 2,
-                  background: effectiveColumns === col ? '#e91e63' : 'transparent',
-                  borderRadius: 2,
-                  transition: 'all 0.18s',
-                }} />
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+        </button>
+        <div className="display-toggle-buttons" style={{ gap: isMobile ? 8 : 12, minHeight: isMobile ? '30px' : '36px' }}>
+          {[1, 2, 3].map((col) => (
+            <button
+              key={col}
+              onClick={() => setColumns(col)}
+              aria-label={`Afficher ${col === 1 ? '2' : col === 2 ? '4' : 'mosaïque'} produits par ligne`}
+              className={effectiveColumns === col ? 'toggle-btn-active' : ''}
+              disabled={shouldDisableToggleButtons}
+              style={{
+                background: 'none',
+                border: 'none',
+                borderRadius: 0,
+                padding: 0,
+                margin: 0,
+                cursor: shouldDisableToggleButtons ? 'default' : 'pointer',
+                outline: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                opacity: shouldDisableToggleButtons ? 0.3 : (effectiveColumns === col ? 1 : 0.6),
+                transition: 'all 0.2s ease',
+                height: isMobile ? 30 : isTablet ? 34 : 32,
+                width: isMobile ? 30 : isTablet ? 34 : 32,
+                position: 'relative',
+                willChange: 'auto',
+                transform: 'translateZ(0)',
+              }}
+              onMouseEnter={(e) => {
+                if (!shouldDisableToggleButtons && effectiveColumns !== col) {
+                  e.currentTarget.style.transform = 'scale(1.1)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              {/* Icônes SVG style Mango comme sur desktop */}
+              {col === 1 && (
+                <svg width={isMobile ? "18" : "20"} height={isMobile ? "18" : "20"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="8" height="18" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="13" y="3" width="8" height="18" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                </svg>
+              )}
+              {col === 2 && (
+                <svg width={isMobile ? "18" : "20"} height={isMobile ? "18" : "20"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="3" width="4.5" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="7.75" y="3" width="4.5" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="13.5" y="3" width="4.5" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="19.25" y="3" width="2.75" height="18" rx="0.5" stroke="#222" strokeWidth="1.5" fill="none" />
+                </svg>
+              )}
+              {col === 3 && (
+                <svg width={isMobile ? "18" : "20"} height={isMobile ? "18" : "20"} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="13" y="3" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="3" y="13" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                  <rect x="13" y="13" width="8" height="8" rx="1" stroke="#222" strokeWidth="1.5" fill="none" />
+                </svg>
+              )}
+              {/* Underline effet actif */}
+              <span style={{
+                display: 'block',
+                height: effectiveColumns === col ? 4 : 0,
+                width: isMobile ? 20 : 24,
+                marginTop: 2,
+                background: effectiveColumns === col ? '#222' : 'transparent',
+                borderRadius: 2,
+                transition: 'all 0.18s',
+              }} />
+            </button>
+          ))}
+        </div>
+        </div>
+      )}
       <Drawer
         anchor="left"
         open={mobileFiltersOpen}
@@ -492,11 +588,41 @@ export default function Produits() {
            />
          </div>
                           {/* Zone des produits */}
-         <div 
-           ref={productsSectionRef}
-           className="products-section" 
-           style={{ transition: 'all 0.4s cubic-bezier(0.4,0.2,0.2,1)', padding: 0, margin: 0 }}
-         >
+          {/* Notification d'adaptation automatique */}
+          {showAdaptiveNotification && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                position: 'fixed',
+                top: isMobileOrTablet ? '70px' : '20px',
+                right: '20px',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(233, 30, 99, 0.2)',
+                borderRadius: '12px',
+                padding: '12px 16px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                zIndex: 1000,
+                fontSize: '0.9rem',
+                color: '#333',
+                maxWidth: '280px'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#e91e63' }}>✨</span>
+                <span>Affichage adapté automatiquement</span>
+              </div>
+            </motion.div>
+          )}
+          
+          <div 
+            ref={productsSectionRef}
+            className="products-section" 
+            style={{ transition: 'all 0.4s cubic-bezier(0.4,0.2,0.2,1)', padding: 0, margin: 0 }}
+          >
            <AnimatePresence mode="wait">
              {filteredProducts.length === 0 ? (
                // Affichage quand aucun produit ne correspond aux filtres
@@ -768,12 +894,16 @@ export default function Produits() {
                    breakpointCols={breakpointColumnsObj}
                    className={`masonry-grid masonry-grid-left ${
                      isMobileOrTablet 
-                       ? effectiveColumns === 1 
+                       ? adaptiveColumns === 1 
                          ? 'masonry-grid-1col-mobile' 
-                         : 'masonry-grid-2cols-mobile'
-                       : effectiveColumns === 1 
+                         : adaptiveColumns === 2
+                           ? 'masonry-grid-2cols-mobile'
+                           : 'masonry-grid-3cols-mobile'
+                       : adaptiveColumns === 1 
                          ? 'masonry-grid-2cols' 
-                         : 'masonry-grid-4cols'
+                         : adaptiveColumns === 2
+                           ? 'masonry-grid-4cols'
+                           : 'masonry-grid-mosaic'
                    }`}
                    columnClassName="masonry-grid_column"
                    style={calculateOptimalSpacing()}
@@ -796,8 +926,8 @@ export default function Produits() {
                         flexDirection: 'column',
                         alignItems: 'stretch',
                         width: '100%',
-                                                 maxWidth: effectiveColumns === 1 ? 400 : effectiveColumns === 2 ? 280 : 280,
-                         height: effectiveColumns === 1 ? 600 : effectiveColumns === 2 ? 480 : 350,
+                        maxWidth: adaptiveColumns === 1 ? 400 : adaptiveColumns === 2 ? 280 : adaptiveColumns === 3 ? (isMobileOrTablet ? 120 : 200) : 280,
+                        height: adaptiveColumns === 1 ? 600 : adaptiveColumns === 2 ? 480 : adaptiveColumns === 3 ? (isMobileOrTablet ? 200 : 300) : 350,
                         background: 'none',
                         border: 'none',
                         boxShadow: 'none',
@@ -816,7 +946,7 @@ export default function Produits() {
                           alt={produit.nom}
                           sx={{
                             width: '100%',
-                                                         height: effectiveColumns === 1 ? 440 : effectiveColumns === 2 ? 350 : 200,
+                            height: adaptiveColumns === 1 ? 440 : adaptiveColumns === 2 ? 350 : adaptiveColumns === 3 ? (isMobileOrTablet ? 140 : 220) : 200,
                             objectFit: 'cover',
                             display: 'block',
                             border: 'none',
@@ -902,55 +1032,91 @@ export default function Produits() {
                       {/* OVERLAY GLASS DESKTOP : tailles au hover, collé en bas de l'image */}
                       {!isMobileOrTablet && hoveredProductId === produit.id && (
                         <div
+                          className="size-overlay-mango"
                           style={{
                             position: 'absolute',
                             left: 0,
                             right: 0,
-                            bottom: '140px', // 200px (img) - 60px (overlay)
-                            height: 60,
+                            bottom: effectiveColumns === 1 ? '160px' : effectiveColumns === 2 ? '130px' : effectiveColumns === 3 ? '80px' : '150px',
+                            height: 50,
                             width: '100%',
-                            background: 'rgba(255,255,255,0.85)',
+                            background: 'rgba(255,255,255,0.98)',
                             backdropFilter: 'blur(8px)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            zIndex: 2,
-                            boxShadow: '0 -2px 16px rgba(0,0,0,0.07)',
-                            transition: 'all 0.18s',
-                            borderBottomLeftRadius: 0,
-                            borderBottomRightRadius: 0,
-                            borderTopLeftRadius: 0,
-                            borderTopRightRadius: 0,
+                            zIndex: 3,
+                            boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',
+                            transition: 'all 0.2s ease',
+                            borderRadius: '0',
+                            border: 'none',
                           }}
                         >
                           {availableSizes.length > 0 ? (
-                            <div style={{ display: 'flex', gap: 28, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                            <div style={{ 
+                              display: 'flex', 
+                              gap: availableSizes.length > 4 ? 20 : 32, 
+                              justifyContent: 'center', 
+                              alignItems: 'center', 
+                              width: '100%',
+                              padding: '0 20px'
+                            }}>
                               {availableSizes.map((t) => (
-                                <span
+                                <button
                                   key={t.taille}
+                                  className="size-button-mango"
                                   style={{
-                                    fontWeight: 500,
-                                    fontSize: '1.18rem',
-                                    color: '#222',
+                                    fontWeight: 400,
+                                    fontSize: '1rem',
+                                    color: '#333',
                                     cursor: 'pointer',
-                                    padding: '2px 8px',
-                                    borderRadius: 4,
-                                    transition: 'color 0.15s, text-decoration 0.15s',
+                                    padding: '4px 8px',
+                                    borderRadius: '0',
+                                    transition: 'all 0.15s ease',
                                     userSelect: 'none',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    minWidth: 'auto',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontFamily: 'inherit',
+                                    letterSpacing: '0.3px',
+                                    position: 'relative',
                                   }}
                                   onClick={() => {
                                     addToCart({ ...produit, selectedSize: t.taille, stock: t.stock });
                                     setHoveredProductId(null);
                                   }}
-                                  onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'}
-                                  onMouseOut={e => e.currentTarget.style.textDecoration = 'none'}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = '#000';
+                                    e.currentTarget.style.fontWeight = '500';
+                                    e.currentTarget.style.textDecoration = 'underline';
+                                    e.currentTarget.style.textUnderlineOffset = '4px';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = '#333';
+                                    e.currentTarget.style.fontWeight = '400';
+                                    e.currentTarget.style.textDecoration = 'none';
+                                  }}
                                 >
                                   {t.taille}
-                                </span>
+                                </button>
                               ))}
                             </div>
                           ) : (
-                            <span style={{ color: '#b71c47', fontWeight: 600 }}>Rupture de stock</span>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                              color: '#d32f2f',
+                              fontWeight: 600,
+                              fontSize: '1rem'
+                            }}>
+                              <span style={{ fontSize: '1.2rem' }}>⚠</span>
+                              <span>Rupture de stock</span>
+                            </div>
                           )}
                         </div>
                       )}

@@ -16,10 +16,14 @@
 .filters-sidebar .search-filters {
   max-width: none;
   margin: 0;
-  padding: 0;
+  padding: 16px;
   z-index: 50;
   position: relative;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Styles pour le drawer mobile */
@@ -73,23 +77,28 @@
 }
 
 .search-input .MuiOutlinedInput-root {
-  border-radius: 0;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  transition: all 0.2s ease;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(224, 224, 224, 0.6);
+  transition: all 0.3s ease;
   font-size: 0.9rem;
   min-height: 48px;
   display: flex;
   align-items: center;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .search-input .MuiOutlinedInput-root:hover {
-  border-color: #000;
+  border-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .search-input .MuiOutlinedInput-root.Mui-focused {
   border-color: #000;
-  box-shadow: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .search-input .MuiOutlinedInput-input {
@@ -97,38 +106,33 @@
   min-height: 20px;
 }
 
-.search-input .MuiOutlinedInput-root {
-  border-radius: 0;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-}
-
 .filter-toggle {
-  background: #fff !important;
-  border: 1px solid #e0e0e0 !important;
-  border-radius: 0 !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(224, 224, 224, 0.6) !important;
+  border-radius: 24px !important;
   color: #333 !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.3s ease !important;
   min-width: 48px;
   height: 48px;
   flex-shrink: 0;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .filter-toggle:hover {
-  background: #f8f8f8 !important;
-  border-color: #000 !important;
+  background: rgba(248, 248, 248, 0.95) !important;
+  border-color: rgba(0, 0, 0, 0.6) !important;
   color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .filter-toggle.active {
-  background: #000 !important;
+  background: linear-gradient(135deg, #000 0%, #333 100%) !important;
   color: #fff !important;
   border-color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .clear-filters {
@@ -204,6 +208,39 @@
   min-height: 40px;
   display: flex;
   flex-direction: column;
+}
+
+/* Styles modernes pour les filtres */
+.filter-section .MuiSelect-root {
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  transition: all 0.3s ease !important;
+}
+
+.filter-section .MuiChip-root {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.filter-section .MuiChip-root:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3) !important;
+}
+
+/* Styles spéciaux pour les différents types de filtres */
+.filter-section:nth-child(3) .MuiChip-root {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+}
+
+.filter-section:nth-child(4) .MuiChip-root {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+}
+
+.filter-section:nth-child(5) .MuiChip-root {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
 }
 
 /* Menus déroulants plus compacts */
@@ -438,10 +475,21 @@
 
 /* Animation pour l'ouverture/fermeture des filtres */
 .filters-content {
-  animation: fadeIn 0.3s ease-out;
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: auto;
   transform: translateZ(0);
 }
+
+.filter-section {
+  animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.filter-section:nth-child(1) { animation-delay: 0.1s; }
+.filter-section:nth-child(2) { animation-delay: 0.2s; }
+.filter-section:nth-child(3) { animation-delay: 0.3s; }
+.filter-section:nth-child(4) { animation-delay: 0.4s; }
+.filter-section:nth-child(5) { animation-delay: 0.5s; }
 
 @keyframes fadeIn {
   from {
@@ -449,6 +497,40 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation pour les chips */
+.filter-section .MuiChip-root {
+  animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 } 
 
@@ -481,15 +563,24 @@
 
 /* Styles spécifiques pour mobile */
 @media (max-width: 1024px) {
+  .search-filters {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 16px;
+    padding: 1rem;
+    margin: 0 0.5rem 2rem 0.5rem;
+  }
+  
   .filter-section {
-    border: 1px solid #f0f0f0;
-    border-radius: 8px;
-    padding: 6px;
-    margin-bottom: 4px;
-    background: #fff;
-    transition: all 0.2s ease;
+    border: 1px solid rgba(240, 240, 240, 0.8);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
     will-change: auto;
     transform: translateZ(0);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
   
   .filter-section:hover {

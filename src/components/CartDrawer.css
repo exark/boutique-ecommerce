@@ -108,16 +108,34 @@
   transform: scale(1.05);
 }
 
-.cart-drawer__total {
-  font-weight: 600 !important;
-  margin-top: 24px !important;
+.cart-drawer__summary {
+  margin-top: 24px;
   padding: 16px;
   background: #fce4ec;
   border: 1px solid #f8bbd9;
   border-radius: 8px;
+}
+
+.cart-drawer__subtotal {
+  font-weight: 500 !important;
+  color: var(--color-texte) !important;
+  margin-bottom: 8px !important;
+}
+
+.cart-drawer__shipping {
+  color: #666 !important;
+  margin-bottom: 12px !important;
+  font-size: 0.9rem !important;
+}
+
+.cart-drawer__total {
+  font-weight: 600 !important;
   color: #e91e63 !important;
   text-align: center;
   font-size: 1.1rem !important;
+  margin: 0 !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #f8bbd9;
 }
 
 .cart-drawer__actions {
@@ -145,7 +163,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
 }
 
-.cart-drawer__whatsapp-btn {
+.cart-drawer__view-cart-btn {
   background: var(--color-accent) !important;
   color: white !important;
   border-radius: 8px !important;
@@ -156,28 +174,10 @@
   border: none !important;
 }
 
-.cart-drawer__whatsapp-btn:hover {
+.cart-drawer__view-cart-btn:hover {
   background: #d13a63 !important;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(247, 86, 124, 0.2) !important;
-}
-
-.cart-drawer__view-cart-btn {
-  border-color: var(--color-accent) !important;
-  color: var(--color-accent) !important;
-  border-radius: 8px !important;
-  padding: 12px 24px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  transition: all 0.2s ease !important;
-  background: transparent !important;
-}
-
-.cart-drawer__view-cart-btn:hover {
-  background: var(--color-accent) !important;
-  color: white !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(247, 86, 124, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
 }
 
 /* Responsive */

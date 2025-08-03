@@ -24,14 +24,17 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background: var(--color-dominante);
   color: var(--color-texte);
   font-family: 'Quicksand', system-ui, Avenir, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {

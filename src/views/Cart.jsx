@@ -47,20 +47,7 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
-    // Génération du message WhatsApp
-    let msg = 'Nouvelle commande :%0A';
-    cart.forEach(item => {
-      const sizeInfo = item.selectedSize ? ` (Taille: ${item.selectedSize})` : '';
-      msg += `- ${item.nom}${sizeInfo} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
-    });
-    msg += `%0ASous-total : ${subtotal.toFixed(2)} €`;
-    if (shipping > 0) msg += `%0ALivraison : ${shipping.toFixed(2)} €`;
-    if (discount > 0) msg += `%0ARéduction : -${discount.toFixed(2)} €`;
-    msg += `%0ATotal : ${total.toFixed(2)} €`;
-    
-    const whatsappNumber = '21695495874';
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${msg}`;
-    window.open(whatsappUrl, '_blank');
+    navigate('/commande');
   };
 
   if (cart.length === 0) {
@@ -88,7 +75,7 @@ export default function Cart() {
   return (
     <div className="cart-page">
       <div className="cart-header">
-        <IconButton onClick={() => navigate(-1)} className="cart-back-btn">
+        <IconButton onClick={() => navigate('/')} className="cart-back-btn">
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h4" className="cart-title">
@@ -232,7 +219,7 @@ export default function Cart() {
                 className="checkout-btn"
                 fullWidth
               >
-                Commander maintenant
+                Valider le panier
               </Button>
             </CardContent>
           </Card>

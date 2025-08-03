@@ -11,21 +11,6 @@ export default function CartDrawer({ open, onClose }) {
   const { cart, removeFromCart } = useCart();
   const navigate = useNavigate();
 
-  // Génération du message WhatsApp
-  function getWhatsappMessage() {
-    if (cart.length === 0) return '';
-    let msg = 'Nouvelle commande :%0A';
-    cart.forEach(item => {
-      const sizeInfo = item.selectedSize ? ` (Taille: ${item.selectedSize})` : '';
-      msg += `- ${item.nom}${sizeInfo} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
-    });
-    msg += `%0ATotal : ` + cart.reduce((acc, item) => acc + item.prix * item.quantity, 0).toFixed(2) + ' €';
-    return msg;
-  }
-  
-  const whatsappNumber = '21695495874'; // sans +
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${getWhatsappMessage()}`;
-
   const total = cart.reduce((acc, item) => acc + item.prix * item.quantity, 0);
 
   return (
@@ -77,9 +62,17 @@ export default function CartDrawer({ open, onClose }) {
                 ))}
               </div>
               
-              <Typography variant="body1" className="cart-drawer__total">
-                Total : {total.toFixed(2)} €
-              </Typography>
+              <div className="cart-drawer__summary">
+                <Typography variant="body1" className="cart-drawer__subtotal">
+                  Sous-total : {total.toFixed(2)} €
+                </Typography>
+                <Typography variant="body2" className="cart-drawer__shipping">
+                  Livraison : {total > 50 ? 'Gratuite' : '5.99 €'}
+                </Typography>
+                <Typography variant="h6" className="cart-drawer__total">
+                  Total : {total > 50 ? total.toFixed(2) : (total + 5.99).toFixed(2)} €
+                </Typography>
+              </div>
             </>
           )}
         </div>
@@ -87,7 +80,7 @@ export default function CartDrawer({ open, onClose }) {
         <div className="cart-drawer__actions">
           {cart.length > 0 && (
             <Button
-              variant="outlined"
+              variant="contained"
               color="primary"
               onClick={() => {
                 onClose();
@@ -100,25 +93,12 @@ export default function CartDrawer({ open, onClose }) {
           )}
           
           <Button 
-            variant="contained" 
-            color="primary" 
+            variant="outlined" 
             onClick={onClose} 
             className="cart-drawer__close-btn"
           >
             Fermer
           </Button>
-          
-          {cart.length > 0 && (
-            <Button
-              variant="contained"
-              className="cart-drawer__whatsapp-btn"
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Envoyer commande
-            </Button>
-          )}
         </div>
       </div>
     </Drawer>

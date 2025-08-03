@@ -14,6 +14,14 @@ export default function Categories() {
   });
 
   function handleCategoryClick(cat) {
+    console.log('Navigating to products with category:', cat);
+    navigate('/produits', { state: { categorie: cat } });
+  }
+
+  function handleSeeAllClick(e, cat) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('See all clicked for category:', cat);
     navigate('/produits', { state: { categorie: cat } });
   }
 
@@ -35,7 +43,14 @@ export default function Categories() {
             </div>
             <div className="category-info">
               <span className="category-name">{cat}</span>
-              <button className="category-btn" onClick={e => { e.stopPropagation(); handleCategoryClick(cat); }}>Voir tout</button>
+              <button 
+                className="category-btn" 
+                type="button"
+                onClick={(e) => handleSeeAllClick(e, cat)}
+                onTouchStart={(e) => e.preventDefault()}
+              >
+                Voir tout
+              </button>
             </div>
           </div>
         ))}

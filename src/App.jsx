@@ -5,9 +5,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProduitDetail from './views/ProduitDetail';
 import Home from './views/Home';
 import Cart from './views/Cart';
+import Commande from './views/Commande';
 import ScrollToTop from './components/ScrollToTop';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import Categories from './views/Categories';
+import Produits from './views/Produits';
 import CartNotification from './components/CartNotification';
 import { SpeedInsights } from "@vercel/speed-insights/react"
 
@@ -22,8 +24,10 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/produits" element={<Produits />} />
           <Route path="/produit/:id" element={<ProduitDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/commande" element={<Commande />} />
           <Route path="/categories" element={<Categories />} />
         </Routes>
       </div>

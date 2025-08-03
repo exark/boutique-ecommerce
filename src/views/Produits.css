@@ -104,19 +104,28 @@ body {
     padding-left: var(--optimal-gap, 2px); /* Espacement ultra-minimal pour 4 colonnes */
   }
   
+  /* Mode mosaïque - espacement minimal */
+  .masonry-grid.masonry-grid-mosaic .masonry-grid_column {
+    padding-left: var(--optimal-gap, 1px); /* Espacement ultra-minimal pour mosaïque */
+  }
+  
+  .masonry-grid.masonry-grid-mosaic .masonry-grid_column > div {
+    margin-bottom: 4px; /* Espacement vertical minimal pour mosaïque */
+  }
+  
   /* Mode 2 colonnes - espacement très serré */
   
 }
 
 /* Tablette - Adaptation intelligente */
-@media (max-width: 1024px) and (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .masonry-grid {
     justify-content: flex-start;
     gap: 0;
   }
   
   .masonry-grid_column {
-    padding-left: var(--optimal-gap, 3px); /* Espacement dynamique très serré pour tablette */
+    padding-left: var(--optimal-gap, 4px); /* Espacement adapté pour tablette */
     background-clip: padding-box;
     box-sizing: border-box;
   }
@@ -126,17 +135,17 @@ body {
   }
   
   .masonry-grid_column > div {
-    margin-bottom: 8px; /* Espacement vertical plus serré */
+    margin-bottom: 10px; /* Espacement vertical confortable sur tablette */
+  }
+  
+  /* Mode 4 colonnes sur tablette (mode par défaut) */
+  .masonry-grid.masonry-grid-4cols .masonry-grid_column {
+    padding-left: var(--optimal-gap, 3px);
   }
   
   /* Mode 2 colonnes sur tablette */
-  .masonry-grid.masonry-grid-2cols-mobile .masonry-grid_column {
-    padding-left: var(--optimal-gap, 4px);
-  }
-  
-  /* Mode 1 colonne sur tablette */
-  .masonry-grid.masonry-grid-1col-mobile .masonry-grid_column {
-    padding-left: 0;
+  .masonry-grid.masonry-grid-2cols .masonry-grid_column {
+    padding-left: var(--optimal-gap, 6px);
   }
 }
 
@@ -161,6 +170,11 @@ body {
     margin-bottom: 12px; /* Espacement vertical plus serré sur mobile */
   }
   
+  /* Mode 3 colonnes sur mobile (mosaïque) */
+  .masonry-grid.masonry-grid-3cols-mobile .masonry-grid_column {
+    padding-left: var(--optimal-gap, 2px); /* Espacement plus serré pour 3 colonnes */
+  }
+  
   /* Mode 2 colonnes sur mobile */
   .masonry-grid.masonry-grid-2cols-mobile .masonry-grid_column {
     padding-left: var(--optimal-gap, 3px);
@@ -173,19 +187,25 @@ body {
 }
 
 /* Responsive - Tablette */
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .produits-layout {
     gap: 1.5rem;
     padding: 0 1.5rem;
   }
   
   .filters-sidebar {
-    width: 250px;
+    width: 280px; /* Largeur optimisée pour tablette */
   }
   
   /* Optimisation de la hauteur des cartes pour tablette */
   .products-section {
-    padding: 0 8px;
+    padding: 0 12px; /* Plus d'espace sur tablette */
+  }
+  
+  /* Titre adapté pour tablette */
+  .produits-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -216,35 +236,69 @@ body {
   will-change: auto;
   transform: translateZ(0);
 }
-@media (max-width: 1024px) {
+
+/* Tablette - Barre sticky */
+@media (min-width: 768px) and (max-width: 1024px) {
   .filters-sticky-mobile-bar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    min-height: 52px;
+    height: 52px;
+    position: sticky;
+    top: 72px; /* desktop navbar */
+    z-index: 100;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #f3e6ea;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  
+  .filters-sidebar {
+    display: none;
+  }
+}
+
+/* Mobile - Barre sticky */
+@media (max-width: 767px) {
+  .filters-sticky-mobile-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100vw;
     min-height: 48px;
     height: 48px;
     position: sticky;
-    top: 72px; /* desktop navbar */
+    top: 62px; /* mobile navbar */
     z-index: 100;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid #f3e6ea;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(8px);
-    border-radius: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     transition: background 0.2s, box-shadow 0.2s;
   }
   
-  /* Masquer la barre sticky quand le menu mobile est ouvert */
+  .filters-sidebar {
+    display: none;
+  }
+}
+
+/* Masquer la barre sticky quand le menu mobile est ouvert */
+@media (max-width: 1024px) {
   .navbar--menu-open ~ .filters-sticky-mobile-bar,
   .navbar--menu-open .filters-sticky-mobile-bar {
     display: none !important;
   }
+}
+
+/* Styles pour le bouton de filtres */
+@media (max-width: 1024px) {
   .filters-open-btn {
     background: #f47b9b;
     color: #fff;
@@ -261,20 +315,6 @@ body {
   }
   .filters-open-btn:hover {
     background: #e91e63;
-  }
-  .filters-sidebar {
-    display: none;
-  }
-}
-@media (max-width: 900px) {
-  .filters-sticky-mobile-bar {
-    top: 62px; /* mobile navbar */
-  }
-  
-  /* Masquer la barre sticky quand le menu mobile est ouvert */
-  .navbar--menu-open ~ .filters-sticky-mobile-bar,
-  .navbar--menu-open .filters-sticky-mobile-bar {
-    display: none !important;
   }
 }
 /* Drawer mobile/tablette plein écran */
@@ -330,18 +370,41 @@ body {
   font-weight: 600;
   font-size: 1.08rem;
   cursor: pointer;
-  background: none;
-  border: none;
+  background: none !important;
+  border: none !important;
   border-radius: 0;
   padding: 0;
   margin-left: 12px;
   transition: color 0.15s;
   display: inline-block;
   text-align: left;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+  outline: none;
+  box-shadow: none;
 }
 .filters-open-text:hover {
   color: #b71c47;
   text-decoration: underline;
+}
+
+/* Styles spécifiques pour tablette */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .filters-open-text {
+    font-size: 1.1rem;
+    margin-left: 16px;
+    padding: 4px 0;
+  }
+}
+
+/* Styles spécifiques pour mobile */
+@media (max-width: 767px) {
+  .filters-open-text {
+    font-size: 1rem;
+    margin-left: 8px;
+    padding: 4px 0;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -367,30 +430,59 @@ body {
 }
 
 /* Pour appliquer la classe sticky-glass dynamiquement, il faut l'ajouter en JS si besoin, sinon on peut cibler via :not(:not(.sticky)) si sticky est déjà utilisé. */
-@media (max-width: 1024px) {
+/* Boutons d'affichage - Tablette */
+@media (min-width: 768px) and (max-width: 1024px) {
   .display-toggle-buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    gap: 18px;
+    gap: 16px;
     margin-left: auto;
-    margin-right: 12px;
+    margin-right: 16px;
+    width: auto;
+    min-height: 36px;
+    will-change: auto;
+    transform: translateZ(0);
+  }
+  
+  /* Boutons optimisés pour tablette */
+  .display-toggle-buttons button {
+    height: 38px;
+    width: 38px;
+  }
+  
+  .display-toggle-buttons svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Boutons d'affichage - Mobile */
+@media (max-width: 767px) {
+  .display-toggle-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px; /* Réduit pour 3 boutons */
+    margin-left: auto;
+    margin-right: 8px;
     width: auto;
     min-height: 32px;
     will-change: auto;
     transform: translateZ(0);
   }
   
-  /* Optimisations spécifiques pour les boutons d'ajustement sur tablette */
+  /* Boutons compacts pour mobile */
   .display-toggle-buttons button {
-    height: 36px;
-    width: 36px;
+    height: 34px;
+    width: 34px;
   }
   
   .display-toggle-buttons svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 }
 @media (min-width: 1025px) {
@@ -416,4 +508,72 @@ body {
 /* Classes utilitaires pour l'espacement intelligent */
 .masonry-grid-left {
   justify-content: flex-start !important;
+}
+
+/* Styles pour l'overlay des tailles au survol - Style Mango */
+.size-overlay-mango {
+  animation: fadeInMango 0.2s ease forwards;
+}
+
+@keyframes fadeInMango {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.size-button-mango {
+  position: relative;
+  font-family: inherit;
+}
+
+.size-button-mango:focus {
+  outline: none;
+}
+
+.size-button-mango:active {
+  transform: scale(0.98);
+}
+
+/* Amélioration responsive pour les overlays - Style Mango */
+
+/* Tablette */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .size-overlay-mango {
+    height: 48px; /* Hauteur confortable pour tablette */
+  }
+  
+  .size-button-mango {
+    padding: 4px 8px;
+    font-size: 1rem;
+    min-width: 32px; /* Largeur minimale pour faciliter le touch */
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .size-overlay-mango {
+    height: 44px; /* Hauteur adaptée pour mobile */
+  }
+  
+  .size-button-mango {
+    padding: 3px 6px;
+    font-size: 0.95rem;
+    min-width: 28px; /* Touch-friendly sur mobile */
+  }
+}
+
+/* Petit mobile */
+@media (max-width: 480px) {
+  .size-overlay-mango {
+    height: 40px;
+  }
+  
+  .size-button-mango {
+    padding: 2px 5px;
+    font-size: 0.9rem;
+    min-width: 26px;
+  }
 }
