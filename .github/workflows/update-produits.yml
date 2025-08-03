@@ -1,0 +1,38 @@
+name: Mise à jour automatique des produits
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Toutes les 5 minutes
+  workflow_dispatch:        # Permet aussi de le lancer manuellement
+
+jobs:
+  update-produits:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cloner le dépôt
+        uses: actions/checkout@v3
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Installer les dépendances
+        run: npm install
+
+      - name: Générer le fichier produits.js depuis Google Sheet
+        run: npm run update-products
+
+      - name: Vérifier les modifications et push si nécessaire
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet src/data/produits.js; then
+            echo "Aucun changement détecté."
+          else
+            git add src/data/produits.js
+            git commit -m "🛒 Mise à jour automatique des produits depuis Google Sheets"
+            git push
+          fi
