@@ -417,20 +417,3 @@ body {
 .masonry-grid-left {
   justify-content: flex-start !important;
 }
-
-/* Classes spécifiques pour les différents modes d'affichage */
-.masonry-grid-4cols {
-  /* Mode 4 colonnes - espacement ultra-minimal */
-}
-
-.masonry-grid-2cols {
-  /* Mode 2 colonnes - espacement modéré */
-}
-
-.masonry-grid-2cols-mobile {
-  /* Mode 2 colonnes sur mobile/tablette */
-}
-
-.masonry-grid-1col-mobile {
-  /* Mode 1 colonne sur mobile/tablette */
-}

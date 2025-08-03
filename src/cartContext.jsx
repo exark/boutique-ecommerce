@@ -1,12 +1,50 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [notification, setNotification] = useState({ open: false, productName: '', selectedSize: '' });
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Charger le panier depuis localStorage au montage du composant
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('cart');
+      console.log('Chargement depuis localStorage:', savedCart);
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        console.log('Panier parsé:', parsedCart);
+        setCart(parsedCart);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement du panier depuis localStorage:', error);
+      // En cas d'erreur, on garde le panier vide
+      setCart([]);
+    } finally {
+      setIsInitialized(true);
+    }
+  }, []);
+
+  // Sauvegarder le panier dans localStorage à chaque modification (seulement après l'initialisation)
+  useEffect(() => {
+    if (isInitialized) {
+      try {
+        console.log('Sauvegarde du panier dans localStorage:', cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde du panier dans localStorage:', error);
+      }
+    }
+  }, [cart, isInitialized]);
 
   function addToCart(product) {
+    if (!product || !product.id) {
+      console.error('Produit invalide pour ajout au panier');
+      return;
+    }
+
+    console.log('Ajout au panier:', product);
     setCart((prevCart) => {
       // Vérifier si le produit existe déjà avec la même taille
       const existing = prevCart.find((item) => 
@@ -29,12 +67,18 @@ export function CartProvider({ children }) {
     // Afficher la notification
     setNotification({
       open: true,
-      productName: product.nom,
+      productName: product.nom || 'Produit',
       selectedSize: product.selectedSize || ''
     });
   }
 
   function removeFromCart(id, selectedSize) {
+    if (!id) {
+      console.error('ID invalide pour suppression du panier');
+      return;
+    }
+
+    console.log('Suppression du panier:', id, selectedSize);
     setCart((prevCart) => 
       prevCart.filter((item) => 
         !(item.id === id && item.selectedSize === selectedSize)
@@ -43,12 +87,18 @@ export function CartProvider({ children }) {
   }
 
   function updateQuantity(id, selectedSize, newQuantity) {
+    if (!id || newQuantity < 0) {
+      console.error('Paramètres invalides pour mise à jour de quantité');
+      return;
+    }
+
+    console.log('Mise à jour quantité:', id, selectedSize, newQuantity);
     setCart((prevCart) => 
       prevCart.map((item) => 
         item.id === id && item.selectedSize === selectedSize 
-          ? { ...item, quantity: newQuantity } 
+          ? { ...item, quantity: Math.max(0, newQuantity) } 
           : item
-      )
+      ).filter(item => item.quantity > 0) // Supprimer les articles avec quantité 0
     );
   }
 
@@ -56,13 +106,39 @@ export function CartProvider({ children }) {
     setNotification({ open: false, productName: '', selectedSize: '' });
   }
 
+  // Fonction pour vider complètement le panier
+  function clearCart() {
+    console.log('Vidage du panier');
+    setCart([]);
+  }
+
+  // Calculer le total des articles dans le panier
+  const cartTotal = cart.reduce((total, item) => total + (item.prix * item.quantity), 0);
+  
+  // Calculer le nombre total d'articles
+  const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, notification, closeNotification }}>
+    <CartContext.Provider value={{ 
+      cart, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      notification, 
+      closeNotification,
+      clearCart,
+      cartTotal,
+      cartItemCount
+    }}>
       {children}
     </CartContext.Provider>
   );
 }
 
 export function useCart() {
-  return useContext(CartContext);
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error('useCart doit être utilisé à l\'intérieur d\'un CartProvider');
+  }
+  return context;
 } 
