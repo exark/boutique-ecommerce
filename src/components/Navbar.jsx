@@ -40,9 +40,9 @@ export default function Navbar() {
   // Gestion du scroll pour masquer/afficher la navbar sur mobile
   // useEffect supprimé car la navbar doit toujours être visible
 
-  // Handler pour le logo : refresh complet vers /home
+  // Handler pour le logo : navigation SPA vers /home
   function handleLogoClick() {
-    window.location.href = '/home';
+    navigate('/home');
   }
 
   // Handler pour Accueil : navigation SPA + smooth scroll
