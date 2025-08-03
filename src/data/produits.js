@@ -1,32 +1,30 @@
-
-
 const produits = [
 
   {
     id: 2,
     nom: 'Blouse légère',
     categorie: 'Blouses',
-    prix: 29.99,
+    prix: 100.99,
     image: '/images/pexels-polina-tankilevitch-4725105.jpg',
-    description: 'Blouse fluide et élégante, idéale pour les journées ensoleillées ou les soirées décontractées.',
+    description: 'Blouse élégante et confortable, parfaite pour toutes les occasions.',
     matiere: 'Viscose',
     couleur: 'Blanc cassé',
     tailles: [
       { taille: 'XS', stock: 3 },
       { taille: 'S', stock: 7 },
-      { taille: 'M', stock: 4 },
-      { taille: 'L', stock: 0 }
+      { taille: 'M', stock: 4 }
     ],
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 3,
     nom: 'Jean taille haute',
     categorie: 'Pantalons',
     prix: 59.99,
     image: '/images/pexels-payamrafiei56-6567927.jpg',
-    description: 'Jean moderne à taille haute, confortable et stylé pour toutes les morphologies.',
+    description: 'Pantalon moderne et stylé, pour un look tendance.',
     matiere: 'Denim',
     couleur: 'Bleu clair',
     tailles: [
@@ -38,13 +36,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 4,
     nom: 'Veste en jean',
     categorie: 'Vestes',
     prix: 69.99,
     image: '/images/denim-jacket-6240825.jpg',
-    description: 'Veste en jean intemporelle, parfaite pour compléter toutes vos tenues.',
+    description: 'Veste intemporelle, idéale pour compléter vos tenues.',
     matiere: 'Denim',
     couleur: 'Bleu',
     tailles: [
@@ -54,13 +53,14 @@ const produits = [
     disponibilite: 'Stock limité',
     nouveaute: true
   },
+
   {
     id: 5,
     nom: 'T-shirt basique',
     categorie: 'T-shirts',
     prix: 19.99,
     image: '/images/pexels-david-manzyk-253085053-20426347.jpg',
-    description: 'T-shirt simple et confortable, un indispensable du dressing.',
+    description: 'T-shirt basique et confortable, un indispensable du dressing.',
     matiere: 'Coton',
     couleur: 'Blanc',
     tailles: [
@@ -73,23 +73,24 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 6,
     nom: 'Jupe plissée',
     categorie: 'Jupes',
     prix: 39.99,
     image: '/images/pexels-miyatavictor-19327673.jpg',
-    description: 'Jupe élégante et féminine, idéale pour toutes les occasions.',
+    description: 'Jupe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester recyclé',
     couleur: 'Noir',
     tailles: [
       { taille: 'S', stock: 4 },
-      { taille: 'M', stock: 0 },
       { taille: 'L', stock: 3 }
     ],
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 7,
     nom: 'Pull en maille',
@@ -108,13 +109,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 8,
     nom: 'Chemise rayée',
     categorie: 'Chemises',
     prix: 34.99,
     image: '/images/pexels-28488111-7945745.jpg',
-    description: 'Chemise élégante à rayures, à porter au bureau ou en sortie.',
+    description: 'Chemise élégante, à porter au bureau ou en sortie.',
     matiere: 'Coton',
     couleur: 'Rayé bleu et blanc',
     tailles: [
@@ -125,13 +127,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 9,
     nom: 'Pantalon fluide',
     categorie: 'Pantalons',
     prix: 54.99,
-    image: '/images/pexels-cottonbro-9861655.jpg',
-    description: 'Pantalon léger et fluide, pour un confort optimal.',
+    image: '/images/pexels-payamrafiei56-6567927.jpg',
+    description: 'Pantalon moderne et stylé, pour un look tendance.',
     matiere: 'Lin',
     couleur: 'Beige clair',
     tailles: [
@@ -142,6 +145,7 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 10,
     nom: 'Cardigan beige',
@@ -159,13 +163,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 11,
     nom: 'Short en lin',
     categorie: 'Shorts',
     prix: 24.99,
     image: '/images/pexels-nai-de-vogue-2150938492-31410215.jpg',
-    description: "Short léger en lin, parfait pour l'été.",
+    description: 'Short léger et confortable, parfait pour l\'été.',
     matiere: 'Lin',
     couleur: 'Blanc',
     tailles: [
@@ -176,23 +181,24 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 12,
     nom: 'Manteau long',
     categorie: 'Manteaux',
     prix: 89.99,
     image: '/images/woman-4290853.jpg',
-    description: 'Manteau long et chaud, pour un hiver stylé.',
+    description: 'Manteau chaud et élégant, pour un hiver stylé.',
     matiere: 'Laine',
     couleur: 'Camel',
     tailles: [
       { taille: 'M', stock: 2 },
-      { taille: 'L', stock: 1 },
-      { taille: 'XL', stock: 0 }
+      { taille: 'L', stock: 1 }
     ],
     disponibilite: 'Stock limité',
     nouveaute: true
   },
+
   {
     id: 13,
     nom: 'Débardeur côtelé',
@@ -210,6 +216,7 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 14,
     nom: 'Combinaison chic',
@@ -227,6 +234,7 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: true
   },
+
   {
     id: 15,
     nom: 'Sweat à capuche',
@@ -245,14 +253,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
-  // Nouveaux produits ajoutés à partir des photos fournies
+
   {
     id: 16,
     nom: 'Pull en maille rayé',
     categorie: 'Pulls',
     prix: 49.99,
-    image: '/images/fashion-1283863.jpg',
-    description: 'Pull rayé en maille épaisse aux couleurs contrastées. Confortable et tendance, idéal pour les journées fraîches.',
+    image: '/images/pexels-vlada-karpovich-9968525.jpg',
+    description: 'Pull doux et chaud, parfait pour la mi-saison.',
     matiere: 'Mélange laine et acrylique',
     couleur: 'Violet et gris',
     tailles: [
@@ -264,13 +272,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: true
   },
+
   {
     id: 17,
     nom: 'Robe noire ceinturée',
     categorie: 'Robes',
     prix: 64.99,
-    image: '/images/fashion-3555648.jpg',
-    description: 'Robe courte sans manches avec encolure en V et ceinture métal. Chic et polyvalente pour la journée comme pour les soirées.',
+    image: '/images/fashion-1283863.jpg',
+    description: 'Robe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester et élasthanne',
     couleur: 'Noir',
     tailles: [
@@ -281,13 +290,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: true
   },
+
   {
     id: 18,
     nom: 'Hoodie oversize beige',
     categorie: 'Sweats',
     prix: 44.99,
-    image: '/images/pexels-28488111-7945745.jpg',
-    description: 'Sweat à capuche oversize au style décontracté. Tissu doux et confortable, avec poche kangourou et capuche ajustable.',
+    image: '/images/fashion-3555648.jpg',
+    description: 'Sweat confortable et stylé, pour un look décontracté.',
     matiere: 'Coton et polyester',
     couleur: 'Beige',
     tailles: [
@@ -299,13 +309,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: false
   },
+
   {
     id: 19,
     nom: 'Blazer orange',
     categorie: 'Blazers',
     prix: 74.99,
     image: '/images/pexels-cottonbro-9861655.jpg',
-    description: 'Blazer tailleur élégant en tissu structuré. Coupe moderne et couleur vive pour dynamiser votre garde-robe professionnelle.',
+    description: 'Blazer élégant et structuré, parfait pour le bureau.',
     matiere: 'Polyester',
     couleur: 'Orange',
     tailles: [
@@ -323,8 +334,8 @@ const produits = [
     nom: 'Robe drapée verte',
     categorie: 'Robes',
     prix: 69.99,
-    image: '/images/pexels-miyatavictor-19327673.jpg',
-    description: 'Robe longue drapée avec ceinture nouée à la taille. Coupe fluide et couleur vibrante pour un look sophistiqué.',
+    image: '/images/fashion-1283863.jpg',
+    description: 'Robe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester satiné',
     couleur: 'Vert éclatant',
     tailles: [
@@ -335,13 +346,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: true
   },
+
   {
     id: 22,
     nom: 'Combishort élégant',
     categorie: 'Combinaisons',
     prix: 59.99,
-    image: '/images/pexels-nai-de-vogue-2150938492-31410215.jpg',
-    description: 'Combishort noir avec épaules dénudées et bretelles ornées. Idéal pour des soirées chics ou des sorties estivales.',
+    image: '/images/woman-6540891.jpg',
+    description: 'Combinaison élégante, idéale pour les soirées.',
     matiere: 'Polyester et élasthanne',
     couleur: 'Noir',
     tailles: [
@@ -352,13 +364,14 @@ const produits = [
     disponibilite: 'En stock',
     nouveaute: true
   },
+
   {
     id: 23,
     nom: 'Chemise blanche oversize',
     categorie: 'Chemises',
     prix: 39.99,
-    image: '/images/pexels-payamrafiei56-6567927.jpg',
-    description: 'Chemise en coton ample à manches longues, à porter rentrée dans une jupe ou un pantalon pour un style minimaliste.',
+    image: '/images/pexels-28488111-7945745.jpg',
+    description: 'Chemise élégante, à porter au bureau ou en sortie.',
     matiere: 'Coton',
     couleur: 'Blanc',
     tailles: [

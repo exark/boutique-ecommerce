@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update-products": "node scripts/convertSheetToJson.js",
+    "update-products:custom": "node scripts/convertSheetToJson.js",
+    "watch-products": "node scripts/watchAndUpdate.js",
+    "dev-auto": "node scripts/devWithAutoUpdate.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
