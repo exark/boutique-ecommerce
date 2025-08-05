@@ -2,9 +2,9 @@ const produits = [
 
   {
     id: 2,
-    nom: 'Blouse légère',
+    nom: 'crop top orange',
     categorie: 'Blouses',
-    prix: 10.96,
+    prix: NaN,
     image: '/images/pexels-polina-tankilevitch-4725105.jpg',
     description: 'Blouse élégante et confortable, parfaite pour toutes les occasions.',
     matiere: 'Viscose',
