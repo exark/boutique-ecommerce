@@ -94,11 +94,6 @@
       ]
     }
   ],
-  "functions": {
-    "app/api/**/*.js": {
-      "maxDuration": 10
-    }
-  },
   "regions": ["cdg1"],
   "framework": "vite"
 }
