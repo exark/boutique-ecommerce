@@ -17,12 +17,12 @@
       ]
     },
     {
-      "source": "/images/(.*\\.(webp|avif|jpg|jpeg|png|gif|svg|ico))$",
+      "source": "/images/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        }, 
+        },
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
@@ -30,19 +30,6 @@
         {
           "key": "Vary",
           "value": "Accept"
-        }
-      ]
-    },
-    {
-      "source": "/images/(.*\\.(mp4|webm|ogg))$",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
         },
         {
           "key": "Accept-Ranges",
@@ -51,7 +38,7 @@
       ]
     },
     {
-      "source": "/(.*\\.(js|css))$",
+      "source": "/(.*\\.(js|css))",
       "headers": [
         {
           "key": "Cache-Control",
