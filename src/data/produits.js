@@ -363,25 +363,6 @@ const produits = [
     ],
     disponibilite: 'En stock',
     nouveaute: true
-  },
-
-  {
-    id: 23,
-    nom: 'Chemise blanche oversize',
-    categorie: 'Chemises',
-    prix: 39.99,
-    image: '/images/pexels-28488111-7945745.jpg',
-    description: 'Chemise élégante, à porter au bureau ou en sortie.',
-    matiere: 'Coton',
-    couleur: 'Blanc',
-    tailles: [
-      { taille: 'S', stock: 5 },
-      { taille: 'M', stock: 7 },
-      { taille: 'L', stock: 5 },
-      { taille: 'XL', stock: 2 }
-    ],
-    disponibilite: 'En stock',
-    nouveaute: false
   }
 ];
 
