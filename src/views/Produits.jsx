@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Masonry from 'react-masonry-css';
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Drawer, IconButton, Grid } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button, Drawer, IconButton, Grid } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FilterList as FilterIcon, Close as CloseIcon } from '@mui/icons-material';
 import './Produits.css';
@@ -9,6 +9,7 @@ import { Link, useLocation } from 'react-router-dom';
 import produits from '../data/produits';
 import SearchFilters from '../components/SearchFilters';
 import SizeSelectionModal from '../components/SizeSelectionModal';
+import MultiImageCard from '../components/MultiImageCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/material/styles';
@@ -938,27 +939,118 @@ export default function Produits() {
                       onMouseEnter={() => !isMobileOrTablet && setHoveredProductId(produit.id)}
                       onMouseLeave={() => !isMobileOrTablet && setHoveredProductId(null)}
                     >
-                      <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <CardMedia
-                          component="img"
-                          image={produit.image}
-                          alt={produit.nom}
-                          sx={{
-                            width: '100%',
-                            height: adaptiveColumns === 1 ? 440 : adaptiveColumns === 2 ? 350 : adaptiveColumns === 3 ? (isMobileOrTablet ? 140 : 220) : 200,
-                            objectFit: 'cover',
-                            display: 'block',
-                            border: 'none',
-                            margin: 0,
-                            padding: 0,
-                            cursor: 'pointer',
-                            transition: 'transform 0.2s ease',
-                            '&:hover': {
-                              transform: 'scale(1.02)',
-                            },
-                          }}
-                        />
-                      </Link>
+                      <div style={{ position: 'relative', display: 'block' }}>
+                        <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                          <MultiImageCard
+                            product={produit}
+                            className="product-image"
+                            aspectRatio={adaptiveColumns === 1 ? '1/1.1' : adaptiveColumns === 2 ? '1/1.25' : '1/1.4'}
+                            objectFit="cover"
+                            showIndicators={!isMobileOrTablet}
+                            autoRotate={false}
+                            style={{
+                              width: '100%',
+                              height: adaptiveColumns === 1 ? 440 : adaptiveColumns === 2 ? 350 : adaptiveColumns === 3 ? (isMobileOrTablet ? 140 : 220) : 200,
+                              cursor: 'pointer',
+                              borderRadius: '8px'
+                            }}
+                          />
+                        </Link>
+                        
+                        {/* OVERLAY GLASS DESKTOP : tailles au hover, directement dans l'image */}
+                        {!isMobileOrTablet && hoveredProductId === produit.id && (
+                          <div
+                            className="size-overlay-mango"
+                            style={{
+                              position: 'absolute',
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              height: 50,
+                              width: '100%',
+                              background: 'rgba(255,255,255,0.85)',
+                              backdropFilter: 'blur(8px)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              zIndex: 10,
+                              boxShadow: 'none',
+                              transition: 'all 0.2s ease',
+                              borderRadius: '0 0 8px 8px',
+                              border: 'none',
+                            }}
+                          >
+                            {availableSizes.length > 0 ? (
+                              <div style={{ 
+                                display: 'flex', 
+                                gap: availableSizes.length > 4 ? 20 : 32, 
+                                justifyContent: 'center', 
+                                alignItems: 'center', 
+                                width: '100%',
+                                padding: '0 20px'
+                              }}>
+                                {availableSizes.map((t) => (
+                                  <button
+                                    key={t.taille}
+                                    className="size-button-mango"
+                                    style={{
+                                      fontWeight: 400,
+                                      fontSize: '1rem',
+                                      color: '#333',
+                                      cursor: 'pointer',
+                                      padding: '4px 8px',
+                                      borderRadius: '0',
+                                      transition: 'all 0.15s ease',
+                                      userSelect: 'none',
+                                      background: 'transparent',
+                                      border: 'none',
+                                      minWidth: 'auto',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontFamily: 'inherit',
+                                      letterSpacing: '0.3px',
+                                      position: 'relative',
+                                    }}
+                                    onClick={() => {
+                                      addToCart({ ...produit, selectedSize: t.taille, stock: t.stock });
+                                      setHoveredProductId(null);
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.color = '#000';
+                                      e.currentTarget.style.fontWeight = '500';
+                                      e.currentTarget.style.textDecoration = 'underline';
+                                      e.currentTarget.style.textUnderlineOffset = '4px';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.color = '#333';
+                                      e.currentTarget.style.fontWeight = '400';
+                                      e.currentTarget.style.textDecoration = 'none';
+                                    }}
+                                  >
+                                    {t.taille}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : (
+                              <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                color: '#d32f2f',
+                                fontWeight: 600,
+                                fontSize: '1rem'
+                              }}>
+                                <span style={{ fontSize: '1.2rem' }}>⚠</span>
+                                <span>Rupture de stock</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      
                       <CardContent sx={{
                         flexGrow: 1,
                         display: 'flex',
@@ -972,34 +1064,58 @@ export default function Produits() {
                       }}>
                         {isMobileOrTablet ? (
                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', width: '100%' }}>
-                            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
-                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1, minWidth: 0 }}>
-                                <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '1.08rem', mb: 0.5, wordBreak: 'break-word' }}>{produit.nom}</Typography>
-                                <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
+                            {/* Mode mosaïque (3+ colonnes) : nom et prix sur la même ligne */}
+                            {effectiveColumns >= 3 ? (
+                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '8px' }}>
+                                <Typography 
+                                  variant="subtitle1" 
+                                  className={isMobile && effectiveColumns === 3 ? 'product-title-mosaic-mobile' : ''}
+                                  sx={{ 
+                                    fontWeight: 600, 
+                                    fontSize: '0.85rem',
+                                    wordBreak: 'break-word',
+                                    flex: 1,
+                                    minWidth: 0,
+                                    lineHeight: 1.2
+                                  }}>{produit.nom}</Typography>
+                                <Typography variant="body2" sx={{ 
+                                  color: '#888', 
+                                  fontSize: '0.8rem',
+                                  fontWeight: 500,
+                                  flexShrink: 0
+                                }}>{produit.prix.toFixed(2)} €</Typography>
                               </div>
-                              {effectiveColumns === 2 && (
-                                <Button
-                                  variant="text"
-                                  color="inherit"
-                                  style={{ 
-                                    minWidth: 36, 
-                                    height: 36, 
-                                    borderRadius: '50%', 
-                                    background: 'transparent', 
-                                    boxShadow: 'none', 
-                                    padding: 0, 
-                                    margin: 0,
-                                    flexShrink: 0,
-                                    marginLeft: 8
-                                  }}
-                                  onClick={(e) => handleAddToCartClick(e, produit)}
-                                  disabled={!hasAvailableSizes(produit)}
-                                  aria-label="Ajouter au panier"
-                                >
-                                  <AddIcon style={{ color: '#222', fontSize: 28 }} />
-                                </Button>
-                              )}
-                            </div>
+                            ) : (
+                              /* Mode 1-2 colonnes : layout classique */
+                              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1, minWidth: 0 }}>
+                                  <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '1.08rem', mb: 0.5, wordBreak: 'break-word' }}>{produit.nom}</Typography>
+                                  <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
+                                </div>
+                                {effectiveColumns === 2 && (
+                                  <Button
+                                    variant="text"
+                                    color="inherit"
+                                    style={{ 
+                                      minWidth: 36, 
+                                      height: 36, 
+                                      borderRadius: '50%', 
+                                      background: 'transparent', 
+                                      boxShadow: 'none', 
+                                      padding: 0, 
+                                      margin: 0,
+                                      flexShrink: 0,
+                                      marginLeft: 8
+                                    }}
+                                    onClick={(e) => handleAddToCartClick(e, produit)}
+                                    disabled={!hasAvailableSizes(produit)}
+                                    aria-label="Ajouter au panier"
+                                  >
+                                    <AddIcon style={{ color: '#222', fontSize: 28 }} />
+                                  </Button>
+                                )}
+                              </div>
+                            )}
                             {effectiveColumns === 1 && (
                               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
                                 <Button
@@ -1027,98 +1143,7 @@ export default function Produits() {
                             <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
                           </>
                         )}
-                      </CardContent>
-                      {/* OVERLAY GLASS DESKTOP : tailles au hover, collé en bas de l'image */}
-                      {!isMobileOrTablet && hoveredProductId === produit.id && (
-                        <div
-                          className="size-overlay-mango"
-                          style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            bottom: effectiveColumns === 1 ? '160px' : effectiveColumns === 2 ? '130px' : effectiveColumns === 3 ? '80px' : '150px',
-                            height: 50,
-                            width: '100%',
-                            background: 'rgba(255,255,255,0.98)',
-                            backdropFilter: 'blur(8px)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            zIndex: 3,
-                            boxShadow: '0 -2px 8px rgba(0,0,0,0.04)',
-                            transition: 'all 0.2s ease',
-                            borderRadius: '0',
-                            border: 'none',
-                          }}
-                        >
-                          {availableSizes.length > 0 ? (
-                            <div style={{ 
-                              display: 'flex', 
-                              gap: availableSizes.length > 4 ? 20 : 32, 
-                              justifyContent: 'center', 
-                              alignItems: 'center', 
-                              width: '100%',
-                              padding: '0 20px'
-                            }}>
-                              {availableSizes.map((t) => (
-                                <button
-                                  key={t.taille}
-                                  className="size-button-mango"
-                                  style={{
-                                    fontWeight: 400,
-                                    fontSize: '1rem',
-                                    color: '#333',
-                                    cursor: 'pointer',
-                                    padding: '4px 8px',
-                                    borderRadius: '0',
-                                    transition: 'all 0.15s ease',
-                                    userSelect: 'none',
-                                    background: 'transparent',
-                                    border: 'none',
-                                    minWidth: 'auto',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontFamily: 'inherit',
-                                    letterSpacing: '0.3px',
-                                    position: 'relative',
-                                  }}
-                                  onClick={() => {
-                                    addToCart({ ...produit, selectedSize: t.taille, stock: t.stock });
-                                    setHoveredProductId(null);
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.color = '#000';
-                                    e.currentTarget.style.fontWeight = '500';
-                                    e.currentTarget.style.textDecoration = 'underline';
-                                    e.currentTarget.style.textUnderlineOffset = '4px';
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.color = '#333';
-                                    e.currentTarget.style.fontWeight = '400';
-                                    e.currentTarget.style.textDecoration = 'none';
-                                  }}
-                                >
-                                  {t.taille}
-                                </button>
-                              ))}
-                            </div>
-                          ) : (
-                            <div style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '8px',
-                              color: '#d32f2f',
-                              fontWeight: 600,
-                              fontSize: '1rem'
-                            }}>
-                              <span style={{ fontSize: '1.2rem' }}>⚠</span>
-                              <span>Rupture de stock</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                       </CardContent>
                     </Card>
                   </motion.div>
                 );

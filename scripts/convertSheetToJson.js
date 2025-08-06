@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import { fileURLToPath } from 'url';
+import { parseImagesFromSheet, processProductFromSheet } from '../src/utils/imageParser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,6 +10,9 @@ const __dirname = path.dirname(__filename);
 // Configuration
 const DEFAULT_SHEET_ID = '1u1bwB9FOHAXW3xMyAyfYlF4jcHS7LvMIRFQLp1rJHto';
 const DEFAULT_OUTPUT_FILE = 'src/data/produits.js';
+
+// Colonnes attendues pour les images
+const IMAGE_COLUMNS = ['image_produit', 'images', 'image_urls', 'photos', 'Pictures', 'Images'];
 
 // Mapping des images existantes par catégorie
 const IMAGE_MAPPING = {
@@ -132,6 +136,10 @@ function convertWideFormatToProducts(header, rows) {
   const stockColumns = header.filter(h => h.toLowerCase().startsWith('stock_'));
   console.log(`Colonnes de stock détectées: ${stockColumns.join(', ')}`);
   
+  // Détecter la colonne d'images
+  const imageColumn = IMAGE_COLUMNS.find(col => header.includes(col));
+  console.log(`Colonne d'images détectée: ${imageColumn || 'Aucune - utilisation du mapping par catégorie'}`);
+  
   const products = [];
   
   rows.forEach((row, index) => {
@@ -166,12 +174,34 @@ function convertWideFormatToProducts(header, rows) {
       return;
     }
     
+    // Traitement des images multiples
+    let imageData;
+    if (imageColumn && row[imageColumn]) {
+      // Utiliser les images depuis Google Sheets
+      const rawImages = row[imageColumn];
+      const parsedImages = parseImagesFromSheet(rawImages);
+      imageData = {
+        image: parsedImages[0] || (IMAGE_MAPPING[categorie] || IMAGE_MAPPING.default),
+        images: parsedImages.length > 0 ? parsedImages : [IMAGE_MAPPING[categorie] || IMAGE_MAPPING.default]
+      };
+      console.log(`Images trouvées pour ${nom}: ${imageData.images.length} images`);
+    } else {
+      // Fallback sur le mapping par catégorie
+      const fallbackImage = IMAGE_MAPPING[categorie] || IMAGE_MAPPING.default;
+      imageData = {
+        image: fallbackImage,
+        images: [fallbackImage]
+      };
+      console.log(`Utilisation image par défaut pour ${nom}: ${fallbackImage}`);
+    }
+    
     const product = {
       id,
       nom: nom,
       categorie: categorie,
       prix: Number(row.prix || row.Prix || row.price || row.Price || 0),
-      image: IMAGE_MAPPING[categorie] || IMAGE_MAPPING.default,
+      image: imageData.image,
+      images: imageData.images,
       description: row.description || row.Description || 
                  DESCRIPTION_MAPPING[categorie] || 
                  DESCRIPTION_MAPPING.default,
@@ -201,13 +231,21 @@ function generateProduitsFile(products) {
       `      { taille: '${t.taille}', stock: ${t.stock} }`
     ).join(',\n');
     
+    // Générer le tableau des images
+    const imagesJson = product.images.map(img => 
+      `      '${img}'`
+    ).join(',\n');
+    
     return `  {
     id: ${product.id},
-    nom: '${product.nom.replace(/'/g, "\\'")}',
+    nom: '${product.nom.replace(/'/g, "\\'")}'',
     categorie: '${product.categorie}',
     prix: ${product.prix},
     image: '${product.image}',
-    description: '${product.description.replace(/'/g, "\\'")}',
+    images: [
+${imagesJson}
+    ],
+    description: '${product.description.replace(/'/g, "\\'")}'',
     matiere: '${product.matiere}',
     couleur: '${product.couleur}',
     tailles: [

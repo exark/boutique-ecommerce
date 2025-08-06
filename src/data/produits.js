@@ -5,7 +5,12 @@ const produits = [
     nom: 'crop top orange',
     categorie: 'Blouses',
     prix: 99.99,
-    image: '/images/pexels-polina-tankilevitch-4725105.jpg',
+    image: 'sA8yYui',
+    images: [
+      'sA8yYui',
+      '9bar64w',
+      'k6PYyLn'
+    ],
     description: 'Blouse élégante et confortable, parfaite pour toutes les occasions.',
     matiere: 'Viscose',
     couleur: 'Blanc cassé',
@@ -23,7 +28,12 @@ const produits = [
     nom: 'Jean taille haute',
     categorie: 'Pantalons',
     prix: 10.96,
-    image: '/images/pexels-payamrafiei56-6567927.jpg',
+    image: '3LYnlYV',
+    images: [
+      '3LYnlYV',
+      'XKg6kvm',
+      '0O7jTgz'
+    ],
     description: 'Pantalon moderne et stylé, pour un look tendance.',
     matiere: 'Denim',
     couleur: 'Bleu clair',
@@ -42,7 +52,13 @@ const produits = [
     nom: 'Veste en jean',
     categorie: 'Vestes',
     prix: 10.96,
-    image: '/images/denim-jacket-6240825.jpg',
+    image: 'ZsH92vC',
+    images: [
+      'ZsH92vC',
+      'WfUjEaH',
+      'lHcCZAk',
+      'wTzjjgM'
+    ],
     description: 'Veste intemporelle, idéale pour compléter vos tenues.',
     matiere: 'Denim',
     couleur: 'Bleu',
@@ -59,7 +75,10 @@ const produits = [
     nom: 'T-shirt basique',
     categorie: 'T-shirts',
     prix: 10.96,
-    image: '/images/pexels-david-manzyk-253085053-20426347.jpg',
+    image: 'bbqurwk',
+    images: [
+      'bbqurwk'
+    ],
     description: 'T-shirt basique et confortable, un indispensable du dressing.',
     matiere: 'Coton',
     couleur: 'Blanc',
@@ -79,7 +98,10 @@ const produits = [
     nom: 'Jupe plissée',
     categorie: 'Jupes',
     prix: 10.96,
-    image: '/images/pexels-miyatavictor-19327673.jpg',
+    image: 'qzA5nws',
+    images: [
+      'qzA5nws'
+    ],
     description: 'Jupe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester recyclé',
     couleur: 'Noir',
@@ -96,7 +118,10 @@ const produits = [
     nom: 'Pull en maille',
     categorie: 'Pulls',
     prix: 10.99,
-    image: '/images/pexels-vlada-karpovich-9968525.jpg',
+    image: 'egEkJT5',
+    images: [
+      'egEkJT5'
+    ],
     description: 'Pull doux et chaud, parfait pour la mi-saison.',
     matiere: 'Laine mérinos',
     couleur: 'Beige',
@@ -115,7 +140,10 @@ const produits = [
     nom: 'Chemise rayée',
     categorie: 'Chemises',
     prix: 69.96,
-    image: '/images/pexels-28488111-7945745.jpg',
+    image: 'dNDD8HN',
+    images: [
+      'dNDD8HN'
+    ],
     description: 'Chemise élégante, à porter au bureau ou en sortie.',
     matiere: 'Coton',
     couleur: 'Rayé bleu et blanc',
@@ -133,7 +161,10 @@ const produits = [
     nom: 'Pantalon fluide',
     categorie: 'Pantalons',
     prix: 54.99,
-    image: '/images/pexels-payamrafiei56-6567927.jpg',
+    image: 'dUqIgu0',
+    images: [
+      'dUqIgu0'
+    ],
     description: 'Pantalon moderne et stylé, pour un look tendance.',
     matiere: 'Lin',
     couleur: 'Beige clair',
@@ -151,7 +182,10 @@ const produits = [
     nom: 'Cardigan beige',
     categorie: 'Cardigans',
     prix: 39.99,
-    image: '/images/pexels-valeriya-31747192.jpg',
+    image: 'b0QwLUn',
+    images: [
+      'b0QwLUn'
+    ],
     description: 'Cardigan doux et élégant, facile à assortir.',
     matiere: 'Acrylique',
     couleur: 'Beige',
@@ -169,7 +203,10 @@ const produits = [
     nom: 'Short en lin',
     categorie: 'Shorts',
     prix: 24.99,
-    image: '/images/pexels-nai-de-vogue-2150938492-31410215.jpg',
+    image: 'e9ZCB9F',
+    images: [
+      'e9ZCB9F'
+    ],
     description: 'Short léger et confortable, parfait pour l\'été.',
     matiere: 'Lin',
     couleur: 'Blanc',
@@ -187,7 +224,10 @@ const produits = [
     nom: 'Manteau long',
     categorie: 'Manteaux',
     prix: 89.99,
-    image: '/images/woman-4290853.jpg',
+    image: 'gybHo4J',
+    images: [
+      'gybHo4J'
+    ],
     description: 'Manteau chaud et élégant, pour un hiver stylé.',
     matiere: 'Laine',
     couleur: 'Camel',
@@ -204,7 +244,10 @@ const produits = [
     nom: 'Débardeur côtelé',
     categorie: 'Débardeurs',
     prix: 17.99,
-    image: '/images/woman-4390055.jpg',
+    image: 'AoD7O2a',
+    images: [
+      'AoD7O2a'
+    ],
     description: 'Débardeur tendance, à porter seul ou sous une veste.',
     matiere: 'Coton',
     couleur: 'Rose poudré',
@@ -222,7 +265,10 @@ const produits = [
     nom: 'Combinaison chic',
     categorie: 'Combinaisons',
     prix: 64.99,
-    image: '/images/woman-6540891.jpg',
+    image: 'vtxv4cu',
+    images: [
+      'vtxv4cu'
+    ],
     description: 'Combinaison élégante, idéale pour les soirées.',
     matiere: 'Polyester',
     couleur: 'Noir',
@@ -240,7 +286,10 @@ const produits = [
     nom: 'Sweat à capuche',
     categorie: 'Sweats',
     prix: 42.99,
-    image: '/images/fashion-3555648.jpg',
+    image: 'rz3RXXf',
+    images: [
+      'rz3RXXf'
+    ],
     description: 'Sweat confortable et stylé, pour un look décontracté.',
     matiere: 'Coton',
     couleur: 'Gris chiné',
@@ -259,7 +308,10 @@ const produits = [
     nom: 'Pull en maille rayé',
     categorie: 'Pulls',
     prix: 49.99,
-    image: '/images/pexels-vlada-karpovich-9968525.jpg',
+    image: 'cNCW5FL',
+    images: [
+      'cNCW5FL'
+    ],
     description: 'Pull doux et chaud, parfait pour la mi-saison.',
     matiere: 'Mélange laine et acrylique',
     couleur: 'Violet et gris',
@@ -278,7 +330,10 @@ const produits = [
     nom: 'Robe noire ceinturée',
     categorie: 'Robes',
     prix: 64.99,
-    image: '/images/fashion-1283863.jpg',
+    image: 'QsxaE0u',
+    images: [
+      'QsxaE0u'
+    ],
     description: 'Robe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester et élasthanne',
     couleur: 'Noir',
@@ -296,7 +351,10 @@ const produits = [
     nom: 'Hoodie oversize beige',
     categorie: 'Sweats',
     prix: 44.99,
-    image: '/images/fashion-3555648.jpg',
+    image: '5K7cqRE',
+    images: [
+      '5K7cqRE'
+    ],
     description: 'Sweat confortable et stylé, pour un look décontracté.',
     matiere: 'Coton et polyester',
     couleur: 'Beige',
@@ -315,7 +373,10 @@ const produits = [
     nom: 'Blazer orange',
     categorie: 'Blazers',
     prix: 74.99,
-    image: '/images/pexels-cottonbro-9861655.jpg',
+    image: 'f4Bcg74',
+    images: [
+      'f4Bcg74'
+    ],
     description: 'Blazer élégant et structuré, parfait pour le bureau.',
     matiere: 'Polyester',
     couleur: 'Orange',
@@ -334,7 +395,10 @@ const produits = [
     nom: 'Robe drapée verte',
     categorie: 'Robes',
     prix: 69.99,
-    image: '/images/fashion-1283863.jpg',
+    image: 'VPu05ub',
+    images: [
+      'VPu05ub'
+    ],
     description: 'Robe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester satiné',
     couleur: 'Vert éclatant',
@@ -352,7 +416,10 @@ const produits = [
     nom: 'Combishort élégant',
     categorie: 'Combinaisons',
     prix: 59.99,
-    image: '/images/woman-6540891.jpg',
+    image: 'gZhT8r8',
+    images: [
+      'gZhT8r8'
+    ],
     description: 'Combinaison élégante, idéale pour les soirées.',
     matiere: 'Polyester et élasthanne',
     couleur: 'Noir',
@@ -363,25 +430,6 @@ const produits = [
     ],
     disponibilite: 'En stock',
     nouveaute: true
-  },
-
-  {
-    id: 23,
-    nom: 'Chemise blanche oversize',
-    categorie: 'Chemises',
-    prix: 39.99,
-    image: '/images/pexels-28488111-7945745.jpg',
-    description: 'Chemise élégante, à porter au bureau ou en sortie.',
-    matiere: 'Coton',
-    couleur: 'Blanc',
-    tailles: [
-      { taille: 'S', stock: 5 },
-      { taille: 'M', stock: 7 },
-      { taille: 'L', stock: 5 },
-      { taille: 'XL', stock: 2 }
-    ],
-    disponibilite: 'En stock',
-    nouveaute: false
   }
 ];
 

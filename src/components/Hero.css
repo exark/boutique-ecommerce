@@ -12,8 +12,32 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background-color: #1a1a1a; /* Fallback color */
 }
 
+/* Poster image for initial load */
+.hero-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hero-poster.fade-in {
+  opacity: 1;
+}
+
+.hero-poster.fade-out {
+  opacity: 0;
+}
+
+/* Video element */
 .hero-video {
   position: absolute;
   top: 0;
@@ -21,30 +45,205 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
+  z-index: 2;
+  transition: opacity 0.5s ease-in-out;
 }
 
+.hero-video.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-video.visible {
+  opacity: 1;
+}
+
+/* Loading states */
+.hero-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  color: #fff;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hero-loading p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Error state */
+.hero-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.hero-error p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Hero content */
 .hero-slogan {
   position: relative;
   z-index: 10;
   color: #fff;
+  text-align: center;
+  padding: 0 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-slogan h1 {
   font-size: 2.6rem;
   font-weight: bold;
   text-shadow: 0 4px 24px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.18);
   letter-spacing: 1px;
-  text-align: center;
-  padding: 0 24px;
-  pointer-events: none;
-  user-select: none;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
 }
 
+.hero-subtitle {
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  margin: 0 0 32px 0;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.hero-cta {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 20px rgba(238, 90, 36, 0.3);
+  pointer-events: auto;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(238, 90, 36, 0.4);
+  background: linear-gradient(135deg, #ff5252, #d84315);
+}
+
+.hero-cta:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
 @media (max-width: 900px) {
   .hero-parallax {
     min-height: 400px;
   }
   
-  .hero-slogan {
-    font-size: 1.2rem;
-    padding: 0 8px;
+  .hero-slogan h1 {
+    font-size: 1.8rem;
   }
-} 
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+  
+  .hero-cta {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+  
+  .hero-slogan {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-parallax {
+    min-height: 350px;
+  }
+  
+  .hero-slogan h1 {
+    font-size: 1.4rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero-cta {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+  
+  .hero-slogan {
+    padding: 0 12px;
+  }
+  
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+  }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .hero-poster,
+  .hero-cta {
+    transition: none;
+  }
+  
+  .loading-spinner {
+    animation: none;
+  }
+  
+  .hero-cta:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .hero-slogan h1,
+  .hero-subtitle {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  }
+  
+  .hero-cta {
+    border: 2px solid #fff;
+  }
+}

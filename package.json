@@ -11,7 +11,11 @@
     "update-products": "node scripts/convertSheetToJson.js",
     "update-products:custom": "node scripts/convertSheetToJson.js",
     "watch-products": "node scripts/watchAndUpdate.js",
-    "dev-auto": "node scripts/devWithAutoUpdate.js"
+    "dev-auto": "node scripts/devWithAutoUpdate.js",
+    "optimize-media": "node scripts/optimize-media.js",
+    "build:optimized": "npm run optimize-media && vite build",
+    "analyze": "vite build --mode analyze",
+    "lighthouse": "lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -38,7 +42,8 @@
     "globals": "^16.3.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.3",
-    "vite": "^7.0.4"
+    "vite": "^7.0.4",
+    "vite-imagetools": "^7.1.0"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

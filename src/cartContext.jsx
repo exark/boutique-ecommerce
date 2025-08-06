@@ -6,6 +6,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [notification, setNotification] = useState({ open: false, productName: '', selectedSize: '' });
   const [isInitialized, setIsInitialized] = useState(false);
+  const [notificationTimeout, setNotificationTimeout] = useState(null);
 
   // Charger le panier depuis localStorage au montage du composant
   useEffect(() => {
@@ -60,12 +61,24 @@ export function CartProvider({ children }) {
       }
     });
     
-    // Afficher la notification
-    setNotification({
-      open: true,
-      productName: product.nom || 'Produit',
-      selectedSize: product.selectedSize || ''
-    });
+    // Fermer la notification précédente si elle existe
+    if (notificationTimeout) {
+      clearTimeout(notificationTimeout);
+    }
+    
+    // Fermer immédiatement toute notification ouverte
+    setNotification({ open: false, productName: '', selectedSize: '' });
+    
+    // Afficher la nouvelle notification après un court délai
+    const timeout = setTimeout(() => {
+      setNotification({
+        open: true,
+        productName: product.nom || 'Produit',
+        selectedSize: product.selectedSize || ''
+      });
+    }, 100);
+    
+    setNotificationTimeout(timeout);
   }
 
   function removeFromCart(id, selectedSize) {
@@ -97,6 +110,12 @@ export function CartProvider({ children }) {
   }
 
   function closeNotification() {
+    // Nettoyer le timeout si il existe
+    if (notificationTimeout) {
+      clearTimeout(notificationTimeout);
+      setNotificationTimeout(null);
+    }
+    
     setNotification({ open: false, productName: '', selectedSize: '' });
   }
 

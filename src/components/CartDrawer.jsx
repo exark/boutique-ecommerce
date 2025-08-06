@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Chip } from '@mui/material';
 import { useCart } from '../cartContext';
 import { useNavigate } from 'react-router-dom';
+import OptimizedImage from './OptimizedImage';
 import './CartDrawer.css';
 
 export default function CartDrawer({ open, onClose }) {
@@ -30,10 +31,13 @@ export default function CartDrawer({ open, onClose }) {
               <div className="cart-drawer__items">
                 {cart.map((item) => (
                   <div key={`${item.id}-${item.selectedSize}`} className="cart-drawer__item">
-                    <img 
+                    <OptimizedImage 
                       src={item.image} 
                       alt={item.nom} 
-                      className="cart-drawer__item-image" 
+                      className="cart-drawer__item-image"
+                      priority={true}
+                      aspectRatio="1/1"
+                      objectFit="cover"
                     />
                     <div className="cart-drawer__item-details">
                       <Typography variant="subtitle1" className="cart-drawer__item-name">

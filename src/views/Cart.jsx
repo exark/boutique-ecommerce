@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import OptimizedImage from '../components/OptimizedImage';
 import './Cart.css';
 
 export default function Cart() {
@@ -88,10 +89,13 @@ export default function Cart() {
           {cart.map((item) => (
             <Card key={`${item.id}-${item.selectedSize}`} className="cart-item">
               <CardContent className="cart-item__content">
-                <img 
+                <OptimizedImage 
                   src={item.image} 
                   alt={item.nom} 
-                  className="cart-item__image" 
+                  className="cart-item__image"
+                  priority={true}
+                  aspectRatio="1/1"
+                  objectFit="cover"
                 />
                 
                 <div className="cart-item__details">

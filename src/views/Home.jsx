@@ -31,6 +31,7 @@ export default function Home() {
         marginTop: '2rem',
         marginBottom: '2rem'
       }} />
+      
       <div ref={produitsRef}>
         <Produits />
       </div>

@@ -86,7 +86,7 @@ body {
   }
   
   .masonry-grid_column {
-    padding-left: var(--optimal-gap, 4px); /* Espacement dynamique très serré */
+    padding-left: var(--optimal-gap, 2px); /* Espacement ultra-compact */
     background-clip: padding-box;
     box-sizing: border-box;
   }
@@ -96,21 +96,25 @@ body {
   }
   
   .masonry-grid_column > div {
-    margin-bottom: 8px; /* Espacement vertical plus serré */
+    margin-bottom: 4px; /* Espacement vertical ultra-compact */
   }
   
   /* Mode 4 colonnes - espacement ultra-minimal */
   .masonry-grid.masonry-grid-4cols .masonry-grid_column {
-    padding-left: var(--optimal-gap, 2px); /* Espacement ultra-minimal pour 4 colonnes */
+    padding-left: var(--optimal-gap, 1px); /* Espacement ultra-minimal pour 4 colonnes */
   }
   
-  /* Mode mosaïque - espacement minimal */
+  .masonry-grid.masonry-grid-4cols .masonry-grid_column > div {
+    margin-bottom: 2px; /* Espacement vertical ultra-compact pour 4 colonnes */
+  }
+  
+  /* Mode mosaïque - espacement ultra-minimal */
   .masonry-grid.masonry-grid-mosaic .masonry-grid_column {
-    padding-left: var(--optimal-gap, 1px); /* Espacement ultra-minimal pour mosaïque */
+    padding-left: var(--optimal-gap, 0px); /* Pas d'espacement pour mosaïque */
   }
   
   .masonry-grid.masonry-grid-mosaic .masonry-grid_column > div {
-    margin-bottom: 4px; /* Espacement vertical minimal pour mosaïque */
+    margin-bottom: 1px; /* Espacement vertical minimal pour mosaïque */
   }
   
   /* Mode 2 colonnes - espacement très serré */
@@ -125,7 +129,7 @@ body {
   }
   
   .masonry-grid_column {
-    padding-left: var(--optimal-gap, 4px); /* Espacement adapté pour tablette */
+    padding-left: var(--optimal-gap, 2px); /* Espacement compact pour tablette */
     background-clip: padding-box;
     box-sizing: border-box;
   }
@@ -135,7 +139,7 @@ body {
   }
   
   .masonry-grid_column > div {
-    margin-bottom: 10px; /* Espacement vertical confortable sur tablette */
+    margin-bottom: 6px; /* Espacement vertical compact sur tablette */
   }
   
   /* Mode 4 colonnes sur tablette (mode par défaut) */
@@ -157,7 +161,7 @@ body {
   }
   
   .masonry-grid_column {
-    padding-left: var(--optimal-gap, 2px); /* Espacement dynamique très serré sur mobile */
+    padding-left: var(--optimal-gap, 1px); /* Espacement ultra-compact sur mobile */
     background-clip: padding-box;
     box-sizing: border-box;
   }
@@ -167,7 +171,7 @@ body {
   }
   
   .masonry-grid_column > div {
-    margin-bottom: 12px; /* Espacement vertical plus serré sur mobile */
+    margin-bottom: 4px; /* Espacement vertical ultra-compact sur mobile */
   }
   
   /* Mode 3 colonnes sur mobile (mosaïque) */
@@ -575,5 +579,134 @@ body {
     padding: 2px 5px;
     font-size: 0.9rem;
     min-width: 26px;
+  }
+}
+
+/* Style épuré et élégant pour les cartes produits */
+.MuiCard-root {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transition: all 0.2s ease !important;
+  overflow: visible !important;
+}
+
+.MuiCard-root:hover {
+  transform: none !important;
+}
+
+/* Images produits épurées */
+.product-image {
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+.MuiCard-root:hover .product-image {
+  transform: none !important;
+}
+
+/* Overlay de tailles par-dessus la photo avec fond blanc et flou */
+.size-overlay-mango {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  gap: 6px !important;
+  justify-content: center !important;
+  z-index: 10 !important;
+}
+
+.size-button-mango {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: none !important;
+  color: #333 !important;
+  border-radius: 0 !important;
+  padding: 4px 8px !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  min-width: auto !important;
+  height: auto !important;
+  line-height: 1 !important;
+  transition: all 0.15s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.size-button-mango:hover {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  transform: none !important;
+}
+
+/* Responsive pour le style épuré */
+@media (min-width: 1025px) {
+  /* Desktop - Affichage ultra-compact */
+  .size-button-mango {
+    font-size: 0.7rem !important;
+    padding: 3px 6px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Tablette - Affichage compact */
+  .size-button-mango {
+    font-size: 0.65rem !important;
+    padding: 2px 5px !important;
+  }
+  
+  .size-overlay-mango {
+    padding: 6px 10px !important;
+    gap: 4px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Mobile - Affichage minimal */
+  .size-button-mango {
+    font-size: 0.6rem !important;
+    padding: 2px 4px !important;
+  }
+  
+  .size-overlay-mango {
+    padding: 6px 8px !important;
+    gap: 3px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Petit mobile - Affichage ultra-minimal */
+  .size-button-mango {
+    font-size: 0.55rem !important;
+    padding: 1px 3px !important;
+  }
+  
+  .size-overlay-mango {
+    padding: 4px 6px !important;
+    gap: 2px !important;
+  }
+}
+
+/* Nom du produit en mode mosaïque mobile (3+ colonnes) */
+@media (max-width: 767px) {
+  .product-title-mosaic-mobile {
+    font-size: 0.55rem !important;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    max-width: none;
+    display: block;
+    word-break: break-word;
+    hyphens: auto;
   }
 }

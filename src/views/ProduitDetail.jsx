@@ -11,7 +11,9 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import StraightenIcon from '@mui/icons-material/Straighten';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ProductImageGallery from '../components/ProductImageGallery';
 import SizeSelectionModal from '../components/SizeSelectionModal';
+import OptimizedImage from '../components/OptimizedImage';
 
 export default function ProduitDetail() {
   const { id } = useParams();
@@ -66,6 +68,54 @@ export default function ProduitDetail() {
     return produit.tailles.filter(t => t.stock > 0).length;
   };
 
+  // Fonction pour obtenir des produits similaires
+  const getSimilarProducts = (currentProduct) => {
+    if (!currentProduct) return [];
+    
+    // Priorité 1: Même catégorie
+    const sameCategory = produits.filter(p => 
+      p.id !== currentProduct.id && 
+      p.categorie === currentProduct.categorie
+    );
+    
+    // Priorité 2: Même couleur
+    const sameColor = produits.filter(p => 
+      p.id !== currentProduct.id && 
+      p.couleur === currentProduct.couleur &&
+      p.categorie !== currentProduct.categorie
+    );
+    
+    // Priorité 3: Prix similaire (±20€)
+    const similarPrice = produits.filter(p => 
+      p.id !== currentProduct.id &&
+      Math.abs(p.prix - currentProduct.prix) <= 20 &&
+      p.categorie !== currentProduct.categorie &&
+      p.couleur !== currentProduct.couleur
+    );
+    
+    // Combiner et limiter à 4 produits
+    const similarProducts = [...sameCategory, ...sameColor, ...similarPrice]
+      .slice(0, 4);
+    
+    // Si moins de 4, compléter avec des produits aléatoires
+    if (similarProducts.length < 4) {
+      const remaining = produits
+        .filter(p => p.id !== currentProduct.id && 
+                !similarProducts.some(sp => sp.id === p.id))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4 - similarProducts.length);
+      
+      similarProducts.push(...remaining);
+    }
+    
+    return similarProducts;
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/produit/${productId}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (!produit) {
     return <div style={{ textAlign: 'center', marginTop: 80 }}>Produit introuvable.</div>;
   }
@@ -95,12 +145,9 @@ export default function ProduitDetail() {
             transition={{ duration: 0.6, ease: [0.4, 0.2, 0.2, 1] }}
           >
             <div className="produit-detail-content-flex">
-              <motion.img
-                src={produit.image}
-                alt={produit.nom}
-                className="produit-detail-image"
-                whileHover={{ scale: 1.04, rotate: 1 }}
-                transition={{ type: 'spring', stiffness: 200 }}
+              <ProductImageGallery
+                product={produit}
+                className="produit-detail-image-gallery"
               />
               <div className="produit-detail-content-texte">
                 {produit.nouveaute && (
@@ -176,6 +223,64 @@ export default function ProduitDetail() {
         produit={produit}
         onAddToCart={handleSizeModalAddToCart}
       />
+
+      {/* Section Produits Similaires */}
+      {getSimilarProducts(produit).length > 0 && (
+        <motion.div 
+          className="similar-products-section"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <div className="similar-products-container">
+            <motion.h3 
+              className="similar-products-title"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              Vous pourriez aussi aimer
+            </motion.h3>
+            
+            <div className="similar-products-grid">
+              {getSimilarProducts(produit).map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  className="similar-product-card"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                  onClick={() => handleProductClick(product.id)}
+                >
+                  <div className="similar-product-image-wrapper">
+                    <OptimizedImage
+                      src={product.image}
+                      alt={product.nom}
+                      className="similar-product-image"
+                      aspectRatio="4/5"
+                      objectFit="cover"
+                    />
+                    {product.nouveaute && (
+                      <div className="similar-product-badge">
+                        Nouveau
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="similar-product-info">
+                    <h4 className="similar-product-name">{product.nom}</h4>
+                    <p className="similar-product-category">{product.categorie}</p>
+                    <div className="similar-product-price">
+                      {product.prix.toFixed(2)} €
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 } 

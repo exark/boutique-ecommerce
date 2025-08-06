@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import produits from '../data/produits';
+import OptimizedImage from '../components/OptimizedImage';
 import './Categories.css';
 
 export default function Categories() {
@@ -37,7 +38,14 @@ export default function Categories() {
             aria-label={`Voir les produits de la catégorie ${cat}`}
           >
             <div className="category-image-wrapper">
-              <img src={catImages[cat]} alt={cat} className="category-image" />
+              <OptimizedImage 
+                src={catImages[cat]} 
+                alt={cat} 
+                className="category-image"
+                priority={true}
+                aspectRatio="4/3"
+                objectFit="cover"
+              />
             </div>
             <div className="category-info">
               <span className="category-name">{cat}</span>

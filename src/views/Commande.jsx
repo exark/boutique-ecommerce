@@ -23,6 +23,7 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import OptimizedImage from '../components/OptimizedImage';
 import './Commande.css';
 
 export default function Commande() {
@@ -402,10 +403,13 @@ export default function Commande() {
               <div className="summary-items">
                 {cart.map((item) => (
                   <div key={`${item.id}-${item.selectedSize}`} className="summary-item">
-                    <img 
+                    <OptimizedImage 
                       src={item.image} 
                       alt={item.nom} 
-                      className="summary-item__image" 
+                      className="summary-item__image"
+                      priority={true}
+                      aspectRatio="1/1"
+                      objectFit="cover"
                     />
                     <div className="summary-item__details">
                       <Typography variant="body2" className="summary-item__name">
