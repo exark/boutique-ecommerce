@@ -61,7 +61,7 @@ export default function Hero() {
               src={slide.url}
               alt={slide.alt}
               className="hero-image"
-              loading={index === 0 ? 'eager' : 'lazy'}
+              loading="eager"
             />
           </div>
         ))}

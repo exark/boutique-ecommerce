@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import './OptimizedImage.css';
 
 const OptimizedImage = ({ 
@@ -6,7 +6,7 @@ const OptimizedImage = ({
   alt, 
   className = '', 
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  loading = 'lazy',
+  loading = 'eager',
   priority = false,
   aspectRatio = '1/1',
   objectFit = 'cover',
@@ -16,43 +16,7 @@ const OptimizedImage = ({
   ...props 
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInView, setIsInView] = useState(priority);
   const [imageError, setImageError] = useState(false);
-  const imgRef = useRef(null);
-  const observerRef = useRef(null);
-
-  // Intersection Observer for lazy loading
-  useEffect(() => {
-    if (priority || isInView) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsInView(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '50px 0px', // Start loading 50px before entering viewport
-        threshold: 0.1
-      }
-    );
-
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-
-    observerRef.current = observer;
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [priority, isInView]);
 
   // Generate responsive image URLs - supports both local and Imgur images
   const generateResponsiveUrls = (imageName) => {
@@ -181,29 +145,12 @@ const OptimizedImage = ({
     }
     
     setImageError(true);
-    setIsLoading(false);
   };
-
-  // Don't render anything until in view (unless priority)
-  if (!isInView) {
-    return (
-      <div
-        ref={imgRef}
-        className={`optimized-image-placeholder ${className}`}
-        style={{ 
-          aspectRatio,
-          backgroundColor: placeholder ? '#f0f0f0' : 'transparent'
-        }}
-        {...props}
-      />
-    );
-  }
 
   const responsiveUrls = generateResponsiveUrls(src);
 
   return (
     <div
-      ref={imgRef}
       className={`optimized-image-container ${className} ${isLoaded ? 'loaded' : 'loading'}`}
       style={{ aspectRatio }}
       {...props}
