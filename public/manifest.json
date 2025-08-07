@@ -7,9 +7,14 @@
   "theme_color": "#d16e8d",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/logo_mobile.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png"
+    },
+    {
+      "src": "/logo_mobile.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
