@@ -17,8 +17,6 @@ import Cart from './views/Cart';
 import Commande from './views/Commande';
 import Categories from './views/Categories';
 
-
-
 function AppContent() {
   const { notification, closeNotification } = useCart();
   
@@ -27,17 +25,15 @@ function AppContent() {
       <ScrollToTop />
       <Navbar />
       <div style={{ paddingTop: '80px', minHeight: 'calc(100vh - 80px - 400px)' }}>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/produits" element={<Produits />} />
-            <Route path="/produit/:id" element={<ProduitDetail />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/commande" element={<Commande />} />
-            <Route path="/categories" element={<Categories />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/produits" element={<Produits />} />
+          <Route path="/produit/:id" element={<ProduitDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/commande" element={<Commande />} />
+          <Route path="/categories" element={<Categories />} />
+        </Routes>
       </div>
       <Footer />
       <ScrollToTopButton />
