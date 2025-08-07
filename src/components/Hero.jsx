@@ -1,117 +1,71 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Hero.css';
 
 export default function Hero() {
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const videoRef = useRef(null);
-  const sectionRef = useRef(null);
-  const observerRef = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Intersection Observer for lazy video loading
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !shouldLoadVideo) {
-            setShouldLoadVideo(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        rootMargin: '100px 0px', // Start loading 100px before entering viewport
-        threshold: 0.1
-      }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+  // Images du slider
+  const slides = [
+    {
+      id: 'aGALwNX',
+      url: 'https://i.imgur.com/aGALwNX.jpg',
+      alt: 'Collection tendance 2'
+    },
+    {
+      id: 'ILppNeH',
+      url: 'https://i.imgur.com/ILppNeH.jpg',
+      alt: 'Collection tendance 1'
+    },
+    {
+      id: '7LDw8is', 
+      url: 'https://i.imgur.com/7LDw8is.jpg',
+      alt: 'Collection tendance 2'
     }
+  ];
 
-    observerRef.current = observer;
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [shouldLoadVideo]);
-
-  // Handle video loading and playback
+  // Auto-slide toutes les 8 secondes
   useEffect(() => {
-    if (shouldLoadVideo && videoRef.current && !isVideoLoaded) {
-      const video = videoRef.current;
-      
-      const handleCanPlay = () => {
-        setIsVideoLoaded(true);
-        // Ensure video plays after loading
-        video.play().catch((error) => {
-          console.warn('Video autoplay failed:', error);
-        });
-      };
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 8000);
 
-      const handleError = () => {
-        setHasError(true);
-        console.error('Video failed to load');
-      };
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
-      video.addEventListener('canplaythrough', handleCanPlay);
-      video.addEventListener('error', handleError);
+  // Marquer comme chargé après un court délai
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
 
-      return () => {
-        video.removeEventListener('canplaythrough', handleCanPlay);
-        video.removeEventListener('error', handleError);
-      };
-    }
-  }, [shouldLoadVideo, isVideoLoaded]);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <section 
-      ref={sectionRef}
-      className={`hero-parallax ${
-        isVideoLoaded ? 'video-loaded' : 'video-loading'
-      } ${hasError ? 'video-error' : ''}`}
-    >
-      {/* Temporary: No poster image until optimized version is available */}
-      <div 
-        className={`hero-poster ${isVideoLoaded ? 'fade-out' : 'fade-in'}`}
-        style={{
-          backgroundColor: '#1a1a1a', // Dark background while video loads
-        }}
-      />
-      
-      {/* Loading indicator */}
-      {shouldLoadVideo && !isVideoLoaded && !hasError && (
-        <div className="hero-loading">
-          <div className="loading-spinner"></div>
-          <p>Chargement de la vidéo...</p>
-        </div>
-      )}
-
-      {/* Optimized video with multiple formats */}
-      {shouldLoadVideo && (
-        <video 
-          ref={videoRef}
-          className={`hero-video ${isVideoLoaded ? 'visible' : 'hidden'}`}
-          muted 
-          loop 
-          playsInline
-          preload="metadata"
-        >
-          {/* Temporary: Use original video until optimized versions are available */}
-          <source src="/images/4782414-uhd_3840_2160_30fps.mp4" type="video/mp4" />
-          Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
-      )}
-      
-      {/* Error fallback */}
-      {hasError && (
-        <div className="hero-error">
-          <p>Impossible de charger la vidéo</p>
-        </div>
-      )}
+    <section className={`hero-parallax ${isLoaded ? 'loaded' : 'loading'}`}>
+      {/* Slider d'images */}
+      <div className="hero-slider">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`hero-slide ${
+              index === currentSlide ? 'active' : ''
+            } ${
+              index === (currentSlide - 1 + slides.length) % slides.length ? 'prev' : ''
+            } ${
+              index === (currentSlide + 1) % slides.length ? 'next' : ''
+            }`}
+          >
+            <img
+              src={slide.url}
+              alt={slide.alt}
+              className="hero-image"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Hero content */}
       <div className="hero-slogan">

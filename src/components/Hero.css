@@ -4,7 +4,7 @@ body {
 
 .hero-parallax {
   /* Hauteur spécifique */
-  min-height: 450px;
+  min-height: 500px;
   
   /* Positionnement relatif pour le slogan */
   position: relative;
@@ -15,104 +15,104 @@ body {
   background-color: #1a1a1a; /* Fallback color */
 }
 
-/* Poster image for initial load */
-.hero-poster {
+/* Slider container */
+.hero-slider {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   z-index: 1;
-  transition: opacity 0.5s ease-in-out;
 }
 
-.hero-poster.fade-in {
-  opacity: 1;
-}
-
-.hero-poster.fade-out {
-  opacity: 0;
-}
-
-/* Video element */
-.hero-video {
+/* Individual slide */
+.hero-slide {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  z-index: 2;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.hero-video.hidden {
   opacity: 0;
-  pointer-events: none;
+  transform: scale(1.1);
+  transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+  z-index: 1;
 }
 
-.hero-video.visible {
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.hero-slide.prev {
+  opacity: 0;
+  transform: scale(0.95) translateX(-20px);
+}
+
+.hero-slide.next {
+  opacity: 0;
+  transform: scale(0.95) translateX(20px);
+}
+
+/* Image styling */
+.hero-image {
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: brightness(0.8) contrast(1.1) saturate(1.1);
+  transition: transform 1.2s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 1.2s ease;
+}
+
+/* Subtle overlay for better text readability */
+.hero-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.hero-slide.active::before {
   opacity: 1;
 }
 
-/* Loading states */
-.hero-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  text-align: center;
-  color: #fff;
+/* Loading and loaded states */
+.hero-parallax.loading .hero-slide {
+  transform: scale(1.05);
 }
 
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid #fff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 16px;
+.hero-parallax.loaded .hero-slide.active {
+  animation: slideIn 1.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.hero-loading p {
-  margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* Error state */
-.hero-error {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  text-align: center;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.hero-error p {
-  margin: 0;
-  font-size: 1rem;
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Hero content */
 .hero-slogan {
   position: relative;
-  z-index: 10;
+  z-index: 20;
   color: #fff;
   text-align: center;
   padding: 0 24px;
@@ -212,22 +212,17 @@ body {
     padding: 0 12px;
   }
   
-  .loading-spinner {
-    width: 32px;
-    height: 32px;
-    border-width: 2px;
-  }
 }
 
 /* Performance optimizations */
 @media (prefers-reduced-motion: reduce) {
-  .hero-video,
-  .hero-poster,
+  .hero-slide,
+  .hero-image,
   .hero-cta {
     transition: none;
   }
   
-  .loading-spinner {
+  .hero-slide.active {
     animation: none;
   }
   
