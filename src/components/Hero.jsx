@@ -9,7 +9,7 @@ export default function Hero() {
   const slides = [
     {
       id: 'hero-1',
-      url: '/images/hero/8b99ed79-86a0-49e2-b641-27528a799d13.webp',
+      url: '/images/hero/hero-3.webp',
       alt: 'Collection tendance 1'
     },
     {

@@ -169,7 +169,9 @@ export default function Produits() {
     const observer = new window.IntersectionObserver(
       ([entry]) => {
         // Si la sentinelle n'est plus visible, la barre est sticky
-        setIsSticky(!entry.isIntersecting);
+        const newStickyState = !entry.isIntersecting;
+        console.log('Sticky state changed:', newStickyState);
+        setIsSticky(newStickyState);
       },
       {
         root: null,
@@ -469,19 +471,20 @@ export default function Produits() {
           }}
         >
         <button 
-          className="filters-open-text" 
+          className="filters-open-text-btn" 
           type="button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Filter button clicked - sticky mode:', isSticky);
             setMobileFiltersOpen(true);
+            return false;
           }}
           onTouchStart={(e) => {
-            e.preventDefault();
             e.stopPropagation();
           }}
         >
-          Filtrer et trier
+          <span>Filtrer et trier</span>
         </button>
         <div className="display-toggle-buttons" style={{ gap: isMobile ? 8 : 12, minHeight: isMobile ? '30px' : '36px' }}>
           {[1, 2, 3].map((col) => (
