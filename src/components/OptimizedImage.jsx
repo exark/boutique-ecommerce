@@ -152,6 +152,12 @@ const OptimizedImage = ({
     
     // For Imgur images, try different fallbacks
     if (currentSrc.includes('imgur.com')) {
+      // Try WebP to JPG fallback first
+      if (currentSrc.includes('.webp')) {
+        e.target.src = currentSrc.replace('.webp', '.jpg');
+        return;
+      }
+      // Then try size fallbacks
       if (currentSrc.includes('l.jpg')) {
         // Try medium size
         e.target.src = currentSrc.replace('l.jpg', 'm.jpg');
