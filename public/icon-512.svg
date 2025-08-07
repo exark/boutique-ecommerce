@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <circle cx="256" cy="256" r="256" fill="#fff0f5"/> <!-- fond rose très clair -->
+  <text x="50%" y="54%" text-anchor="middle" fill="#d16e8d" font-size="112" font-family="cursive" font-weight="bold">
+    Solène
+  </text>
+</svg>
