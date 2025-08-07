@@ -8,19 +8,19 @@ export default function Hero() {
   // Images du slider
   const slides = [
     {
-      id: 'aGALwNX',
-      url: 'https://i.imgur.com/aGALwNX.jpg',
-      alt: 'Collection tendance 2'
-    },
-    {
-      id: 'ILppNeH',
-      url: 'https://i.imgur.com/ILppNeH.jpg',
+      id: 'hero-1',
+      url: '/src/assets/products/8b99ed79-86a0-49e2-b641-27528a799d13.webp',
       alt: 'Collection tendance 1'
     },
     {
-      id: '7LDw8is', 
-      url: 'https://i.imgur.com/7LDw8is.jpg',
+      id: 'hero-2',
+      url: '/src/assets/products/ChatGPT Image Aug 7, 2025, 04_43_27 AM.webp',
       alt: 'Collection tendance 2'
+    },
+    {
+      id: 'hero-3', 
+      url: '/src/assets/products/ChatGPT Image Aug 7, 2025, 05_44_21 AM.webp',
+      alt: 'Collection tendance 3'
     }
   ];
 
