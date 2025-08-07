@@ -2,14 +2,14 @@ const produits = [
 
   {
     id: 2,
-    nom: 'crop top orange'',
+    nom: 'crop top orange',
     categorie: 'Blouses',
     prix: 99.99,
     image: 'sA8yYui',
     images: [
       'sA8yYui'
     ],
-    description: 'Blouse élégante et confortable, parfaite pour toutes les occasions.'',
+    description: 'Blouse élégante et confortable, parfaite pour toutes les occasions.',
     matiere: 'Viscose',
     couleur: 'Blanc cassé',
     tailles: [
@@ -23,14 +23,14 @@ const produits = [
 
   {
     id: 3,
-    nom: 'Jean taille haute'',
+    nom: 'Jean taille haute',
     categorie: 'Pantalons',
     prix: 10.96,
     image: '3LYnlYV',
     images: [
       '3LYnlYV'
     ],
-    description: 'Pantalon moderne et stylé, pour un look tendance.'',
+    description: 'Pantalon moderne et stylé, pour un look tendance.',
     matiere: 'Denim',
     couleur: 'Bleu clair',
     tailles: [
@@ -45,14 +45,14 @@ const produits = [
 
   {
     id: 4,
-    nom: 'Veste en jean'',
+    nom: 'Veste en jean',
     categorie: 'Vestes',
     prix: 10.96,
     image: 'd2pA79w',
     images: [
       'd2pA79w'
     ],
-    description: 'Veste intemporelle, idéale pour compléter vos tenues.'',
+    description: 'Veste intemporelle, idéale pour compléter vos tenues.',
     matiere: 'Denim',
     couleur: 'Bleu',
     tailles: [
@@ -65,14 +65,14 @@ const produits = [
 
   {
     id: 5,
-    nom: 'T-shirt basique'',
+    nom: 'T-shirt basique',
     categorie: 'T-shirts',
     prix: 10.96,
     image: 'bbqurwk',
     images: [
       'bbqurwk'
     ],
-    description: 'T-shirt basique et confortable, un indispensable du dressing.'',
+    description: 'T-shirt basique et confortable, un indispensable du dressing.',
     matiere: 'Coton',
     couleur: 'Blanc',
     tailles: [
@@ -88,14 +88,14 @@ const produits = [
 
   {
     id: 6,
-    nom: 'Jupe plissée'',
+    nom: 'Jupe plissée',
     categorie: 'Jupes',
     prix: 10.96,
     image: 'qzA5nws',
     images: [
       'qzA5nws'
     ],
-    description: 'Jupe élégante et féminine, pour toutes les occasions.'',
+    description: 'Jupe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester recyclé',
     couleur: 'Noir',
     tailles: [
@@ -108,14 +108,14 @@ const produits = [
 
   {
     id: 7,
-    nom: 'Pull en maille'',
+    nom: 'Pull en maille',
     categorie: 'Pulls',
     prix: 10.99,
     image: 'egEkJT5',
     images: [
       'egEkJT5'
     ],
-    description: 'Pull doux et chaud, parfait pour la mi-saison.'',
+    description: 'Pull doux et chaud, parfait pour la mi-saison.',
     matiere: 'Laine mérinos',
     couleur: 'Beige',
     tailles: [
@@ -130,14 +130,14 @@ const produits = [
 
   {
     id: 8,
-    nom: 'Chemise rayée'',
+    nom: 'Chemise rayée',
     categorie: 'Chemises',
     prix: 69.96,
     image: 'dNDD8HN',
     images: [
       'dNDD8HN'
     ],
-    description: 'Chemise élégante, à porter au bureau ou en sortie.'',
+    description: 'Chemise élégante, à porter au bureau ou en sortie.',
     matiere: 'Coton',
     couleur: 'Rayé bleu et blanc',
     tailles: [
@@ -151,14 +151,14 @@ const produits = [
 
   {
     id: 9,
-    nom: 'Pantalon fluide'',
+    nom: 'Pantalon fluide',
     categorie: 'Pantalons',
     prix: 54.99,
     image: 'dUqIgu0',
     images: [
       'dUqIgu0'
     ],
-    description: 'Pantalon moderne et stylé, pour un look tendance.'',
+    description: 'Pantalon moderne et stylé, pour un look tendance.',
     matiere: 'Lin',
     couleur: 'Beige clair',
     tailles: [
@@ -172,14 +172,14 @@ const produits = [
 
   {
     id: 10,
-    nom: 'Cardigan beige'',
+    nom: 'Cardigan beige',
     categorie: 'Cardigans',
     prix: 39.99,
     image: 'b0QwLUn',
     images: [
       'b0QwLUn'
     ],
-    description: 'Cardigan doux et élégant, facile à assortir.'',
+    description: 'Cardigan doux et élégant, facile à assortir.',
     matiere: 'Acrylique',
     couleur: 'Beige',
     tailles: [
@@ -193,14 +193,14 @@ const produits = [
 
   {
     id: 11,
-    nom: 'Short en lin'',
+    nom: 'Short en lin',
     categorie: 'Shorts',
     prix: 24.99,
     image: 'e9ZCB9F',
     images: [
       'e9ZCB9F'
     ],
-    description: 'Short léger et confortable, parfait pour l\'été.'',
+    description: 'Short léger et confortable, parfait pour l\'été.',
     matiere: 'Lin',
     couleur: 'Blanc',
     tailles: [
@@ -214,14 +214,14 @@ const produits = [
 
   {
     id: 12,
-    nom: 'Manteau long'',
+    nom: 'Manteau long',
     categorie: 'Manteaux',
     prix: 89.99,
     image: 'gybHo4J',
     images: [
       'gybHo4J'
     ],
-    description: 'Manteau chaud et élégant, pour un hiver stylé.'',
+    description: 'Manteau chaud et élégant, pour un hiver stylé.',
     matiere: 'Laine',
     couleur: 'Camel',
     tailles: [
@@ -234,14 +234,14 @@ const produits = [
 
   {
     id: 13,
-    nom: 'Débardeur côtelé'',
+    nom: 'Débardeur côtelé',
     categorie: 'Débardeurs',
     prix: 17.99,
     image: 'AoD7O2a',
     images: [
       'AoD7O2a'
     ],
-    description: 'Débardeur tendance, à porter seul ou sous une veste.'',
+    description: 'Débardeur tendance, à porter seul ou sous une veste.',
     matiere: 'Coton',
     couleur: 'Rose poudré',
     tailles: [
@@ -255,14 +255,14 @@ const produits = [
 
   {
     id: 14,
-    nom: 'Combinaison chic'',
+    nom: 'Combinaison chic',
     categorie: 'Combinaisons',
     prix: 64.99,
     image: 'vtxv4cu',
     images: [
       'vtxv4cu'
     ],
-    description: 'Combinaison élégante, idéale pour les soirées.'',
+    description: 'Combinaison élégante, idéale pour les soirées.',
     matiere: 'Polyester',
     couleur: 'Noir',
     tailles: [
@@ -276,14 +276,14 @@ const produits = [
 
   {
     id: 15,
-    nom: 'Sweat à capuche'',
+    nom: 'Sweat à capuche',
     categorie: 'Sweats',
     prix: 42.99,
     image: 'rz3RXXf',
     images: [
       'rz3RXXf'
     ],
-    description: 'Sweat confortable et stylé, pour un look décontracté.'',
+    description: 'Sweat confortable et stylé, pour un look décontracté.',
     matiere: 'Coton',
     couleur: 'Gris chiné',
     tailles: [
@@ -298,14 +298,14 @@ const produits = [
 
   {
     id: 16,
-    nom: 'Pull en maille rayé'',
+    nom: 'Pull en maille rayé',
     categorie: 'Pulls',
     prix: 49.99,
     image: 'cNCW5FL',
     images: [
       'cNCW5FL'
     ],
-    description: 'Pull doux et chaud, parfait pour la mi-saison.'',
+    description: 'Pull doux et chaud, parfait pour la mi-saison.',
     matiere: 'Mélange laine et acrylique',
     couleur: 'Violet et gris',
     tailles: [
@@ -320,14 +320,14 @@ const produits = [
 
   {
     id: 17,
-    nom: 'Robe noire ceinturée'',
+    nom: 'Robe noire ceinturée',
     categorie: 'Robes',
     prix: 64.99,
     image: 'QsxaE0u',
     images: [
       'QsxaE0u'
     ],
-    description: 'Robe élégante et féminine, pour toutes les occasions.'',
+    description: 'Robe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester et élasthanne',
     couleur: 'Noir',
     tailles: [
@@ -341,14 +341,14 @@ const produits = [
 
   {
     id: 18,
-    nom: 'Hoodie oversize beige'',
+    nom: 'Hoodie oversize beige',
     categorie: 'Sweats',
     prix: 44.99,
     image: '5K7cqRE',
     images: [
       '5K7cqRE'
     ],
-    description: 'Sweat confortable et stylé, pour un look décontracté.'',
+    description: 'Sweat confortable et stylé, pour un look décontracté.',
     matiere: 'Coton et polyester',
     couleur: 'Beige',
     tailles: [
@@ -363,14 +363,14 @@ const produits = [
 
   {
     id: 19,
-    nom: 'Blazer orange'',
+    nom: 'Blazer orange',
     categorie: 'Blazers',
     prix: 74.99,
     image: 'f4Bcg74',
     images: [
       'f4Bcg74'
     ],
-    description: 'Blazer élégant et structuré, parfait pour le bureau.'',
+    description: 'Blazer élégant et structuré, parfait pour le bureau.',
     matiere: 'Polyester',
     couleur: 'Orange',
     tailles: [
@@ -385,14 +385,14 @@ const produits = [
 
   {
     id: 21,
-    nom: 'Robe drapée verte'',
+    nom: 'Robe drapée verte',
     categorie: 'Robes',
     prix: 69.99,
     image: 'VPu05ub',
     images: [
       'VPu05ub'
     ],
-    description: 'Robe élégante et féminine, pour toutes les occasions.'',
+    description: 'Robe élégante et féminine, pour toutes les occasions.',
     matiere: 'Polyester satiné',
     couleur: 'Vert éclatant',
     tailles: [
@@ -406,14 +406,14 @@ const produits = [
 
   {
     id: 22,
-    nom: 'Combishort élégant'',
+    nom: 'Combishort élégant',
     categorie: 'Combinaisons',
     prix: 59.99,
     image: 'gZhT8r8',
     images: [
       'gZhT8r8'
     ],
-    description: 'Combinaison élégante, idéale pour les soirées.'',
+    description: 'Combinaison élégante, idéale pour les soirées.',
     matiere: 'Polyester et élasthanne',
     couleur: 'Noir',
     tailles: [

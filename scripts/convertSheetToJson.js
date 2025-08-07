@@ -233,25 +233,25 @@ function generateProduitsFile(products) {
     
     // Générer le tableau des images
     const imagesJson = product.images.map(img => 
-      `      '${img}'`
+      `      '${img.replace(/'/g, "\\'").replace(/"/g, '\\"')}'`
     ).join(',\n');
     
     return `  {
     id: ${product.id},
-    nom: '${product.nom.replace(/'/g, "\\'")}'',
+    nom: '${product.nom.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
     categorie: '${product.categorie}',
     prix: ${product.prix},
-    image: '${product.image}',
+    image: '${product.image.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
     images: [
 ${imagesJson}
     ],
-    description: '${product.description.replace(/'/g, "\\'")}'',
-    matiere: '${product.matiere}',
-    couleur: '${product.couleur}',
+    description: '${product.description.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
+    matiere: '${product.matiere.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
+    couleur: '${product.couleur.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
     tailles: [
 ${taillesJson}
     ],
-    disponibilite: '${product.disponibilite}',
+    disponibilite: '${product.disponibilite.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
     nouveaute: ${product.nouveaute}
   }`;
   }).join(',\n\n');
