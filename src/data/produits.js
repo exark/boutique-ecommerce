@@ -18,7 +18,7 @@ const produits = [
       { taille: 'M', stock: 4 }
     ],
     disponibilite: 'En stock',
-    nouveaute: false
+    nouveaute: true
   },
 
   {
@@ -40,7 +40,7 @@ const produits = [
       { taille: 'XL', stock: 1 }
     ],
     disponibilite: 'En stock',
-    nouveaute: false
+    nouveaute: true
   },
 
   {
@@ -103,7 +103,7 @@ const produits = [
       { taille: 'L', stock: 3 }
     ],
     disponibilite: 'En stock',
-    nouveaute: false
+    nouveaute: true
   },
 
   {
@@ -167,7 +167,7 @@ const produits = [
       { taille: 'XL', stock: 3 }
     ],
     disponibilite: 'En stock',
-    nouveaute: false
+    nouveaute: true
   },
 
   {
