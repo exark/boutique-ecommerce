@@ -6,7 +6,7 @@ import { FilterList as FilterIcon, Close as CloseIcon } from '@mui/icons-materia
 import './Produits.css';
 import { useCart } from '../cartContext';
 import { Link, useLocation } from 'react-router-dom';
-import produits from '../data/produits';
+import produits from '../data/produits.json';
 import SearchFilters from '../components/SearchFilters';
 import SizeSelectionModal from '../components/SizeSelectionModal';
 import MultiImageCard from '../components/MultiImageCard';

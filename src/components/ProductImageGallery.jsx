@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import OptimizedImage from './OptimizedImage';
 import './ProductImageGallery.css';
 
 const ProductImageGallery = ({ product, className = '' }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   
-  // Utiliser images ou fallback sur image unique
-  const images = product.images || [product.image];
+  // Utiliser la nouvelle structure d'images
+  const images = (product.images && product.images.length > 0)
+    ? product.images
+    : [{ base: product.image, srcset: {}, fallbackJpg: product.image }];
   const hasMultipleImages = images.length > 1;
 
   const handleThumbnailClick = (index) => {
@@ -40,13 +41,18 @@ const ProductImageGallery = ({ product, className = '' }) => {
               transition={{ duration: 0.3 }}
               className="main-image-motion-wrapper"
             >
-              <OptimizedImage
-                src={images[selectedImageIndex]}
+              <img
+                src={images[selectedImageIndex].base}
+                srcSet={`${images[selectedImageIndex].srcset['400']} 400w, ${images[selectedImageIndex].srcset['800']} 800w, ${images[selectedImageIndex].srcset['1200']} 1200w`}
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 300px"
+                loading="lazy"
+                decoding="async"
+                width="300"
+                height="400"
                 alt={`${product.nom} - Image ${selectedImageIndex + 1}`}
+                onError={(e) => { e.currentTarget.src = images[selectedImageIndex].fallbackJpg || product.image; }}
                 className="main-product-image"
-                priority={true}
-                aspectRatio="4/5"
-                objectFit="cover"
+                style={{ objectFit: 'cover' }}
               />
             </motion.div>
           </AnimatePresence>
@@ -73,12 +79,18 @@ const ProductImageGallery = ({ product, className = '' }) => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <OptimizedImage
-                  src={image}
+                <img
+                  src={image.base}
+                  srcSet={`${image.srcset['400']} 400w, ${image.srcset['800']} 800w, ${image.srcset['1200']} 1200w`}
+                  sizes="80px"
+                  loading="lazy"
+                  decoding="async"
+                  width="80"
+                  height="80"
                   alt={`${product.nom} - Miniature ${index + 1}`}
+                  onError={(e) => { e.currentTarget.src = image.fallbackJpg || product.image; }}
                   className="thumbnail-image"
-                  aspectRatio="1/1"
-                  objectFit="cover"
+                  style={{ objectFit: 'cover' }}
                 />
                 
                 {/* Overlay actif */}

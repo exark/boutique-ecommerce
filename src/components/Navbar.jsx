@@ -8,7 +8,7 @@ import { useCart } from '../cartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import CartDrawer from './CartDrawer';
 import SidebarCategories from './SidebarCategories';
-import produits from '../data/produits';
+import produits from '../data/produits.json';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

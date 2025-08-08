@@ -17,39 +17,10 @@ export function parseImagesFromSheet(imageString) {
     return [];
   }
 
-  // Nettoyer la chaîne : supprimer espaces en trop, retours à la ligne
-  const cleanString = imageString.trim().replace(/\s+/g, ' ');
-  
-  // Séparer par virgules, points-virgules, ou retours à la ligne
-  const imageParts = cleanString
-    .split(/[,;\n]/)
+  return imageString
+    .split(/\s+/)
     .map(part => part.trim())
-    .filter(part => part.length > 0);
-
-  const processedImages = [];
-
-  for (const part of imageParts) {
-    // Vérifier si c'est une URL Imgur complète
-    const imgurUrlMatch = part.match(/imgur\.com\/([a-zA-Z0-9]{7})/);
-    if (imgurUrlMatch) {
-      processedImages.push(imgurUrlMatch[1]);
-      continue;
-    }
-
-    // Vérifier si c'est un ID Imgur (7 caractères alphanumériques)
-    if (/^[a-zA-Z0-9]{7}$/.test(part)) {
-      processedImages.push(part);
-      continue;
-    }
-
-    // Si c'est une URL complète mais pas Imgur, la garder telle quelle
-    if (part.startsWith('http')) {
-      processedImages.push(part);
-      continue;
-    }
-  }
-
-  return processedImages;
+    .filter(part => part.length > 0 && part.startsWith('http'));
 }
 
 /**

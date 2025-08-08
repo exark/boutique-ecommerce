@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button, CircularProgress, IconButton } from '@mui/material';
 import { useCart } from '../cartContext';
 import './ProduitDetail.css';
-import produits from '../data/produits';
+import produits from '../data/produits.json';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import ColorLensIcon from '@mui/icons-material/ColorLens';

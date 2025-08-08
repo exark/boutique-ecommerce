@@ -1,0 +1,762 @@
+[
+  {
+    "id": 2,
+    "nom": "crop top orange",
+    "categorie": "Blouses",
+    "prix": 99.99,
+    "image": "https://i.imgur.com/sA8yYuim.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/sA8yYuim.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/sA8yYuis.jpg",
+          "800": "https://i.imgur.com/sA8yYuim.jpg",
+          "1200": "https://i.imgur.com/sA8yYuil.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/sA8yYuim.jpg"
+      }
+    ],
+    "description": "Blouse élégante et confortable, parfaite pour toutes les occasions.",
+    "matiere": "Viscose",
+    "couleur": "Blanc cassé",
+    "tailles": [
+      {
+        "taille": "XS",
+        "stock": 3
+      },
+      {
+        "taille": "S",
+        "stock": 7
+      },
+      {
+        "taille": "M",
+        "stock": 4
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 3,
+    "nom": "Jean taille haute",
+    "categorie": "Pantalons",
+    "prix": 10.96,
+    "image": "https://i.imgur.com/3LYnlYVm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/3LYnlYVm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/3LYnlYVs.jpg",
+          "800": "https://i.imgur.com/3LYnlYVm.jpg",
+          "1200": "https://i.imgur.com/3LYnlYVl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/3LYnlYVm.jpg"
+      }
+    ],
+    "description": "Pantalon moderne et stylé, pour un look tendance.",
+    "matiere": "Denim",
+    "couleur": "Bleu clair",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 2
+      },
+      {
+        "taille": "M",
+        "stock": 6
+      },
+      {
+        "taille": "L",
+        "stock": 4
+      },
+      {
+        "taille": "XL",
+        "stock": 1
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 4,
+    "nom": "Veste en jean",
+    "categorie": "Vestes",
+    "prix": 10.96,
+    "image": "https://i.imgur.com/d2pA79wm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/d2pA79wm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/d2pA79ws.jpg",
+          "800": "https://i.imgur.com/d2pA79wm.jpg",
+          "1200": "https://i.imgur.com/d2pA79wl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/d2pA79wm.jpg"
+      }
+    ],
+    "description": "Veste intemporelle, idéale pour compléter vos tenues.",
+    "matiere": "Denim",
+    "couleur": "Bleu",
+    "tailles": [
+      {
+        "taille": "M",
+        "stock": 3
+      },
+      {
+        "taille": "L",
+        "stock": 1
+      }
+    ],
+    "disponibilite": "Stock limité",
+    "nouveaute": true
+  },
+  {
+    "id": 5,
+    "nom": "T-shirt basique",
+    "categorie": "T-shirts",
+    "prix": 10.96,
+    "image": "https://i.imgur.com/bbqurwkm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/bbqurwkm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/bbqurwks.jpg",
+          "800": "https://i.imgur.com/bbqurwkm.jpg",
+          "1200": "https://i.imgur.com/bbqurwkl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/bbqurwkm.jpg"
+      }
+    ],
+    "description": "T-shirt basique et confortable, un indispensable du dressing.",
+    "matiere": "Coton",
+    "couleur": "Blanc",
+    "tailles": [
+      {
+        "taille": "XS",
+        "stock": 8
+      },
+      {
+        "taille": "S",
+        "stock": 12
+      },
+      {
+        "taille": "M",
+        "stock": 15
+      },
+      {
+        "taille": "L",
+        "stock": 10
+      },
+      {
+        "taille": "XL",
+        "stock": 6
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 6,
+    "nom": "Jupe plissée",
+    "categorie": "Jupes",
+    "prix": 10.96,
+    "image": "https://i.imgur.com/qzA5nwsm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/qzA5nwsm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/qzA5nwss.jpg",
+          "800": "https://i.imgur.com/qzA5nwsm.jpg",
+          "1200": "https://i.imgur.com/qzA5nwsl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/qzA5nwsm.jpg"
+      }
+    ],
+    "description": "Jupe élégante et féminine, pour toutes les occasions.",
+    "matiere": "Polyester recyclé",
+    "couleur": "Noir",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 4
+      },
+      {
+        "taille": "L",
+        "stock": 3
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 7,
+    "nom": "Pull en maille",
+    "categorie": "Pulls",
+    "prix": 10.99,
+    "image": "https://i.imgur.com/egEkJT5m.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/egEkJT5m.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/egEkJT5s.jpg",
+          "800": "https://i.imgur.com/egEkJT5m.jpg",
+          "1200": "https://i.imgur.com/egEkJT5l.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/egEkJT5m.jpg"
+      }
+    ],
+    "description": "Pull doux et chaud, parfait pour la mi-saison.",
+    "matiere": "Laine mérinos",
+    "couleur": "Beige",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 6
+      },
+      {
+        "taille": "M",
+        "stock": 8
+      },
+      {
+        "taille": "L",
+        "stock": 5
+      },
+      {
+        "taille": "XL",
+        "stock": 3
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 8,
+    "nom": "Chemise rayée",
+    "categorie": "Chemises",
+    "prix": 69.96,
+    "image": "https://i.imgur.com/dNDD8HNm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/dNDD8HNm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/dNDD8HNs.jpg",
+          "800": "https://i.imgur.com/dNDD8HNm.jpg",
+          "1200": "https://i.imgur.com/dNDD8HNl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/dNDD8HNm.jpg"
+      }
+    ],
+    "description": "Chemise élégante, à porter au bureau ou en sortie.",
+    "matiere": "Coton",
+    "couleur": "Rayé bleu et blanc",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 3
+      },
+      {
+        "taille": "M",
+        "stock": 7
+      },
+      {
+        "taille": "L",
+        "stock": 4
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 9,
+    "nom": "Pantalon fluide",
+    "categorie": "Pantalons",
+    "prix": 54.99,
+    "image": "https://i.imgur.com/dUqIgu0m.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/dUqIgu0m.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/dUqIgu0s.jpg",
+          "800": "https://i.imgur.com/dUqIgu0m.jpg",
+          "1200": "https://i.imgur.com/dUqIgu0l.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/dUqIgu0m.jpg"
+      }
+    ],
+    "description": "Pantalon moderne et stylé, pour un look tendance.",
+    "matiere": "Lin",
+    "couleur": "Beige clair",
+    "tailles": [
+      {
+        "taille": "M",
+        "stock": 5
+      },
+      {
+        "taille": "L",
+        "stock": 8
+      },
+      {
+        "taille": "XL",
+        "stock": 3
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 10,
+    "nom": "Cardigan beige",
+    "categorie": "Cardigans",
+    "prix": 39.99,
+    "image": "https://i.imgur.com/b0QwLUnm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/b0QwLUnm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/b0QwLUns.jpg",
+          "800": "https://i.imgur.com/b0QwLUnm.jpg",
+          "1200": "https://i.imgur.com/b0QwLUnl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/b0QwLUnm.jpg"
+      }
+    ],
+    "description": "Cardigan doux et élégant, facile à assortir.",
+    "matiere": "Acrylique",
+    "couleur": "Beige",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 4
+      },
+      {
+        "taille": "M",
+        "stock": 6
+      },
+      {
+        "taille": "L",
+        "stock": 2
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 11,
+    "nom": "Short en lin",
+    "categorie": "Shorts",
+    "prix": 24.99,
+    "image": "https://i.imgur.com/e9ZCB9Fm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/e9ZCB9Fm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/e9ZCB9Fs.jpg",
+          "800": "https://i.imgur.com/e9ZCB9Fm.jpg",
+          "1200": "https://i.imgur.com/e9ZCB9Fl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/e9ZCB9Fm.jpg"
+      }
+    ],
+    "description": "Short léger et confortable, parfait pour l'été.",
+    "matiere": "Lin",
+    "couleur": "Blanc",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 8
+      },
+      {
+        "taille": "M",
+        "stock": 10
+      },
+      {
+        "taille": "L",
+        "stock": 6
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 12,
+    "nom": "Manteau long",
+    "categorie": "Manteaux",
+    "prix": 89.99,
+    "image": "https://i.imgur.com/gybHo4Jm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/gybHo4Jm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/gybHo4Js.jpg",
+          "800": "https://i.imgur.com/gybHo4Jm.jpg",
+          "1200": "https://i.imgur.com/gybHo4Jl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/gybHo4Jm.jpg"
+      }
+    ],
+    "description": "Manteau chaud et élégant, pour un hiver stylé.",
+    "matiere": "Laine",
+    "couleur": "Camel",
+    "tailles": [
+      {
+        "taille": "M",
+        "stock": 2
+      },
+      {
+        "taille": "L",
+        "stock": 1
+      }
+    ],
+    "disponibilite": "Stock limité",
+    "nouveaute": true
+  },
+  {
+    "id": 13,
+    "nom": "Débardeur côtelé",
+    "categorie": "Débardeurs",
+    "prix": 17.99,
+    "image": "https://i.imgur.com/AoD7O2am.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/AoD7O2am.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/AoD7O2as.jpg",
+          "800": "https://i.imgur.com/AoD7O2am.jpg",
+          "1200": "https://i.imgur.com/AoD7O2al.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/AoD7O2am.jpg"
+      }
+    ],
+    "description": "Débardeur tendance, à porter seul ou sous une veste.",
+    "matiere": "Coton",
+    "couleur": "Rose poudré",
+    "tailles": [
+      {
+        "taille": "XS",
+        "stock": 5
+      },
+      {
+        "taille": "S",
+        "stock": 8
+      },
+      {
+        "taille": "M",
+        "stock": 6
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 14,
+    "nom": "Combinaison chic",
+    "categorie": "Combinaisons",
+    "prix": 64.99,
+    "image": "https://i.imgur.com/vtxv4cum.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/vtxv4cum.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/vtxv4cus.jpg",
+          "800": "https://i.imgur.com/vtxv4cum.jpg",
+          "1200": "https://i.imgur.com/vtxv4cul.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/vtxv4cum.jpg"
+      }
+    ],
+    "description": "Combinaison élégante, idéale pour les soirées.",
+    "matiere": "Polyester",
+    "couleur": "Noir",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 3
+      },
+      {
+        "taille": "M",
+        "stock": 5
+      },
+      {
+        "taille": "L",
+        "stock": 2
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": true
+  },
+  {
+    "id": 15,
+    "nom": "Sweat à capuche",
+    "categorie": "Sweats",
+    "prix": 42.99,
+    "image": "https://i.imgur.com/rz3RXXfm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/rz3RXXfm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/rz3RXXfs.jpg",
+          "800": "https://i.imgur.com/rz3RXXfm.jpg",
+          "1200": "https://i.imgur.com/rz3RXXfl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/rz3RXXfm.jpg"
+      }
+    ],
+    "description": "Sweat confortable et stylé, pour un look décontracté.",
+    "matiere": "Coton",
+    "couleur": "Gris chiné",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 7
+      },
+      {
+        "taille": "M",
+        "stock": 10
+      },
+      {
+        "taille": "L",
+        "stock": 8
+      },
+      {
+        "taille": "XL",
+        "stock": 4
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 16,
+    "nom": "Pull en maille rayé",
+    "categorie": "Pulls",
+    "prix": 49.99,
+    "image": "https://i.imgur.com/cNCW5FLm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/cNCW5FLm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/cNCW5FLs.jpg",
+          "800": "https://i.imgur.com/cNCW5FLm.jpg",
+          "1200": "https://i.imgur.com/cNCW5FLl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/cNCW5FLm.jpg"
+      }
+    ],
+    "description": "Pull doux et chaud, parfait pour la mi-saison.",
+    "matiere": "Mélange laine et acrylique",
+    "couleur": "Violet et gris",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 5
+      },
+      {
+        "taille": "M",
+        "stock": 8
+      },
+      {
+        "taille": "L",
+        "stock": 4
+      },
+      {
+        "taille": "XL",
+        "stock": 3
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": true
+  },
+  {
+    "id": 17,
+    "nom": "Robe noire ceinturée",
+    "categorie": "Robes",
+    "prix": 64.99,
+    "image": "https://i.imgur.com/QsxaE0um.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/QsxaE0um.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/QsxaE0us.jpg",
+          "800": "https://i.imgur.com/QsxaE0um.jpg",
+          "1200": "https://i.imgur.com/QsxaE0ul.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/QsxaE0um.jpg"
+      }
+    ],
+    "description": "Robe élégante et féminine, pour toutes les occasions.",
+    "matiere": "Polyester et élasthanne",
+    "couleur": "Noir",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 4
+      },
+      {
+        "taille": "M",
+        "stock": 6
+      },
+      {
+        "taille": "L",
+        "stock": 3
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": true
+  },
+  {
+    "id": 18,
+    "nom": "Hoodie oversize beige",
+    "categorie": "Sweats",
+    "prix": 44.99,
+    "image": "https://i.imgur.com/5K7cqREm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/5K7cqREm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/5K7cqREs.jpg",
+          "800": "https://i.imgur.com/5K7cqREm.jpg",
+          "1200": "https://i.imgur.com/5K7cqREl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/5K7cqREm.jpg"
+      }
+    ],
+    "description": "Sweat confortable et stylé, pour un look décontracté.",
+    "matiere": "Coton et polyester",
+    "couleur": "Beige",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 5
+      },
+      {
+        "taille": "M",
+        "stock": 7
+      },
+      {
+        "taille": "L",
+        "stock": 4
+      },
+      {
+        "taille": "XL",
+        "stock": 2
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": false
+  },
+  {
+    "id": 19,
+    "nom": "Blazer orange",
+    "categorie": "Blazers",
+    "prix": 74.99,
+    "image": "https://i.imgur.com/f4Bcg74m.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/f4Bcg74m.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/f4Bcg74s.jpg",
+          "800": "https://i.imgur.com/f4Bcg74m.jpg",
+          "1200": "https://i.imgur.com/f4Bcg74l.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/f4Bcg74m.jpg"
+      }
+    ],
+    "description": "Blazer élégant et structuré, parfait pour le bureau.",
+    "matiere": "Polyester",
+    "couleur": "Orange",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 2
+      },
+      {
+        "taille": "M",
+        "stock": 5
+      },
+      {
+        "taille": "L",
+        "stock": 3
+      },
+      {
+        "taille": "XL",
+        "stock": 1
+      }
+    ],
+    "disponibilite": "Stock limité",
+    "nouveaute": false
+  },
+  {
+    "id": 21,
+    "nom": "Robe drapée verte",
+    "categorie": "Robes",
+    "prix": 69.99,
+    "image": "https://i.imgur.com/VPu05ubm.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/VPu05ubm.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/VPu05ubs.jpg",
+          "800": "https://i.imgur.com/VPu05ubm.jpg",
+          "1200": "https://i.imgur.com/VPu05ubl.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/VPu05ubm.jpg"
+      }
+    ],
+    "description": "Robe élégante et féminine, pour toutes les occasions.",
+    "matiere": "Polyester satiné",
+    "couleur": "Vert éclatant",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 3
+      },
+      {
+        "taille": "M",
+        "stock": 5
+      },
+      {
+        "taille": "L",
+        "stock": 2
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": true
+  },
+  {
+    "id": 22,
+    "nom": "Combishort élégant",
+    "categorie": "Combinaisons",
+    "prix": 59.99,
+    "image": "https://i.imgur.com/gZhT8r8m.jpg",
+    "images": [
+      {
+        "base": "https://i.imgur.com/gZhT8r8m.jpg",
+        "srcset": {
+          "400": "https://i.imgur.com/gZhT8r8s.jpg",
+          "800": "https://i.imgur.com/gZhT8r8m.jpg",
+          "1200": "https://i.imgur.com/gZhT8r8l.jpg"
+        },
+        "fallbackJpg": "https://i.imgur.com/gZhT8r8m.jpg"
+      }
+    ],
+    "description": "Combinaison élégante, idéale pour les soirées.",
+    "matiere": "Polyester et élasthanne",
+    "couleur": "Noir",
+    "tailles": [
+      {
+        "taille": "S",
+        "stock": 4
+      },
+      {
+        "taille": "M",
+        "stock": 6
+      },
+      {
+        "taille": "L",
+        "stock": 3
+      }
+    ],
+    "disponibilite": "En stock",
+    "nouveaute": true
+  }
+]

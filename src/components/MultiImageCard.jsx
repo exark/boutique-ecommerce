@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import OptimizedImage from './OptimizedImage';
 import './MultiImageCard.css';
 
 const MultiImageCard = ({ 
   product, 
   className = '', 
-  aspectRatio = '1/1',
   objectFit = 'cover',
   showIndicators = true,
   autoRotate = false,
@@ -15,8 +13,10 @@ const MultiImageCard = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   
-  // Utiliser images ou fallback sur image unique
-  const images = product.images || [product.image];
+  // Utiliser nouvelles structures d'images
+  const images = (product.images && product.images.length > 0)
+    ? product.images
+    : [{ base: product.image, srcset: {}, fallbackJpg: product.image }];
   const hasMultipleImages = images.length > 1;
 
   // Auto-rotation des images au hover
@@ -67,13 +67,18 @@ const MultiImageCard = ({
     >
       {/* Image principale */}
       <div className="image-container" onClick={handleImageClick}>
-        <OptimizedImage
-          src={images[currentImageIndex]}
+        <img
+          src={images[currentImageIndex].base}
+          srcSet={`${images[currentImageIndex].srcset['400']} 400w, ${images[currentImageIndex].srcset['800']} 800w, ${images[currentImageIndex].srcset['1200']} 1200w`}
+          sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 300px"
+          loading="lazy"
+          decoding="async"
+          width="300"
+          height="400"
           alt={`${product.nom} - Image ${currentImageIndex + 1}`}
-          aspectRatio={aspectRatio}
-          objectFit={objectFit}
-          priority={currentImageIndex === 0}
+          onError={(e) => { e.currentTarget.src = images[currentImageIndex].fallbackJpg || product.image; }}
           className="product-image"
+          style={{ objectFit }}
         />
         
         {/* Overlay pour indiquer qu'il y a plusieurs images */}

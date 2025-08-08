@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import produits from '../data/produits';
+import produits from '../data/produits.json';
 import OptimizedImage from '../components/OptimizedImage';
 import './Categories.css';
 

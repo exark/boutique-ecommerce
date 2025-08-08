@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import produits from '../data/produits';
+import produits from '../data/produits.json';
 import './SidebarCategories.css';
 
 function useIsMobile(breakpoint = 900) {

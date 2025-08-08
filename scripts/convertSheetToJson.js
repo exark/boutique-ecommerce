@@ -1,15 +1,28 @@
+/* eslint-env node */
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import { fileURLToPath } from 'url';
-import { parseImagesFromSheet, processProductFromSheet } from '../src/utils/imageParser.js';
+import crypto from 'crypto';
+import sharp from 'sharp';
+import { parseImagesFromSheet } from '../src/utils/imageParser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
 const DEFAULT_SHEET_ID = '1u1bwB9FOHAXW3xMyAyfYlF4jcHS7LvMIRFQLp1rJHto';
-const DEFAULT_OUTPUT_FILE = 'src/data/produits.js';
+const DEFAULT_OUTPUT_FILE = 'src/data/produits.json';
+
+const IMAGE_OUTPUT_DIR = path.join(__dirname, '..', 'public', 'images', 'products');
+
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFD').replace(/\p{Diacritic}/gu, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
 
 // Colonnes attendues pour les images
 const IMAGE_COLUMNS = ['image_produit', 'images', 'image_urls', 'photos', 'Pictures', 'Images'];
@@ -221,42 +234,59 @@ function convertWideFormatToProducts(header, rows) {
   return result;
 }
 
-function generateProduitsFile(products) {
-  console.log('Génération du fichier produits.js...');
-  const header = `const produits = [\n\n`;
-  const footer = `\n];\n\nexport default produits;`;
-  
-  const productsJson = products.map(product => {
-    const taillesJson = product.tailles.map(t => 
-      `      { taille: '${t.taille}', stock: ${t.stock} }`
-    ).join(',\n');
-    
-    // Générer le tableau des images
-    const imagesJson = product.images.map(img => 
-      `      '${img.replace(/'/g, "\\'").replace(/"/g, '\\"')}'`
-    ).join(',\n');
-    
-    return `  {
-    id: ${product.id},
-    nom: '${product.nom.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
-    categorie: '${product.categorie}',
-    prix: ${product.prix},
-    image: '${product.image.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
-    images: [
-${imagesJson}
-    ],
-    description: '${product.description.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
-    matiere: '${product.matiere.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
-    couleur: '${product.couleur.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
-    tailles: [
-${taillesJson}
-    ],
-    disponibilite: '${product.disponibilite.replace(/'/g, "\\'").replace(/"/g, '\\"')}',
-    nouveaute: ${product.nouveaute}
-  }`;
-  }).join(',\n\n');
-  
-  return header + productsJson + footer;
+async function downloadAndOptimize(url, slug, index) {
+  const hash = crypto.createHash('md5').update(url).digest('hex').slice(0, 8);
+  const baseName = `${slug}-${hash}-${index}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const sizes = [400, 800, 1200];
+    const srcset = {};
+    for (const width of sizes) {
+      const outPath = path.join(IMAGE_OUTPUT_DIR, `${baseName}-${width}.webp`);
+      await sharp(buffer).resize({ width }).webp({ quality: 75 }).toFile(outPath);
+      srcset[width] = `/images/products/${baseName}-${width}.webp`;
+    }
+
+    const jpgOut = path.join(IMAGE_OUTPUT_DIR, `${baseName}-800.jpg`);
+    await sharp(buffer).resize({ width: 800 }).jpeg({ quality: 75 }).toFile(jpgOut);
+
+    return {
+      base: srcset[800],
+      srcset,
+      fallbackJpg: `/images/products/${baseName}-800.jpg`
+    };
+  } catch (err) {
+    console.error(`Erreur traitement image ${url}: ${err.message}`);
+    return {
+      base: url,
+      srcset: {},
+      fallbackJpg: url
+    };
+  }
+}
+
+async function processImages(products) {
+  if (!fs.existsSync(IMAGE_OUTPUT_DIR)) {
+    fs.mkdirSync(IMAGE_OUTPUT_DIR, { recursive: true });
+  }
+
+  for (const product of products) {
+    const slug = slugify(product.nom);
+    const processed = [];
+    for (let i = 0; i < product.images.length; i++) {
+      const imgUrl = product.images[i];
+      const optimized = await downloadAndOptimize(imgUrl, slug, i);
+      processed.push(optimized);
+    }
+    product.images = processed;
+    if (processed[0]) {
+      product.image = processed[0].fallbackJpg || processed[0].base;
+    }
+  }
 }
 
 async function main() {
@@ -280,15 +310,17 @@ async function main() {
       throw new Error('Aucun produit n\'a été converti. Vérifiez le format de votre Google Sheet.');
     }
     
+    console.log('Traitement des images...');
+    await processImages(products);
+
     console.log(`Génération du fichier ${outputFile}...`);
-    const produitsContent = generateProduitsFile(products);
-    
+
     const outputDir = path.dirname(outputFile);
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
-    
-    fs.writeFileSync(outputFile, produitsContent, 'utf8');
+
+    fs.writeFileSync(outputFile, JSON.stringify(products, null, 2), 'utf8');
     
     console.log(`Conversion terminée avec succès !`);
     console.log(`${products.length} produits convertis`);
