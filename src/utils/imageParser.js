@@ -20,18 +20,19 @@ export function parseImagesFromSheet(imageString) {
   // Nettoyer la chaîne : supprimer espaces en trop, retours à la ligne
   const cleanString = imageString.trim();
   
-  // Séparer par virgules, points-virgules, retours à la ligne, ou espaces (1 ou plus)
-  // Mais d'abord, essayer de détecter si ce sont des URLs complètes ou des IDs
+  // Séparer par virgules, points-virgules, retours à la ligne, ou espaces
+  // Support spécial pour les URLs Imgur séparées par espaces simples
   let imageParts;
   
-  // Si la chaîne contient des URLs complètes (avec http), utiliser un séparateur plus strict
-  if (cleanString.includes('http')) {
+  // Si la chaîne contient des URLs Imgur, détecter le format
+  if (cleanString.includes('imgur.com')) {
+    // Pour les URLs Imgur, accepter les espaces simples comme séparateurs
     imageParts = cleanString
-      .split(/[,;\n]|\s{2,}/)  // Espaces multiples pour URLs
+      .split(/[,;\n\s]+/)  // Espaces simples inclus pour URLs Imgur
       .map(part => part.trim())
-      .filter(part => part.length > 0);
+      .filter(part => part.length > 0 && part.includes('imgur'));
   } else {
-    // Pour les IDs simples, permettre séparation par espaces simples aussi
+    // Pour les IDs simples, permettre tous types de séparateurs
     imageParts = cleanString
       .split(/[,;\n\s]+/)  // Tout type d'espacement
       .map(part => part.trim())

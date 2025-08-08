@@ -7,7 +7,9 @@ const produits = [
     prix: 99.99,
     image: 'sA8yYui',
     images: [
-      'sA8yYui'
+      'sA8yYui',
+      '3LYnlYV',
+      'bbqurwk'
     ],
     description: 'Blouse élégante et confortable, parfaite pour toutes les occasions.',
     matiere: 'Viscose',
