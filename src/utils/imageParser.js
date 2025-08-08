@@ -18,13 +18,25 @@ export function parseImagesFromSheet(imageString) {
   }
 
   // Nettoyer la chaîne : supprimer espaces en trop, retours à la ligne
-  const cleanString = imageString.trim().replace(/\s+/g, ' ');
+  const cleanString = imageString.trim();
   
-  // Séparer par virgules, points-virgules, ou retours à la ligne
-  const imageParts = cleanString
-    .split(/[,;\n]/)
-    .map(part => part.trim())
-    .filter(part => part.length > 0);
+  // Séparer par virgules, points-virgules, retours à la ligne, ou espaces (1 ou plus)
+  // Mais d'abord, essayer de détecter si ce sont des URLs complètes ou des IDs
+  let imageParts;
+  
+  // Si la chaîne contient des URLs complètes (avec http), utiliser un séparateur plus strict
+  if (cleanString.includes('http')) {
+    imageParts = cleanString
+      .split(/[,;\n]|\s{2,}/)  // Espaces multiples pour URLs
+      .map(part => part.trim())
+      .filter(part => part.length > 0);
+  } else {
+    // Pour les IDs simples, permettre séparation par espaces simples aussi
+    imageParts = cleanString
+      .split(/[,;\n\s]+/)  // Tout type d'espacement
+      .map(part => part.trim())
+      .filter(part => part.length > 0);
+  }
 
   const processedImages = [];
 
