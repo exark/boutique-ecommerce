@@ -8,9 +8,11 @@ import {
   Typography, 
   Box,
   Chip,
-  Alert
+  Alert,
+  IconButton
 } from '@mui/material';
-import { motion } from 'framer-motion';
+import { Close as CloseIcon } from '@mui/icons-material';
+import { motion, AnimatePresence } from 'framer-motion';
 import './SizeSelectionModal.css';
 
 export default function SizeSelectionModal({ 
@@ -63,22 +65,42 @@ export default function SizeSelectionModal({
     <Dialog 
       open={open} 
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="xs"
       fullWidth
       PaperProps={{
         className: 'size-modal-paper'
       }}
+      BackdropProps={{
+        className: 'size-modal-backdrop'
+      }}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, y: 50, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 50, scale: 0.95 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 30,
+          duration: 0.4 
+        }}
       >
+        {/* Header avec bouton fermer */}
+        <Box className="size-modal-header">
+          <IconButton 
+            onClick={onClose}
+            className="size-modal-close-btn"
+            size="small"
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </Box>
+
         <DialogTitle className="size-modal-title">
-          <Typography variant="h5" component="div" className="size-modal-title-text">
+          <Typography variant="h6" component="div" className="size-modal-title-text">
             Choisissez votre taille
           </Typography>
-          <Typography variant="body2" color="text.secondary" className="size-modal-subtitle">
+          <Typography variant="body2" className="size-modal-subtitle">
             {produit.nom}
           </Typography>
         </DialogTitle>
@@ -91,7 +113,7 @@ export default function SizeSelectionModal({
           ) : (
             <>
               <Box className="size-modal-sizes">
-                {produit.tailles.map((sizeData) => {
+                {produit.tailles.map((sizeData, index) => {
                   const { status, text } = getStockStatus(sizeData.stock);
                   const isAvailable = sizeData.stock > 0;
                   const isSelected = selectedSize === sizeData.taille;
@@ -99,64 +121,101 @@ export default function SizeSelectionModal({
                   return (
                     <motion.div
                       key={sizeData.taille}
-                      whileHover={isAvailable ? { scale: 1.05 } : {}}
-                      whileTap={isAvailable ? { scale: 0.95 } : {}}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ 
+                        delay: index * 0.1,
+                        type: "spring",
+                        stiffness: 200
+                      }}
+                      whileHover={isAvailable ? { 
+                        scale: 1.02,
+                        transition: { duration: 0.2 }
+                      } : {}}
+                      whileTap={isAvailable ? { 
+                        scale: 0.98,
+                        transition: { duration: 0.1 }
+                      } : {}}
                     >
-                      <Button
-                        variant={isSelected ? "contained" : "outlined"}
-                        className={`size-button ${status} ${isSelected ? 'selected' : ''}`}
+                      <Box
+                        className={`size-option ${status} ${isSelected ? 'selected' : ''} ${!isAvailable ? 'disabled' : ''}`}
                         onClick={() => isAvailable && handleSizeSelect(sizeData.taille)}
-                        disabled={!isAvailable}
-                        fullWidth
                       >
-                        <Box className="size-button-content">
-                          <Typography variant="h6" className="size-text">
-                            {sizeData.taille}
-                          </Typography>
-                          <Chip 
-                            label={text}
-                            size="small"
-                            className={`stock-chip ${status}`}
-                          />
+                        <Typography className="size-label">
+                          {sizeData.taille}
+                        </Typography>
+                        <Box className={`stock-indicator ${status}`}>
+                          {status === 'disponible' && '✓'}
+                          {status === 'limite' && '!'}
+                          {status === 'rupture' && '✕'}
                         </Box>
-                      </Button>
+                        <Typography className="stock-text">
+                          {text}
+                        </Typography>
+                      </Box>
                     </motion.div>
                   );
                 })}
               </Box>
 
-              {selectedSize && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <Alert severity="info" className="size-modal-selection">
-                    Taille sélectionnée : <strong>{selectedSize}</strong>
-                  </Alert>
-                </motion.div>
-              )}
+              <AnimatePresence>
+                {selectedSize && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -15, scale: 0.95 }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 25
+                    }}
+                    className="size-selection-indicator"
+                  >
+                    <Box className="selection-content">
+                      <Typography className="selection-text">
+                        Taille sélectionnée
+                      </Typography>
+                      <Typography className="selection-size">
+                        {selectedSize}
+                      </Typography>
+                    </Box>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </>
           )}
         </DialogContent>
 
         <DialogActions className="size-modal-actions">
-          <Button 
-            onClick={onClose}
-            className="size-modal-cancel-btn"
+          <motion.div 
+            className="action-buttons"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
           >
-            Annuler
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleAddToCart}
-            disabled={!selectedSize || availableSizes.length === 0}
-            className="size-modal-add-btn"
-          >
-            Ajouter au panier
-          </Button>
+            <Button 
+              onClick={onClose}
+              className="size-modal-cancel-btn"
+              fullWidth
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleAddToCart}
+              disabled={!selectedSize || availableSizes.length === 0}
+              className="size-modal-add-btn"
+              fullWidth
+            >
+              <motion.span
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Ajouter au panier
+              </motion.span>
+            </Button>
+          </motion.div>
         </DialogActions>
       </motion.div>
     </Dialog>
   );
-} 
+}
