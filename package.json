@@ -18,7 +18,7 @@
     "build:optimized": "npm run optimize-media && vite build",
     "analyze": "vite build --mode analyze",
     "lighthouse": "lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html",
-    "lighthouse:ci": "lhci autorun",
+    "lighthouse:ci": "lhci autorun --config=lighthouserc.cjs",
     "cache:purge": "echo 'Use: vercel cache rm <url> to purge specific cache entries'",
     "perf:audit": "npm run build && npm run lighthouse:ci"
   },

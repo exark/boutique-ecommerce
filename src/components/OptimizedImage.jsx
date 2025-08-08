@@ -72,39 +72,48 @@ const OptimizedImage = ({
     // Handle Imgur images (full URLs)
     if (imageName.includes('imgur.com')) {
       return {
-        webp: null,
+        webp: null, // Imgur doesn't support WebP conversion via URL params
         avif: null,
         jpg: {
-          srcSet: null,
+          srcSet: `${imageName}?w=400 400w, ${imageName}?w=800 800w, ${imageName}?w=1200 1200w`,
           src: imageName,
           fallback: imageName
         }
       };
     }
     
-    // Handle Imgur IDs (just the ID without full URL)
+    // Handle Imgur IDs (just the ID without full URL) - Enable responsive sizes
     if (/^[a-zA-Z0-9]{7}$/.test(imageName)) {
-      const imgurUrl = `https://i.imgur.com/${imageName}.jpg`;
+      const imgurBase = `https://i.imgur.com/${imageName}`;
       return {
-        webp: null,
+        webp: null, // Imgur doesn't support WebP
         avif: null,
         jpg: {
-          srcSet: null,
-          src: imgurUrl,
-          fallback: imgurUrl
+          srcSet: `${imgurBase}s.jpg 400w, ${imgurBase}m.jpg 800w, ${imgurBase}l.jpg 1200w`,
+          src: `${imgurBase}m.jpg`,
+          fallback: `${imgurBase}.jpg`
         }
       };
     }
     
-    // Handle local images - use simple path resolution
+    // Handle local images - enable modern formats for local images
     const fullPath = imageName.startsWith('/') ? imageName : `/images/${imageName}`;
+    const baseName = fullPath.replace(/\.[^/.]+$/, '');
     
     return {
-      webp: null,
-      avif: null,
+      webp: {
+        srcSet: `${baseName}?format=webp&w=400 400w, ${baseName}?format=webp&w=800 800w, ${baseName}?format=webp&w=1200 1200w`,
+        src: `${baseName}?format=webp&w=800`,
+        fallback: fullPath
+      },
+      avif: {
+        srcSet: `${baseName}?format=avif&w=400 400w, ${baseName}?format=avif&w=800 800w, ${baseName}?format=avif&w=1200 1200w`,
+        src: `${baseName}?format=avif&w=800`,
+        fallback: fullPath
+      },
       jpg: {
-        srcSet: null,
-        src: fullPath,
+        srcSet: `${baseName}?w=400 400w, ${baseName}?w=800 800w, ${baseName}?w=1200 1200w`,
+        src: `${baseName}?w=800`,
         fallback: fullPath
       }
     };
@@ -173,18 +182,40 @@ const OptimizedImage = ({
       ) : (
         /* Chargement conditionnel basé sur la visibilité */
         (isInView || priority) && (
-          <img
-            ref={imgRef}
-            src={responsiveUrls.jpg.src}
-            alt={alt}
-            loading={effectiveLoading}
-            sizes={sizes}
-            decoding="async"
-            className="optimized-image"
-            style={{ objectFit }}
-            onLoad={handleLoad}
-            onError={handleImageError}
-          />
+          <picture>
+            {/* AVIF format for modern browsers (local images only) */}
+            {responsiveUrls.avif && (
+              <source
+                srcSet={responsiveUrls.avif.srcSet}
+                sizes={sizes}
+                type="image/avif"
+              />
+            )}
+            
+            {/* WebP format fallback (local images only) */}
+            {responsiveUrls.webp && (
+              <source
+                srcSet={responsiveUrls.webp.srcSet}
+                sizes={sizes}
+                type="image/webp"
+              />
+            )}
+            
+            {/* Original format fallback */}
+            <img
+              ref={imgRef}
+              src={responsiveUrls.jpg.src}
+              srcSet={responsiveUrls.jpg.srcSet}
+              alt={alt}
+              loading={effectiveLoading}
+              sizes={sizes}
+              decoding="async"
+              className="optimized-image"
+              style={{ objectFit }}
+              onLoad={handleLoad}
+              onError={handleImageError}
+            />
+          </picture>
         )
       )}
     </div>
