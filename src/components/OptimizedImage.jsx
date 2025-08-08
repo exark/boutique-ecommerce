@@ -26,7 +26,7 @@ const OptimizedImage = ({
   src,
   alt,
   className = '',
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (min-width: 1024px) 100vw',
   loading = 'lazy',
   priority = false,
   aspectRatio = '1/1',
@@ -85,12 +85,18 @@ const OptimizedImage = ({
     // Handle Imgur IDs (just the ID without full URL) - Enable responsive sizes
     if (/^[a-zA-Z0-9]{7}$/.test(imageName)) {
       const imgurBase = `https://i.imgur.com/${imageName}`;
+      const isDesktop = window.innerWidth >= 1024;
+      
       return {
         webp: null, // Imgur doesn't support WebP
         avif: null,
         jpg: {
-          srcSet: `${imgurBase}s.jpg 400w, ${imgurBase}m.jpg 800w, ${imgurBase}l.jpg 1200w`,
-          src: `${imgurBase}m.jpg`,
+          // Desktop: True original quality (no compression), Mobile: Optimized sizes for performance
+          srcSet: isDesktop 
+            ? null // No srcSet on desktop = browser uses src directly (original quality)
+            : `${imgurBase}s.jpg 400w, ${imgurBase}m.jpg 800w, ${imgurBase}l.jpg 1200w`,
+          // Use the highest quality available format for desktop
+          src: isDesktop ? `${imgurBase}.jpg` : `${imgurBase}m.jpg`, // Original .jpg is the highest quality Imgur provides
           fallback: `${imgurBase}.jpg`
         }
       };
@@ -127,26 +133,40 @@ const OptimizedImage = ({
   const handleImageError = (e) => {
     const currentSrc = e.target.src;
     
-    // For Imgur images, try different fallbacks
+    // For Imgur images, try different quality fallbacks for desktop
     if (currentSrc.includes('imgur.com')) {
-      // Try WebP to JPG fallback first
-      if (currentSrc.includes('.webp')) {
-        e.target.src = currentSrc.replace('.webp', '.jpg');
-        return;
-      }
-      // Then try size fallbacks
-      if (currentSrc.includes('l.jpg')) {
-        // Try medium size
-        e.target.src = currentSrc.replace('l.jpg', 'm.jpg');
-        return;
-      } else if (currentSrc.includes('m.jpg')) {
-        // Try small size
-        e.target.src = currentSrc.replace('m.jpg', 's.jpg');
-        return;
-      } else if (currentSrc.includes('s.jpg')) {
-        // Try original size
-        e.target.src = currentSrc.replace('s.jpg', '.jpg');
-        return;
+      const isDesktop = window.innerWidth >= 1024;
+      
+      if (isDesktop) {
+        // Desktop quality fallback sequence: .png -> .jpg -> l.jpg -> m.jpg
+        if (currentSrc.includes('.png')) {
+          e.target.src = currentSrc.replace('.png', '.jpg');
+          return;
+        } else if (currentSrc.endsWith('.jpg') && !currentSrc.includes('l.jpg') && !currentSrc.includes('m.jpg') && !currentSrc.includes('s.jpg')) {
+          // Try large size if original fails
+          e.target.src = currentSrc.replace('.jpg', 'l.jpg');
+          return;
+        } else if (currentSrc.includes('l.jpg')) {
+          // Try medium size
+          e.target.src = currentSrc.replace('l.jpg', 'm.jpg');
+          return;
+        }
+      } else {
+        // Mobile fallback sequence (existing logic)
+        if (currentSrc.includes('.webp')) {
+          e.target.src = currentSrc.replace('.webp', '.jpg');
+          return;
+        }
+        if (currentSrc.includes('l.jpg')) {
+          e.target.src = currentSrc.replace('l.jpg', 'm.jpg');
+          return;
+        } else if (currentSrc.includes('m.jpg')) {
+          e.target.src = currentSrc.replace('m.jpg', 's.jpg');
+          return;
+        } else if (currentSrc.includes('s.jpg')) {
+          e.target.src = currentSrc.replace('s.jpg', '.jpg');
+          return;
+        }
       }
     }
     
@@ -205,10 +225,10 @@ const OptimizedImage = ({
             <img
               ref={imgRef}
               src={responsiveUrls.jpg.src}
-              srcSet={responsiveUrls.jpg.srcSet}
+              {...(responsiveUrls.jpg.srcSet && { srcSet: responsiveUrls.jpg.srcSet })}
               alt={alt}
               loading={effectiveLoading}
-              sizes={sizes}
+              {...(responsiveUrls.jpg.srcSet && { sizes })}
               decoding="async"
               className="optimized-image"
               style={{ objectFit }}
