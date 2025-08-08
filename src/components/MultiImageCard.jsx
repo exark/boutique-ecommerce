@@ -10,6 +10,7 @@ const MultiImageCard = ({
   showIndicators = true,
   autoRotate = false,
   autoRotateInterval = 2000,
+  priority = false, // Nouvelle prop pour la priorité de chargement
   ...props 
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -72,7 +73,8 @@ const MultiImageCard = ({
           alt={`${product.nom} - Image ${currentImageIndex + 1}`}
           aspectRatio={aspectRatio}
           objectFit={objectFit}
-          priority={currentImageIndex === 0}
+          priority={priority || currentImageIndex === 0}
+          loading={priority ? 'eager' : 'lazy'}
           className="product-image"
         />
         

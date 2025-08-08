@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './OptimizedImage.css';
 
 const OptimizedImage = ({
@@ -6,7 +6,7 @@ const OptimizedImage = ({
   alt,
   className = '',
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  loading = 'eager',
+  loading = 'lazy',
   priority = false,
   aspectRatio = '1/1',
   objectFit = 'cover',
@@ -17,7 +17,32 @@ const OptimizedImage = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const effectiveLoading = priority ? 'eager' : loading;
+  const [isInView, setIsInView] = useState(priority);
+  const imgRef = useRef(null);
+  const containerRef = useRef(null);
+  const effectiveLoading = priority ? 'eager' : 'lazy';
+
+  // Intersection Observer pour preload agressif sur mobile
+  useEffect(() => {
+    if (priority || !containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        // Preload plus agressif sur mobile - 200px avant d'être visible
+        rootMargin: window.innerWidth <= 768 ? '200px' : '100px',
+        threshold: 0.01
+      }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [priority]);
 
   // Generate responsive image URLs - supports both local and Imgur images
   const generateResponsiveUrls = (imageName) => {
@@ -154,6 +179,7 @@ const OptimizedImage = ({
 
   return (
     <div
+      ref={containerRef}
       className={`optimized-image-container ${className} ${isLoaded ? 'loaded' : 'loading'}`}
       style={{ aspectRatio }}
       {...props}
@@ -167,18 +193,21 @@ const OptimizedImage = ({
           <span>Image failed to load</span>
         </div>
       ) : (
-        /* Temporary: Use original images directly until FFmpeg is installed */
-        <img
-          src={responsiveUrls.jpg.fallback}
-          alt={alt}
-          loading={effectiveLoading}
-          sizes={sizes}
-          decoding="async"
-          className="optimized-image"
-          style={{ objectFit }}
-          onLoad={handleLoad}
-          onError={handleImageError}
-        />
+        /* Chargement conditionnel basé sur la visibilité */
+        (isInView || priority) && (
+          <img
+            ref={imgRef}
+            src={responsiveUrls.jpg.fallback}
+            alt={alt}
+            loading={effectiveLoading}
+            sizes={sizes}
+            decoding="async"
+            className="optimized-image"
+            style={{ objectFit }}
+            onLoad={handleLoad}
+            onError={handleImageError}
+          />
+        )
       )}
     </div>
   );

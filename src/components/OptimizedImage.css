@@ -27,7 +27,7 @@
 .optimized-image {
   width: 100%;
   height: 100%;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.15s ease, transform 0.3s ease;
   border-radius: 8px;
 }
 
@@ -45,10 +45,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #f8f9fa 25%, #e9ecef 50%, #f8f9fa 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1s infinite;
   border-radius: 8px;
+  opacity: 0.8;
 }
 
 .optimized-image-error {
@@ -67,7 +68,7 @@
   border: 2px dashed #dee2e6;
 }
 
-/* Shimmer animation for loading state */
+/* Shimmer animation optimisée pour mobile */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -77,22 +78,39 @@
   }
 }
 
+/* Optimisations spécifiques mobile pour éviter les blancs */
+@media (max-width: 768px) {
+  .optimized-image {
+    transition: opacity 0.1s ease, transform 0.2s ease;
+  }
+  
+  .optimized-image-skeleton {
+    animation: shimmer 0.8s infinite;
+    background: linear-gradient(90deg, #f1f3f4 25%, #e8eaed 50%, #f1f3f4 75%);
+  }
+  
+  .optimized-image-container.loading {
+    background-color: #f8f9fa;
+  }
+  
+  /* Preload hint pour les images suivantes */
+  .optimized-image-container + .optimized-image-container {
+    will-change: contents;
+  }
+}
+
 /* Hover effects for product images */
 .optimized-image-container:hover .optimized-image {
   transform: scale(1.05);
 }
 
-/* Responsive optimizations */
+/* Responsive optimizations étendues */
 @media (max-width: 768px) {
   .optimized-image-container {
     border-radius: 6px;
   }
   
   .optimized-image {
-    border-radius: 6px;
-  }
-  
-  .optimized-image-skeleton {
     border-radius: 6px;
   }
   
