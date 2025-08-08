@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './OptimizedImage.css';
 
-const OptimizedImage = ({ 
-  src, 
-  alt, 
-  className = '', 
+const OptimizedImage = ({
+  src,
+  alt,
+  className = '',
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
   loading = 'eager',
   priority = false,
@@ -17,6 +17,7 @@ const OptimizedImage = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const effectiveLoading = priority ? 'eager' : loading;
 
   // Generate responsive image URLs - supports both local and Imgur images
   const generateResponsiveUrls = (imageName) => {
@@ -145,6 +146,8 @@ const OptimizedImage = ({
     }
     
     setImageError(true);
+    // Notify parent components of the failure after all fallbacks have been attempted
+    onError?.(e);
   };
 
   const responsiveUrls = generateResponsiveUrls(src);
@@ -168,7 +171,8 @@ const OptimizedImage = ({
         <img
           src={responsiveUrls.jpg.fallback}
           alt={alt}
-          loading={loading}
+          loading={effectiveLoading}
+          sizes={sizes}
           decoding="async"
           className="optimized-image"
           style={{ objectFit }}
