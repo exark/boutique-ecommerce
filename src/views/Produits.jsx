@@ -64,6 +64,12 @@ export default function Produits() {
   const [containerWidth, setContainerWidth] = useState(0);
   const [showAdaptiveNotification, setShowAdaptiveNotification] = useState(false);
   
+  // Pagination states
+  const [displayedCount, setDisplayedCount] = useState(3); // Commencer avec 3 produits
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const INITIAL_LOAD = 3; // Nombre initial de produits
+  const LOAD_MORE_COUNT = 5; // Nombre de produits à charger à chaque "Voir plus"
+  
   // Fonction pour calculer le nombre optimal de colonnes selon le nombre de produits (pure function)
   const getAdaptiveColumns = (productCount, selectedColumns) => {
     let adaptedColumns = selectedColumns;
@@ -86,20 +92,43 @@ export default function Produits() {
     return adaptedColumns;
   };
 
-  // Colonnes adaptatives basées sur le nombre de produits filtrés (mémorisé pour éviter les re-rendus)
+  // Produits à afficher avec pagination
+  const displayedProducts = useMemo(() => {
+    return filteredProducts.slice(0, displayedCount);
+  }, [filteredProducts, displayedCount]);
+  
+  // Colonnes adaptatives basées sur le nombre de produits affichés (mémorisé pour éviter les re-rendus)
   const adaptiveColumns = useMemo(() => {
-    return getAdaptiveColumns(filteredProducts.length, effectiveColumns);
-  }, [filteredProducts.length, effectiveColumns, isMobileOrTablet]);
+    return getAdaptiveColumns(displayedProducts.length, effectiveColumns);
+  }, [displayedProducts.length, effectiveColumns, isMobileOrTablet]);
   
   // Gérer la notification d'adaptation dans un useEffect séparé
   useEffect(() => {
     const wasAdapted = adaptiveColumns !== effectiveColumns;
-    if (wasAdapted && filteredProducts.length > 0) {
+    if (wasAdapted && displayedProducts.length > 0) {
       setShowAdaptiveNotification(true);
       const timer = setTimeout(() => setShowAdaptiveNotification(false), 3000);
       return () => clearTimeout(timer);
     }
-  }, [adaptiveColumns, effectiveColumns, filteredProducts.length]);
+  }, [adaptiveColumns, effectiveColumns, displayedProducts.length]);
+  
+  // Reset displayedCount when filters change
+  useEffect(() => {
+    setDisplayedCount(INITIAL_LOAD);
+  }, [filteredProducts]);
+  
+  // Fonction pour charger plus de produits
+  const handleLoadMore = () => {
+    setIsLoadingMore(true);
+    // Simuler un petit délai pour l'UX
+    setTimeout(() => {
+      setDisplayedCount(prev => Math.min(prev + LOAD_MORE_COUNT, filteredProducts.length));
+      setIsLoadingMore(false);
+    }, 300);
+  };
+  
+  // Vérifier s'il y a plus de produits à charger
+  const hasMoreProducts = displayedCount < filteredProducts.length;
   const productsSectionRef = useRef(null);
   
   // Calculer la largeur du conteneur pour l'espacement optimal
@@ -627,7 +656,7 @@ export default function Produits() {
             style={{ transition: 'all 0.4s cubic-bezier(0.4,0.2,0.2,1)', padding: 0, margin: 0 }}
           >
            <AnimatePresence mode="wait">
-             {filteredProducts.length === 0 ? (
+             {displayedProducts.length === 0 ? (
                // Affichage quand aucun produit ne correspond aux filtres
                                <motion.div
                   key="no-products"
@@ -887,7 +916,7 @@ export default function Produits() {
                                                        ) : (
                             // Affichage normal avec Masonry pour tous les produits
                               <motion.div
-                  key={`masonry-${filteredProducts.length}-${effectiveColumns}-${isFiltering}`}
+                  key={`masonry-${displayedProducts.length}-${effectiveColumns}-${isFiltering}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -911,7 +940,7 @@ export default function Produits() {
                    columnClassName="masonry-grid_column"
                    style={calculateOptimalSpacing()}
                  >
-                          {filteredProducts.map((produit, i) => {
+                          {displayedProducts.map((produit, i) => {
                 const availableSizes = produit.tailles ? produit.tailles.filter(t => t.stock > 0) : [];
                 return (
                                      <motion.div
@@ -1152,6 +1181,73 @@ export default function Produits() {
                 );
               })}
             </Masonry>
+            {/* Bouton "Voir plus" */}
+            {hasMoreProducts && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '3rem',
+                  marginBottom: '2rem'
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={handleLoadMore}
+                  disabled={isLoadingMore}
+                  sx={{
+                    color: '#333',
+                    borderColor: '#333',
+                    background: '#fff',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    fontSize: '1rem',
+                    padding: '12px 32px',
+                    borderRadius: '8px',
+                    borderWidth: '2px',
+                    minWidth: '200px',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&:hover': {
+                      borderColor: '#000',
+                      color: '#000',
+                      background: '#fff',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
+                      transform: 'translateY(-2px)',
+                    },
+                    '&:disabled': {
+                      opacity: 0.6,
+                      cursor: 'not-allowed'
+                    }
+                  }}
+                >
+                  {isLoadingMore ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div 
+                        style={{
+                          width: '16px',
+                          height: '16px',
+                          border: '2px solid #ccc',
+                          borderTop: '2px solid #333',
+                          borderRadius: '50%',
+                          animation: 'spin 1s linear infinite'
+                        }}
+                      />
+                      <span>Chargement...</span>
+                    </div>
+                  ) : (
+                    `Voir plus (${Math.min(LOAD_MORE_COUNT, filteredProducts.length - displayedCount)} produits)`
+                  )}
+                </Button>
+              </motion.div>
+            )}
           </motion.div>
           )}
         </AnimatePresence>

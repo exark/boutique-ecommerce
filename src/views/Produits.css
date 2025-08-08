@@ -2,6 +2,12 @@ body {
   overflow-x: hidden;
 }
 
+/* Animation pour le spinner de chargement */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .produits-container {
   min-height: 100vh;
   display: flex;
