@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:pwa": "vite build && npm run generate-sw",
+    "generate-sw": "workbox generateSW workbox-config.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "update-products": "node scripts/convertSheetToJson.js",
@@ -15,7 +17,10 @@
     "optimize-media": "node scripts/optimize-media.js",
     "build:optimized": "npm run optimize-media && vite build",
     "analyze": "vite build --mode analyze",
-    "lighthouse": "lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html"
+    "lighthouse": "lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html",
+    "lighthouse:ci": "lhci autorun",
+    "cache:purge": "echo 'Use: vercel cache rm <url> to purge specific cache entries'",
+    "perf:audit": "npm run build && npm run lighthouse:ci"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -32,8 +37,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
+    "@lhci/cli": "^0.15.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@vite-pwa/assets-generator": "^1.0.0",
     "@vitejs/plugin-react": "^4.6.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.30.1",
@@ -41,9 +48,11 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "postcss": "^8.5.6",
+    "sharp": "^0.34.3",
     "tailwindcss": "^3.4.3",
     "vite": "^7.0.4",
-    "vite-imagetools": "^7.1.0"
+    "vite-imagetools": "^7.1.0",
+    "vite-plugin-pwa": "^1.0.2"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

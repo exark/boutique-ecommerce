@@ -1,6 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './OptimizedImage.css';
 
+// Helper function to generate srcset for modern formats
+const generateModernSrcSet = (src, sizes = [400, 800, 1200]) => {
+  if (src.includes('imgur.com')) {
+    // For Imgur images, use their built-in resizing
+    return sizes.map(size => `${src.replace('.jpg', 'm.jpg')} ${size}w`).join(', ');
+  }
+  
+  // For local images, assume Vite imagetools processing
+  const baseSrc = src.replace(/\.(jpg|jpeg|png)$/i, '');
+  return sizes.map(size => `${baseSrc}?w=${size}&format=webp ${size}w`).join(', ');
+};
+
+const generateAvifSrcSet = (src, sizes = [400, 800, 1200]) => {
+  if (src.includes('imgur.com')) {
+    return null; // Imgur doesn't support AVIF yet
+  }
+  
+  const baseSrc = src.replace(/\.(jpg|jpeg|png)$/i, '');
+  return sizes.map(size => `${baseSrc}?w=${size}&format=avif ${size}w`).join(', ');
+};
+
 const OptimizedImage = ({
   src,
   alt,
@@ -46,88 +67,45 @@ const OptimizedImage = ({
 
   // Generate responsive image URLs - supports both local and Imgur images
   const generateResponsiveUrls = (imageName) => {
-    if (!imageName) return { webp: '', avif: '', jpg: '' };
+    if (!imageName) return { webp: null, avif: null, jpg: { src: '', fallback: '' } };
     
-    // Check if it's an Imgur URL or ID
-    const isImgurUrl = imageName.includes('imgur.com') || imageName.includes('i.imgur.com');
-    const isImgurId = /^[a-zA-Z0-9]{7}$/.test(imageName); // Imgur IDs are 7 characters
-    
-    if (isImgurUrl || isImgurId) {
-      // Handle Imgur images
-      let imgurId;
-      if (isImgurUrl) {
-        // Extract ID from URL like https://i.imgur.com/XKg6kvm.jpg
-        const match = imageName.match(/\/([a-zA-Z0-9]{7})(?:\.[a-zA-Z]+)?$/);
-        imgurId = match ? match[1] : imageName;
-      } else {
-        imgurId = imageName;
-      }
-      
-      // Imgur responsive URLs
-      const imgurBase = `https://i.imgur.com/${imgurId}`;
+    // Handle Imgur images (full URLs)
+    if (imageName.includes('imgur.com')) {
       return {
-        webp: {
-          srcSet: [
-            `${imgurBase}s.jpg 400w`,  // Small (400px max)
-            `${imgurBase}m.jpg 800w`,  // Medium (800px max)
-            `${imgurBase}l.jpg 1200w`  // Large (1200px max)
-          ].join(', '),
-          src: `${imgurBase}m.jpg`,
-          fallback: `${imgurBase}.jpg`
-        },
-        avif: {
-          srcSet: [
-            `${imgurBase}s.jpg 400w`,
-            `${imgurBase}m.jpg 800w`,
-            `${imgurBase}l.jpg 1200w`
-          ].join(', '),
-          src: `${imgurBase}m.jpg`,
-          fallback: `${imgurBase}.jpg`
-        },
+        webp: null,
+        avif: null,
         jpg: {
-          srcSet: [
-            `${imgurBase}s.jpg 400w`,
-            `${imgurBase}m.jpg 800w`,
-            `${imgurBase}l.jpg 1200w`
-          ].join(', '),
-          src: `${imgurBase}m.jpg`,
-          fallback: `${imgurBase}.jpg`
+          srcSet: null,
+          src: imageName,
+          fallback: imageName
         }
       };
     }
     
-    // Handle local images (existing logic)
+    // Handle Imgur IDs (just the ID without full URL)
+    if (/^[a-zA-Z0-9]{7}$/.test(imageName)) {
+      const imgurUrl = `https://i.imgur.com/${imageName}.jpg`;
+      return {
+        webp: null,
+        avif: null,
+        jpg: {
+          srcSet: null,
+          src: imgurUrl,
+          fallback: imgurUrl
+        }
+      };
+    }
+    
+    // Handle local images - use simple path resolution
     const fullPath = imageName.startsWith('/') ? imageName : `/images/${imageName}`;
-    const baseName = fullPath.replace(/\.[^/.]+$/, ''); // Remove extension
-    const originalPath = fullPath;
     
     return {
-      webp: {
-        srcSet: [
-          `${baseName}?format=webp&w=400 400w`,
-          `${baseName}?format=webp&w=800 800w`,
-          `${baseName}?format=webp&w=1200 1200w`
-        ].join(', '),
-        src: `${baseName}?format=webp&w=800`,
-        fallback: originalPath
-      },
-      avif: {
-        srcSet: [
-          `${baseName}?format=avif&w=400 400w`,
-          `${baseName}?format=avif&w=800 800w`,
-          `${baseName}?format=avif&w=1200 1200w`
-        ].join(', '),
-        src: `${baseName}?format=avif&w=800`,
-        fallback: originalPath
-      },
+      webp: null,
+      avif: null,
       jpg: {
-        srcSet: [
-          `${baseName}?format=jpg&w=400 400w`,
-          `${baseName}?format=jpg&w=800 800w`,
-          `${baseName}?format=jpg&w=1200 1200w`
-        ].join(', '),
-        src: `${baseName}?format=jpg&w=800`,
-        fallback: originalPath
+        srcSet: null,
+        src: fullPath,
+        fallback: fullPath
       }
     };
   };
@@ -197,7 +175,7 @@ const OptimizedImage = ({
         (isInView || priority) && (
           <img
             ref={imgRef}
-            src={responsiveUrls.jpg.fallback}
+            src={responsiveUrls.jpg.src}
             alt={alt}
             loading={effectiveLoading}
             sizes={sizes}

@@ -1,0 +1,92 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g @lhci/cli@0.12.x
+          
+      - name: Build project
+        run: npm run build
+        
+      - name: Run Lighthouse CI
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-results
+          path: .lighthouseci/
+          
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            try {
+              const resultsPath = '.lighthouseci/lhr-*.json';
+              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+              
+              const scores = {
+                performance: Math.round(results.categories.performance.score * 100),
+                accessibility: Math.round(results.categories.accessibility.score * 100),
+                bestPractices: Math.round(results.categories['best-practices'].score * 100),
+                seo: Math.round(results.categories.seo.score * 100),
+                pwa: Math.round(results.categories.pwa.score * 100)
+              };
+              
+              const lcp = results.audits['largest-contentful-paint'].displayValue;
+              const fcp = results.audits['first-contentful-paint'].displayValue;
+              const cls = results.audits['cumulative-layout-shift'].displayValue;
+              
+              const comment = `## 🚨 Lighthouse CI Results
+              
+              ### Scores
+              - 🚀 Performance: ${scores.performance}/100
+              - ♿ Accessibility: ${scores.accessibility}/100
+              - ✅ Best Practices: ${scores.bestPractices}/100
+              - 🔍 SEO: ${scores.seo}/100
+              - 📱 PWA: ${scores.pwa}/100
+              
+              ### Core Web Vitals
+              - **LCP**: ${lcp}
+              - **FCP**: ${fcp}
+              - **CLS**: ${cls}
+              
+              ${scores.performance < 85 ? '⚠️ Performance score is below threshold (85)' : '✅ Performance meets requirements'}
+              `;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            } catch (error) {
+              console.log('Could not parse Lighthouse results:', error);
+            }
