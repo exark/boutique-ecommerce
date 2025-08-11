@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  TextField, 
-  Slider, 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
+import {
+  TextField,
+  Slider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   Chip,
   Button,
   Box,
@@ -20,7 +20,7 @@ import {
   Divider,
   Badge
 } from '@mui/material';
-import { 
+import {
   Search as SearchIcon,
   FilterList as FilterIcon,
   Clear as ClearIcon,
@@ -34,12 +34,43 @@ import { useDebounce } from '../hooks/useDebounce';
 import './SearchFilters.css';
 
 export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false, selectedCategories = [] }) {
-  const [searchTerm, setSearchTerm] = useState('');
+  // Fonction pour charger les filtres depuis localStorage
+  const loadFiltersFromStorage = () => {
+    try {
+      const savedFilters = localStorage.getItem('searchFilters');
+      if (savedFilters) {
+        return JSON.parse(savedFilters);
+      }
+    } catch (error) {
+      console.log('Erreur lors du chargement des filtres:', error);
+    }
+    return {
+      searchTerm: '',
+      priceRange: [0, 200],
+      selectedMatieres: [],
+      selectedColors: [],
+      selectedSizes: []
+    };
+  };
+
+  // Fonction pour sauvegarder les filtres dans localStorage
+  const saveFiltersToStorage = (filters) => {
+    try {
+      localStorage.setItem('searchFilters', JSON.stringify(filters));
+    } catch (error) {
+      console.log('Erreur lors de la sauvegarde des filtres:', error);
+    }
+  };
+
+  // Charger les filtres sauvegardés au démarrage
+  const savedFilters = loadFiltersFromStorage();
+  
+  const [searchTerm, setSearchTerm] = useState(savedFilters.searchTerm);
   const [isSearching, setIsSearching] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 200]);
-  const [selectedMatieres, setSelectedMatieres] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [priceRange, setPriceRange] = useState(savedFilters.priceRange);
+  const [selectedMatieres, setSelectedMatieres] = useState(savedFilters.selectedMatieres);
+  const [selectedColors, setSelectedColors] = useState(savedFilters.selectedColors);
+  const [selectedSizes, setSelectedSizes] = useState(savedFilters.selectedSizes);
   const [showFilters, setShowFilters] = useState(false);
   const [expandedFilters, setExpandedFilters] = useState({
     price: true,
@@ -61,10 +92,10 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     // Appliquer les filtres si :
     // - Recherche vide OU recherche >= 2 caractères
     // - OU si d'autres filtres sont actifs (prix, matières, couleurs, tailles)
-    const shouldApplyFilters = 
-      debouncedSearchTerm.length === 0 || 
+    const shouldApplyFilters =
+      debouncedSearchTerm.length === 0 ||
       debouncedSearchTerm.length >= 2 ||
-      debouncedPriceRange[0] > 0 || 
+      debouncedPriceRange[0] > 0 ||
       debouncedPriceRange[1] < 200 ||
       selectedMatieres.length > 0 ||
       selectedColors.length > 0 ||
@@ -87,7 +118,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   }, []);
 
   // Filtrer les produits selon les catégories sélectionnées pour adapter les autres filtres
-  const productsForFilters = selectedCategories.length > 0 
+  const productsForFilters = selectedCategories.length > 0
     ? produits.filter(p => selectedCategories.includes(p.categorie))
     : produits;
 
@@ -99,17 +130,46 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-    // Ne pas appliquer les filtres immédiatement, le debounce s'en charge
+    
+    // Sauvegarder immédiatement le terme de recherche
+    const currentFilters = {
+      searchTerm: value,
+      priceRange,
+      selectedMatieres,
+      selectedColors,
+      selectedSizes
+    };
+    saveFiltersToStorage(currentFilters);
   };
 
   const handlePriceChange = (event, newValue) => {
     setPriceRange(newValue);
+    
+    // Sauvegarder immédiatement le prix
+    const currentFilters = {
+      searchTerm,
+      priceRange: newValue,
+      selectedMatieres,
+      selectedColors,
+      selectedSizes
+    };
+    saveFiltersToStorage(currentFilters);
   };
 
   const handleMatiereChange = (event) => {
     const value = event.target.value;
     setSelectedMatieres(value);
-    
+
+    // Sauvegarder immédiatement les matières
+    const currentFilters = {
+      searchTerm,
+      priceRange,
+      selectedMatieres: value,
+      selectedColors,
+      selectedSizes
+    };
+    saveFiltersToStorage(currentFilters);
+
     // Sur mobile, fermer automatiquement le filtre après sélection
     if (isMobile && !alwaysOpen) {
       setTimeout(() => {
@@ -121,7 +181,17 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   const handleColorChange = (event) => {
     const value = event.target.value;
     setSelectedColors(value);
-    
+
+    // Sauvegarder immédiatement les couleurs
+    const currentFilters = {
+      searchTerm,
+      priceRange,
+      selectedMatieres,
+      selectedColors: value,
+      selectedSizes
+    };
+    saveFiltersToStorage(currentFilters);
+
     // Sur mobile, fermer automatiquement le filtre après sélection
     if (isMobile && !alwaysOpen) {
       setTimeout(() => {
@@ -133,7 +203,17 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   const handleSizeChange = (event) => {
     const value = event.target.value;
     setSelectedSizes(value);
-    
+
+    // Sauvegarder immédiatement les tailles
+    const currentFilters = {
+      searchTerm,
+      priceRange,
+      selectedMatieres,
+      selectedColors,
+      selectedSizes: value
+    };
+    saveFiltersToStorage(currentFilters);
+
     // Sur mobile, fermer automatiquement le filtre après sélection
     if (isMobile && !alwaysOpen) {
       setTimeout(() => {
@@ -182,7 +262,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
 
     // Filtre par taille
     if (sizes.length > 0) {
-      filtered = filtered.filter(produit => 
+      filtered = filtered.filter(produit =>
         produit.tailles.some(taille => sizes.includes(taille.taille))
       );
     }
@@ -196,15 +276,25 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     setSelectedMatieres([]);
     setSelectedColors([]);
     setSelectedSizes([]);
+    
+    // Effacer aussi les filtres du localStorage
+    const clearedFilters = {
+      searchTerm: '',
+      priceRange: [0, 200],
+      selectedMatieres: [],
+      selectedColors: [],
+      selectedSizes: []
+    };
+    saveFiltersToStorage(clearedFilters);
   };
 
-  const hasActiveFilters = searchTerm || priceRange[0] > 0 || priceRange[1] < 200 || 
-                          selectedMatieres.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0;
+  const hasActiveFilters = searchTerm || priceRange[0] > 0 || priceRange[1] < 200 ||
+    selectedMatieres.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0;
 
   return (
     <div className="search-filters">
 
-      
+
       {/* Barre de recherche */}
       <div className="search-container">
         <TextField
@@ -251,7 +341,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
           >
             {showFilters ? 'Masquer les filtres' : 'Afficher les filtres'}
           </Button>
-          
+
           {hasActiveFilters && (
             <Button
               variant="text"
@@ -308,7 +398,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 2 }}>
               {/* Filtre par prix */}
               <Box sx={{
-                border: '1px solid rgba(224, 224, 224, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '12px',
                 padding: '12px'
               }}>
@@ -324,7 +414,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   valueLabelDisplay="auto"
                   min={0}
                   max={200}
-                  sx={{ 
+                  sx={{
                     color: '#667eea',
                     height: 4,
                     '& .MuiSlider-thumb': {
@@ -337,7 +427,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
 
               {/* Filtre par matière */}
               <Box sx={{
-                border: '1px solid rgba(224, 224, 224, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '12px',
                 padding: '12px'
               }}>
@@ -385,7 +475,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
 
               {/* Filtre par couleur */}
               <Box sx={{
-                border: '1px solid rgba(224, 224, 224, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '12px',
                 padding: '12px'
               }}>
@@ -433,7 +523,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
 
               {/* Filtre par taille */}
               <Box sx={{
-                border: '1px solid rgba(224, 224, 224, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '12px',
                 padding: '12px'
               }}>
@@ -487,7 +577,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600, fontSize: '0.95rem' }}>
               Filtres
             </Typography>
-            
+
             {/* Version mobile simplifiée */}
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {/* Prix mobile */}
@@ -504,15 +594,15 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   sx={{ color: '#667eea', height: 4 }}
                 />
               </Box>
-              
+
               {/* Autres filtres mobile */}
               <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
                 <FormControl size="small">
                   <Typography variant="caption" sx={{ marginBottom: 0.5, fontWeight: 600 }}>Matière</Typography>
                   <Select
                     multiple
-                    value={selectedCategories}
-                    onChange={handleCategoryChange}
+                    value={selectedMatieres}
+                    onChange={handleMatiereChange}
                     displayEmpty
                     sx={{ fontSize: '0.8rem' }}
                     renderValue={(selected) => (
@@ -528,7 +618,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                     ))}
                   </Select>
                 </FormControl>
-                
+
                 <FormControl size="small">
                   <Typography variant="caption" sx={{ marginBottom: 0.5, fontWeight: 600 }}>Couleur</Typography>
                   <Select
@@ -551,7 +641,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   </Select>
                 </FormControl>
               </Box>
-              
+
               <FormControl size="small">
                 <Typography variant="caption" sx={{ marginBottom: 0.5, fontWeight: 600 }}>Taille</Typography>
                 <Select

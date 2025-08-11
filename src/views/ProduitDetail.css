@@ -1,6 +1,7 @@
 /* Style épuré, élégant et féminin pour la fiche produit */
 .produit-detail-container {
-  max-width: 1400px;
+  max-width: 1600px;
+  width: 1325px;
   margin: 16px auto 32px auto;
   background: #fff;
   border-radius: 32px;

@@ -703,19 +703,25 @@ export default function Produits() {
         className="mobile-filters-drawer"
         PaperProps={{ className: 'mobile-filters-paper' }}
       >
-        <div className="mobile-filters-header">
-          <span className="mobile-filters-title">Filtres & Tri</span>
-          <button className="mobile-filters-close" onClick={() => setMobileFiltersOpen(false)} aria-label="Fermer">✕</button>
+        <div className="mobile-filters-content">
+          <SearchFilters 
+            onFiltersChange={handleFiltersChange}
+            produits={produits}
+            alwaysOpen={true}
+            selectedCategories={selectedCategories}
+          />
+          {/* Bouton OK directement sous les filtres */}
+          <div className="mobile-filters-inline-ok">
+            <button
+              type="button"
+              className="mobile-filters-ok"
+              onClick={() => setMobileFiltersOpen(false)}
+              aria-label="Valider et fermer"
+            >
+              OK
+            </button>
+          </div>
         </div>
-                 <div className="mobile-filters-content">
-           <SearchFilters 
-             onFiltersChange={handleFiltersChange}
-             produits={produits}
-             alwaysOpen={true}
-             selectedCategories={selectedCategories}
-             key={`mobile-filters-${resetTrigger}`}
-           />
-         </div>
       </Drawer>
       <div className="produits-layout">
         {/* Sidebar des filtres - Desktop uniquement */}
