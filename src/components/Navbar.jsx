@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Navbar.css';
 import logo from '../assets/logo-solene.webp';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'; // Remplacé par SVG personnalisé
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useCart } from '../cartContext';
@@ -240,7 +240,14 @@ export default function Navbar() {
       </div>
       <div className="navbar__right">
         <div className="navbar__cart" onClick={() => setCartOpen(true)}>
-          <ShoppingCartIcon fontSize="large" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" role="img" aria-label="Panier boutique"
+               viewBox="0 0 24 24" fill="none" stroke="#c2185b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <title>Panier boutique</title>
+            <path d="M3 9h18l-1.6 8.2A2.5 2.5 0 0 1 16.9 20H7.1a2.5 2.5 0 0 1-2.5-2.1L3 9Z"/>
+            <path d="M8 9V6a4 4 0 0 1 8 0v3"/>
+            <circle cx="9" cy="20.5" r="1.2"/>
+            <circle cx="15" cy="20.5" r="1.2"/>
+          </svg>
           {cartCount > 0 && <span className="navbar__cart-badge">{cartCount}</span>}
         </div>
         <button className="navbar__burger" onClick={() => setMenuOpen(true)} aria-label="Ouvrir le menu">
