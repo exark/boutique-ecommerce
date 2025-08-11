@@ -809,3 +809,30 @@ body {
     hyphens: auto;
   }
 }
+
+/* Tooltip produit (uniquement utilisé sur la page Produits) */
+.product-tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 10px 12px;
+  color: #222;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  max-width: 260px;
+  animation: fadeInMango 120ms ease-out;
+  pointer-events: none; /* ne bloque pas les interactions avec la carte */
+}
+
+.product-tooltip-line {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  white-space: normal;
+}
+
+.product-tooltip-line + .product-tooltip-line {
+  margin-top: 4px;
+}

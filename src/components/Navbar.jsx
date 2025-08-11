@@ -339,18 +339,6 @@ export default function Navbar() {
                   }}
                 >
                   {cat}
-                  {isSelected && (
-                    <span style={{
-                      position: 'absolute',
-                      top: '-2px',
-                      right: '-2px',
-                      width: '8px',
-                      height: '8px',
-                      backgroundColor: '#e91e63',
-                      borderRadius: '50%',
-                      border: '1px solid white'
-                    }} />
-                  )}
                 </button>
               </div>
             );
@@ -425,18 +413,6 @@ export default function Navbar() {
                       }}
                     >
                       {cat}
-                      {isSelected && (
-                        <span style={{
-                          position: 'absolute',
-                          top: '-2px',
-                          right: '-2px',
-                          width: '8px',
-                          height: '8px',
-                          backgroundColor: '#e91e63',
-                          borderRadius: '50%',
-                          border: '1px solid white'
-                        }} />
-                      )}
                     </motion.li>
                   );
                 })}

@@ -18,7 +18,9 @@ import {
   CircularProgress,
   useMediaQuery,
   Divider,
-  Badge
+  Badge,
+  Checkbox,
+  ListItemText
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -466,7 +468,8 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   >
                     {categories.map((category) => (
                       <MenuItem key={category} value={category} sx={{ fontSize: '0.8rem' }}>
-                        {category}
+                        <Checkbox checked={selectedMatieres.indexOf(category) > -1} size="small" sx={{ padding: '2px 6px' }} />
+                        <ListItemText primary={category} primaryTypographyProps={{ sx: { fontSize: '0.8rem' } }} />
                       </MenuItem>
                     ))}
                   </Select>
@@ -514,7 +517,8 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   >
                     {colors.map((color) => (
                       <MenuItem key={color} value={color} sx={{ fontSize: '0.8rem' }}>
-                        {color}
+                        <Checkbox checked={selectedColors.indexOf(color) > -1} size="small" sx={{ padding: '2px 6px' }} />
+                        <ListItemText primary={color} primaryTypographyProps={{ sx: { fontSize: '0.8rem' } }} />
                       </MenuItem>
                     ))}
                   </Select>
@@ -562,7 +566,8 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                   >
                     {sizes.map((size) => (
                       <MenuItem key={size} value={size} sx={{ fontSize: '0.8rem' }}>
-                        {size}
+                        <Checkbox checked={selectedSizes.indexOf(size) > -1} size="small" sx={{ padding: '2px 6px' }} />
+                        <ListItemText primary={size} primaryTypographyProps={{ sx: { fontSize: '0.8rem' } }} />
                       </MenuItem>
                     ))}
                   </Select>
@@ -658,7 +663,8 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                 >
                   {sizes.map((size) => (
                     <MenuItem key={size} value={size} sx={{ fontSize: '0.8rem' }}>
-                      {size}
+                      <Checkbox checked={selectedSizes.indexOf(size) > -1} size="small" sx={{ padding: '2px 6px' }} />
+                      <ListItemText primary={size} primaryTypographyProps={{ sx: { fontSize: '0.8rem' } }} />
                     </MenuItem>
                   ))}
                 </Select>

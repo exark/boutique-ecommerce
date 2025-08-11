@@ -24,13 +24,13 @@ export default function Footer() {
             Solène vous accompagne dans votre style avec des pièces uniques et de qualité.
           </p>
           <div className="footer__social">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <a href="https://www.facebook.com/profile.php?id=61578789780680" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FacebookIcon />
             </a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <InstagramIcon />
             </a>
-            <a href="mailto:contact@solene-boutique.com" aria-label="Email">
+            <a href="mailto:solene.handmade.crochet@gmail.com" aria-label="Email">
               <EmailIcon />
             </a>
           </div>
@@ -50,10 +50,10 @@ export default function Footer() {
         <div className="footer__section">
           <h3 className="footer__title">Informations</h3>
           <ul className="footer__links">
-            <li><a href="/mentions-legales">Mentions légales</a></li>
-            <li><a href="/politique-confidentialite">Politique de confidentialité</a></li>
-            <li><a href="/conditions-vente">Conditions de vente</a></li>
-            <li><a href="/retours-echanges">Retours et échanges</a></li>
+            <li><Link to="/mentions-legales">Mentions légales</Link></li>
+            <li><Link to="/politique-confidentialite">Politique de confidentialité</Link></li>
+            <li><Link to="/conditions-vente">Conditions de vente</Link></li>
+            {/*  <li><Link to="/retours-echanges">Retours et échanges</Link></li> */}
           </ul>
         </div>
 
@@ -71,7 +71,7 @@ export default function Footer() {
             </div>
             <div className="footer__contact-item">
               <EmailIcon />
-              <span>contact@solene-boutique.com</span>
+              <span>solene.handmade.crochet@gmail.com</span>
             </div>
           </div>
         </div>

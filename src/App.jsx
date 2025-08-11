@@ -15,6 +15,9 @@ import Produits from './views/Produits';
 import ProduitDetail from './views/ProduitDetail';
 import Cart from './views/Cart';
 import Commande from './views/Commande';
+import PolitiqueConfidentialite from './views/PolitiqueConfidentialite';
+import ConditionsVente from './views/ConditionsVente';
+import MentionsLegales from './views/MentionsLegales';
 
 function AppContent() {
   const { notification, closeNotification } = useCart();
@@ -31,6 +34,9 @@ function AppContent() {
           <Route path="/produit/:id" element={<ProduitDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/commande" element={<Commande />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+          <Route path="/conditions-vente" element={<ConditionsVente />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
         </Routes>
       </div>
       <Footer />

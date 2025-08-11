@@ -59,6 +59,10 @@ export default function Produits() {
   
   const theme = useTheme();
   const [hoveredProductId, setHoveredProductId] = useState(null);
+  // Tooltip state and timer for delayed hover display (desktop only)
+  const [tooltipProductId, setTooltipProductId] = useState(null);
+  const tooltipTimerRef = useRef(null);
+  const hoveredIdRef = useRef(null);
   const [isNavbarMenuOpen, setIsNavbarMenuOpen] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -67,8 +71,22 @@ export default function Produits() {
   // Pagination states
   const [displayedCount, setDisplayedCount] = useState(3); // Commencer avec 3 produits
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const INITIAL_LOAD = 3; // Nombre initial de produits
+  const INITIAL_LOAD = 4; // Nombre initial de produits
   const LOAD_MORE_COUNT = 5; // Nombre de produits à charger à chaque "Voir plus"
+
+  // Keep a ref of hovered id to validate tooltip when timer completes
+  useEffect(() => {
+    hoveredIdRef.current = hoveredProductId;
+  }, [hoveredProductId]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (tooltipTimerRef.current) {
+        clearTimeout(tooltipTimerRef.current);
+      }
+    };
+  }, []);
   
   // Fonction pour calculer le nombre optimal de colonnes selon le nombre de produits (pure function)
   const getAdaptiveColumns = (productCount, selectedColumns) => {
@@ -1054,8 +1072,31 @@ export default function Produits() {
                         position: 'relative',
                         overflow: 'hidden',
                       }}
-                      onMouseEnter={() => !isMobileOrTablet && setHoveredProductId(produit.id)}
-                      onMouseLeave={() => !isMobileOrTablet && setHoveredProductId(null)}
+                      onMouseEnter={() => {
+                        if (isMobileOrTablet) return;
+                        // Set immediate hover (for size overlay)
+                        setHoveredProductId(produit.id);
+                        // Cancel any existing tooltip timer
+                        if (tooltipTimerRef.current) {
+                          clearTimeout(tooltipTimerRef.current);
+                        }
+                        // Start delayed tooltip timer (1.5s)
+                        tooltipTimerRef.current = setTimeout(() => {
+                          // Show tooltip only if still hovering the same product
+                          if (hoveredIdRef.current === produit.id) {
+                            setTooltipProductId(produit.id);
+                          }
+                        }, 1500);
+                      }}
+                      onMouseLeave={() => {
+                        if (isMobileOrTablet) return;
+                        setHoveredProductId(null);
+                        // Hide tooltip and clear timer
+                        setTooltipProductId(null);
+                        if (tooltipTimerRef.current) {
+                          clearTimeout(tooltipTimerRef.current);
+                        }
+                      }}
                     >
                       <div style={{ position: 'relative', display: 'block' }}>
                         <Link to={`/produit/${produit.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -1074,6 +1115,19 @@ export default function Produits() {
                             }}
                           />
                         </Link>
+                        {/* Delayed hover tooltip (desktop only) */}
+                        {!isMobileOrTablet && tooltipProductId === produit.id && (
+                          <div className="product-tooltip" style={{ position: 'absolute', top: 8, left: 8, zIndex: 20 }}>
+                            <div className="product-tooltip-line"><strong>Nom:</strong> {produit.nom}</div>
+                            <div className="product-tooltip-line"><strong>Catégorie:</strong> {produit.categorie}</div>
+                            {produit.couleur && (
+                              <div className="product-tooltip-line"><strong>Couleur:</strong> {produit.couleur}</div>
+                            )}
+                            {produit.matiere && (
+                              <div className="product-tooltip-line"><strong>Matière:</strong> {produit.matiere}</div>
+                            )}
+                          </div>
+                        )}
                         
                         {/* OVERLAY GLASS DESKTOP : tailles au hover, directement dans l'image */}
                         {!isMobileOrTablet && hoveredProductId === produit.id && (
