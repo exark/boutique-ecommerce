@@ -20,7 +20,7 @@ export default function Footer() {
             <img src={logo} alt="Logo Solène" />
           </div>
           <p className="footer__description">
-            Découvrez notre collection exclusive de vêtements féminins élégants et tendance. 
+            Découvrez notre collection exclusive de vêtements féminins élégants et tendance.
             Solène vous accompagne dans votre style avec des pièces uniques et de qualité.
           </p>
           <div className="footer__social">
@@ -81,7 +81,20 @@ export default function Footer() {
       <div className="footer__bottom">
         <div className="footer__bottom-content">
           <p>&copy; {currentYear} Solène Boutique. Tous droits réservés.</p>
-          <p>Créé avec ❤️ pour les femmes élégantes</p>
+          <p>
+            Créé avec <span className="footer-heart" aria-hidden="true">❤️</span> pour les femmes élégantes
+            <span className="footer__byline">
+              — développé par Ahmed
+              <span className="footer-badge" aria-hidden="true">
+                <img
+                  src="/images/exark.png"
+                  loading="lazy"
+                  style={{ height: '3.2em', width: 'auto', display: 'inline-block' }}
+                  className="footer-badge__img"
+                />
+              </span>
+            </span>
+          </p>
         </div>
       </div>
     </footer>

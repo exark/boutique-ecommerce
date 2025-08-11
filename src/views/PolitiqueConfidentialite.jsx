@@ -1,14 +1,24 @@
 import React from 'react';
-import { Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box, IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
 export default function PolitiqueConfidentialite() {
+  const navigate = useNavigate();
+
   return (
     <div style={{ paddingTop: '24px', paddingBottom: '48px' }}>
+      <div className="cart-header">
+        <IconButton onClick={() => navigate('/')} className="cart-back-btn">
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h4" className="cart-title">
+          Politique de confidentialité
+        </Typography>
+      </div>
       <Container maxWidth="md">
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 700 }}>
-            Politique de confidentialité
-          </Typography>
+          {/* Heading now shown in header to match Cart design */}
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             Dernière mise à jour : {new Date().toLocaleDateString()}
           </Typography>

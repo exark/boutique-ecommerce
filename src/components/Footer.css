@@ -169,6 +169,42 @@
   font-size: 0.9rem;
 }
 
+/* Heartbeat animation for footer heart */
+.footer-heart {
+  display: inline-block;
+  color: var(--color-accent);
+  animation: footer-heartbeat 1.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Subtle developer byline */
+.footer__byline {
+  margin-left: 6px;
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.footer__byline:hover {
+  opacity: 1;
+}
+
+/* Inline cyberpunk badge next to byline */
+.footer-badge {
+  display: inline-block;
+  margin-left: 6px;
+}
+
+
+@keyframes footer-heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.2); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.2); }
+  70% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .footer {
