@@ -42,7 +42,6 @@ async function deployWithUpdate() {
     console.log('   Exemple: vercel --prod');
     
     console.log('🎉 Déploiement terminé avec succès !');
-    console.log('📊 Produits mis à jour automatiquement');
     
   } catch (error) {
     console.error('❌ Erreur lors du déploiement:', error.message);

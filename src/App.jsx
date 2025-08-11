@@ -15,7 +15,6 @@ import Produits from './views/Produits';
 import ProduitDetail from './views/ProduitDetail';
 import Cart from './views/Cart';
 import Commande from './views/Commande';
-import Categories from './views/Categories';
 
 function AppContent() {
   const { notification, closeNotification } = useCart();
@@ -32,7 +31,6 @@ function AppContent() {
           <Route path="/produit/:id" element={<ProduitDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/commande" element={<Commande />} />
-          <Route path="/categories" element={<Categories />} />
         </Routes>
       </div>
       <Footer />

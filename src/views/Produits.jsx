@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Masonry from 'react-masonry-css';
-import { Card, CardContent, Typography, CardActions, Button, Drawer, IconButton, Grid } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button, Drawer, IconButton, Grid, Chip } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FilterList as FilterIcon, Close as CloseIcon } from '@mui/icons-material';
 import './Produits.css';
@@ -17,7 +17,7 @@ import { useTheme } from '@mui/material/styles';
 export default function Produits() {
   const { addToCart } = useCart();
   const location = useLocation();
-  const [selectedCategory, setSelectedCategory] = useState(location.state?.categorie || null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(produits);
   const [isFiltering, setIsFiltering] = useState(false);
   const [sizeModalOpen, setSizeModalOpen] = useState(false);
@@ -167,21 +167,87 @@ export default function Produits() {
     return () => observer.disconnect();
   }, []);
   
-  // Filtrage par catégorie si sélectionnée
+  // Filtrage par catégories sélectionnées
   useEffect(() => {
-    if (selectedCategory) {
-      setFilteredProducts(produits.filter(p => p.categorie === selectedCategory));
+    if (selectedCategories.length > 0) {
+      setFilteredProducts(produits.filter(p => selectedCategories.includes(p.categorie)));
     } else {
       setFilteredProducts(produits);
     }
-  }, [selectedCategory]);
+  }, [selectedCategories]);
 
-  // Si navigation avec state (depuis la navbar)
+  // Charger et synchroniser les catégories sélectionnées depuis localStorage
   useEffect(() => {
-    if (location.state?.categorie) {
-      setSelectedCategory(location.state.categorie);
-    }
-  }, [location.state]);
+    const loadSelectedCategories = () => {
+      try {
+        const stored = localStorage.getItem('selectedCategories');
+        const categories = stored ? JSON.parse(stored) : [];
+        console.log('Produits: Loading categories from localStorage:', categories);
+        setSelectedCategories(categories);
+      } catch (error) {
+        console.error('Error reading selectedCategories from localStorage:', error);
+        setSelectedCategories([]);
+      }
+    };
+
+    // Charger au montage
+    loadSelectedCategories();
+
+    // Écouter les changements depuis la navbar
+    const handleCategoriesChanged = (event) => {
+      console.log('Produits: Categories changed event received:', event.detail);
+      loadSelectedCategories(); // Recharger depuis localStorage
+      // Déclencher un re-filtrage immédiat pour appliquer les nouvelles catégories
+      setResetTrigger(prev => prev + 1);
+    };
+
+    window.addEventListener('selectedCategoriesChanged', handleCategoriesChanged);
+    
+    return () => {
+      window.removeEventListener('selectedCategoriesChanged', handleCategoriesChanged);
+    };
+  }, []);
+
+  // Fonction pour supprimer une catégorie de la sélection
+  const removeSelectedCategory = (categoryToRemove) => {
+    const newCategories = selectedCategories.filter(cat => cat !== categoryToRemove);
+    console.log('Produits: Removing category:', categoryToRemove, 'New categories:', newCategories);
+    
+    // Mettre à jour l'état local immédiatement
+    setSelectedCategories(newCategories);
+    
+    // Mettre à jour localStorage
+    localStorage.setItem('selectedCategories', JSON.stringify(newCategories));
+    
+    // Déclencher l'événement pour synchroniser la navbar
+    window.dispatchEvent(new CustomEvent('selectedCategoriesChanged', { 
+      detail: { categories: newCategories } 
+    }));
+    
+    // Déclencher un re-filtrage
+    setResetTrigger(prev => prev + 1);
+  };
+
+  // Fonction pour effacer toutes les catégories
+  const clearAllCategories = () => {
+    console.log('Produits: Clearing all categories');
+    
+    // Mettre à jour l'état local immédiatement
+    setSelectedCategories([]);
+    
+    // Mettre à jour localStorage
+    localStorage.setItem('selectedCategories', JSON.stringify([]));
+    
+    // Déclencher l'événement pour synchroniser la navbar
+    window.dispatchEvent(new CustomEvent('selectedCategoriesChanged', { 
+      detail: { categories: [] } 
+    }));
+    
+    // Déclencher un re-filtrage immédiat
+    setResetTrigger(prev => prev + 1);
+  };
+
+
 
   useEffect(() => {
     const ref = filtersBarRef.current;
@@ -232,12 +298,13 @@ export default function Produits() {
 
   const handleFiltersChange = (filteredProducts) => {
     setIsFiltering(true);
-    // Si une catégorie est sélectionnée, on filtre d'abord par catégorie
-    if (selectedCategory) {
-      setFilteredProducts(filteredProducts.filter(p => p.categorie === selectedCategory));
-    } else {
-      setFilteredProducts(filteredProducts);
-    }
+    console.log('Produits: Applying filtered products:', filteredProducts.length, 'products');
+    
+    // Les produits sont déjà filtrés par catégories dans SearchFilters
+    setFilteredProducts(filteredProducts);
+    
+    // Reset la pagination quand les filtres changent
+    setDisplayedCount(INITIAL_LOAD);
     
     // Reset l'état de filtrage après l'animation
     setTimeout(() => setIsFiltering(false), 150);
@@ -479,14 +546,54 @@ export default function Produits() {
           })}
         </div>
       </div>
-      {selectedCategory && (
-        <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontWeight: 600, color: '#e91e63' }}>Catégorie : {selectedCategory}</span>
+      {selectedCategories.length > 0 && (
+        <div style={{ marginBottom: 16, marginLeft: 16, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <span style={{ fontWeight: 600, color: '#e91e63' }}>
+            Catégorie{selectedCategories.length > 1 ? 's' : ''} ({selectedCategories.length}/5) :
+          </span>
+          {selectedCategories.map((cat, index) => (
+            <div key={index} style={{ 
+              background: '#f5f5f5', 
+              border: '1px solid #e91e63', 
+              borderRadius: 16, 
+              padding: '4px 12px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 6,
+              fontSize: '0.9rem'
+            }}>
+              <span style={{ color: '#e91e63', fontWeight: 500 }}>{cat}</span>
+              <button
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  color: '#e91e63', 
+                  cursor: 'pointer', 
+                  padding: 0,
+                  fontSize: '1.1rem',
+                  lineHeight: 1
+                }}
+                onClick={() => removeSelectedCategory(cat)}
+                title={`Retirer ${cat}`}
+              >
+                ×
+              </button>
+            </div>
+          ))}
           <button
-            style={{ background: '#eee', border: 'none', borderRadius: 16, padding: '4px 14px', cursor: 'pointer', color: '#e91e63', fontWeight: 500 }}
-            onClick={() => setSelectedCategory(null)}
+            style={{ 
+              background: '#e91e63', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: 16, 
+              padding: '6px 16px', 
+              cursor: 'pointer', 
+              fontWeight: 500,
+              fontSize: '0.85rem'
+            }}
+            onClick={() => clearAllCategories()}
           >
-            Réinitialiser
+            Tout effacer
           </button>
         </div>
       )}
@@ -605,7 +712,8 @@ export default function Produits() {
              onFiltersChange={handleFiltersChange}
              produits={produits}
              alwaysOpen={true}
-             resetTrigger={resetTrigger}
+             selectedCategories={selectedCategories}
+             key={`mobile-filters-${resetTrigger}`}
            />
          </div>
       </Drawer>
@@ -616,40 +724,12 @@ export default function Produits() {
              onFiltersChange={handleFiltersChange}
              produits={produits}
              alwaysOpen={true}
-             resetTrigger={resetTrigger}
+             selectedCategories={selectedCategories}
+             key={`desktop-filters-${resetTrigger}`}
            />
          </div>
-                          {/* Zone des produits */}
-          {/* Notification d'adaptation automatique */}
-          {showAdaptiveNotification && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                position: 'fixed',
-                top: isMobileOrTablet ? '70px' : '20px',
-                right: '20px',
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(233, 30, 99, 0.2)',
-                borderRadius: '12px',
-                padding: '12px 16px',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                zIndex: 1000,
-                fontSize: '0.9rem',
-                color: '#333',
-                maxWidth: '280px'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: '#e91e63' }}>✨</span>
-                <span>Affichage adapté automatiquement</span>
-              </div>
-            </motion.div>
-          )}
           
+
           <div 
             ref={productsSectionRef}
             className="products-section" 

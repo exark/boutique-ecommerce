@@ -33,11 +33,11 @@ import {
 import { useDebounce } from '../hooks/useDebounce';
 import './SearchFilters.css';
 
-export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false, resetTrigger = 0 }) {
+export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false, selectedCategories = [] }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 200]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedMatieres, setSelectedMatieres] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -58,28 +58,43 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
 
   // Appliquer les filtres quand les valeurs debounced changent
   useEffect(() => {
-    // Ne chercher que si on a au moins 2 caractères ou si c'est vide
-    if (debouncedSearchTerm.length >= 2 || debouncedSearchTerm.length === 0) {
-      setIsSearching(true);
+    // Appliquer les filtres si :
+    // - Recherche vide OU recherche >= 2 caractères
+    // - OU si d'autres filtres sont actifs (prix, matières, couleurs, tailles)
+    const shouldApplyFilters = 
+      debouncedSearchTerm.length === 0 || 
+      debouncedSearchTerm.length >= 2 ||
+      debouncedPriceRange[0] > 0 || 
+      debouncedPriceRange[1] < 200 ||
+      selectedMatieres.length > 0 ||
+      selectedColors.length > 0 ||
+      selectedSizes.length > 0 ||
+      selectedCategories.length > 0;
+
+    if (shouldApplyFilters) {
+      setIsSearching(debouncedSearchTerm.length > 0 && debouncedSearchTerm.length < 2 ? false : true);
       // Petit délai pour montrer l'indicateur de recherche
       setTimeout(() => {
-        applyFilters(debouncedSearchTerm, debouncedPriceRange, selectedCategories, selectedColors, selectedSizes);
+        applyFilters(debouncedSearchTerm, debouncedPriceRange, selectedMatieres, selectedColors, selectedSizes);
         setIsSearching(false);
-      }, 100);
+      }, debouncedSearchTerm.length > 0 && debouncedSearchTerm.length < 2 ? 0 : 100);
     }
-  }, [debouncedSearchTerm, debouncedPriceRange, selectedCategories, selectedColors, selectedSizes]);
+  }, [debouncedSearchTerm, debouncedPriceRange, selectedCategories, selectedMatieres, selectedColors, selectedSizes]);
 
-  // Réinitialiser les filtres quand resetTrigger change
+  // Appliquer les filtres initiaux au montage du composant
   useEffect(() => {
-    if (resetTrigger > 0) {
-      clearFilters();
-    }
-  }, [resetTrigger]);
+    applyFilters('', [0, 200], [], [], []);
+  }, []);
 
-  // Extraction des options uniques depuis les produits
-  const categories = [...new Set(produits.map(p => p.matiere))];
-  const colors = [...new Set(produits.map(p => p.couleur))];
-  const sizes = [...new Set(produits.flatMap(p => p.tailles.map(t => t.taille)))];
+  // Filtrer les produits selon les catégories sélectionnées pour adapter les autres filtres
+  const productsForFilters = selectedCategories.length > 0 
+    ? produits.filter(p => selectedCategories.includes(p.categorie))
+    : produits;
+
+  // Extraction des options uniques depuis les produits filtrés par catégories
+  const categories = [...new Set(productsForFilters.map(p => p.matiere))];
+  const colors = [...new Set(productsForFilters.map(p => p.couleur))];
+  const sizes = [...new Set(productsForFilters.flatMap(p => p.tailles.map(t => t.taille)))];
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
@@ -91,9 +106,9 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     setPriceRange(newValue);
   };
 
-  const handleCategoryChange = (event) => {
+  const handleMatiereChange = (event) => {
     const value = event.target.value;
-    setSelectedCategories(value);
+    setSelectedMatieres(value);
     
     // Sur mobile, fermer automatiquement le filtre après sélection
     if (isMobile && !alwaysOpen) {
@@ -134,8 +149,13 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     }));
   };
 
-  const applyFilters = (search, price, categories, colors, sizes) => {
+  const applyFilters = (search, price, matieres, colors, sizes) => {
     let filtered = produits;
+
+    // PREMIER : Filtre par catégories sélectionnées (depuis navbar)
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(produit => selectedCategories.includes(produit.categorie));
+    }
 
     // Filtre par recherche textuelle
     if (search) {
@@ -150,9 +170,9 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
     // Filtre par prix
     filtered = filtered.filter(produit => produit.prix >= price[0] && produit.prix <= price[1]);
 
-    // Filtre par catégorie (matière)
-    if (categories.length > 0) {
-      filtered = filtered.filter(produit => categories.includes(produit.matiere));
+    // Filtre par matière
+    if (matieres.length > 0) {
+      filtered = filtered.filter(produit => matieres.includes(produit.matiere));
     }
 
     // Filtre par couleur
@@ -173,16 +193,18 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
   const clearFilters = () => {
     setSearchTerm('');
     setPriceRange([0, 200]);
-    setSelectedCategories([]);
+    setSelectedMatieres([]);
     setSelectedColors([]);
     setSelectedSizes([]);
   };
 
   const hasActiveFilters = searchTerm || priceRange[0] > 0 || priceRange[1] < 200 || 
-                          selectedCategories.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0;
+                          selectedMatieres.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0;
 
   return (
     <div className="search-filters">
+
+      
       {/* Barre de recherche */}
       <div className="search-container">
         <TextField
@@ -328,8 +350,8 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                 <FormControl fullWidth size="small">
                   <Select
                     multiple
-                    value={selectedCategories}
-                    onChange={handleCategoryChange}
+                    value={selectedMatieres}
+                    onChange={handleMatiereChange}
                     displayEmpty
                     sx={{
                       fontSize: '0.8rem',
