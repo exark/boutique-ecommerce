@@ -31,6 +31,27 @@ export default function Navbar() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
+  // Animation du panier quand un article est ajouté
+  const [cartBump, setCartBump] = useState(false);
+  const prevCartCountRef = useRef(cartCount);
+
+  useEffect(() => {
+    const prev = prevCartCountRef.current;
+    // Déclenche l'animation uniquement si le compteur augmente
+    if (cartCount > prev) {
+      setCartBump(true);
+      const timer = setTimeout(() => setCartBump(false), 550);
+      return () => clearTimeout(timer);
+    }
+    // Mettre à jour la valeur précédente si pas d'augmentation
+    prevCartCountRef.current = cartCount;
+  }, [cartCount]);
+
+  // Garder prevCartCount synchronisé après chaque rendu
+  useEffect(() => {
+    prevCartCountRef.current = cartCount;
+  }, [cartCount]);
+
   // Extraire dynamiquement les catégories uniques
   const categories = Array.from(new Set(produits.map(p => p.categorie))).sort();
 
@@ -239,7 +260,7 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar__right">
-        <div className="navbar__cart" onClick={() => setCartOpen(true)}>
+        <div className={`navbar__cart${cartBump ? ' bump' : ''}`} onClick={() => setCartOpen(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" role="img" aria-label="Panier boutique"
                viewBox="0 0 24 24" fill="none" stroke="#c2185b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <title>Panier boutique</title>
