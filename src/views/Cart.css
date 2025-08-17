@@ -22,13 +22,13 @@
 
 .cart-back-btn {
   color: var(--color-accent) !important;
-  background: rgba(247, 86, 124, 0.1) !important;
+  background: rgba(255, 202, 212, 0.1) !important;
   border-radius: 12px !important;
   transition: all 0.2s ease !important;
 }
 
 .cart-back-btn:hover {
-  background: rgba(247, 86, 124, 0.2) !important;
+  background: rgba(255, 202, 212, 0.2) !important;
   transform: translateX(-2px);
 }
 
@@ -36,6 +36,7 @@
   color: var(--color-texte) !important;
   font-weight: 700 !important;
   margin: 0 !important;
+  font-family: 'Playfair Display', serif;
 }
 
 .cart-content {

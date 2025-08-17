@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(247, 86, 124, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 202, 212, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   opacity: 0;
@@ -21,9 +21,9 @@
 }
 
 .scroll-to-top-button:hover {
-  background: #d13a63;
+  background: var(--color-secondaire);
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 25px rgba(247, 86, 124, 0.4);
+  box-shadow: 0 6px 25px rgba(255, 202, 212, 0.4);
 }
 
 .scroll-to-top-button:active {

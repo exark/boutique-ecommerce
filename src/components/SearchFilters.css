@@ -12,6 +12,8 @@
   transform: translateZ(0);
 }
 
+
+
 /* Styles pour la sidebar */
 .filters-sidebar .search-filters {
   max-width: none;
@@ -90,14 +92,14 @@
 }
 
 .search-input .MuiOutlinedInput-root:hover {
-  border-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 202, 212, 0.6);
+  box-shadow: 0 4px 12px rgba(255, 202, 212, 0.1);
   transform: translateY(-1px);
 }
 
 .search-input .MuiOutlinedInput-root.Mui-focused {
   border-color: #000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(255, 202, 212, 0.15);
   transform: translateY(-2px);
 }
 
@@ -121,10 +123,10 @@
 
 .filter-toggle:hover {
   background: rgba(248, 248, 248, 0.95) !important;
-  border-color: rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(255, 202, 212, 0.6) !important;
   color: #000 !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(255, 202, 212, 0.1);
 }
 
 .filter-toggle.active {
@@ -184,6 +186,7 @@
   color: #333;
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-family: 'Playfair Display', serif;
 }
 
 /* Grille des filtres */
@@ -218,8 +221,8 @@
 }
 
 .filter-section .MuiChip-root {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
-  color: #fff !important;
+  background: #FFCAD4 !important;
+  color: #000 !important;
   font-weight: 600 !important;
   border-radius: 8px !important;
   transition: all 0.2s ease !important;
@@ -227,20 +230,20 @@
 
 .filter-section .MuiChip-root:hover {
   transform: scale(1.05) !important;
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(255, 202, 212, 0.3) !important;
 }
 
 /* Styles spéciaux pour les différents types de filtres */
 .filter-section:nth-child(3) .MuiChip-root {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+  background: #FFCAD4 !important;
 }
 
 .filter-section:nth-child(4) .MuiChip-root {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  background: #FFCAD4 !important;
 }
 
 .filter-section:nth-child(5) .MuiChip-root {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+  background: #FFCAD4 !important;
 }
 
 /* Menus déroulants plus compacts */
@@ -271,7 +274,7 @@
 }
 
 .price-slider .MuiSlider-thumb:hover {
-  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 8px rgba(255, 202, 212, 0.1);
 }
 
 /* Espacement entre les filtres */
@@ -393,6 +396,7 @@
   font-size: 0.8rem;
   color: #666;
   font-weight: 400;
+  font-family: 'Playfair Display', serif !important;
 }
 
 .filter-section .MuiInputLabel-root.Mui-focused {
@@ -403,6 +407,7 @@
   font-size: 0.9rem;
   color: #333;
   padding: 12px 16px;
+  font-family: 'Playfair Display', serif !important;
 }
 
 .filter-section .MuiChip-root {
@@ -433,6 +438,7 @@
   padding: 8px 16px;
   border-radius: 0;
   transition: all 0.2s ease;
+  font-family: 'Playfair Display', serif !important;
 }
 
 .filters-content .MuiButton-outlined:hover {

@@ -1,19 +1,24 @@
-/* Modal de sélection des tailles - Design épuré et féminin */
+/* Modal de sélection des tailles - Design élégant centré */
 .size-modal-backdrop {
-  backdrop-filter: blur(12px) !important;
-  background: rgba(255, 240, 245, 0.3) !important;
+  backdrop-filter: blur(20px) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .size-modal-paper {
-  border-radius: 24px 24px 0 0 !important;
-  box-shadow: 0 -8px 32px rgba(233, 30, 99, 0.12) !important;
-  background: linear-gradient(145deg, #ffffff 0%, #fefefe 100%) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 202, 212, 0.2) !important;
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%) !important;
   overflow: hidden;
-  border: none !important;
-  position: fixed !important;
-  bottom: 0 !important;
-  margin: 0 !important;
-  max-height: 85vh !important;
+  border: 2px solid rgba(255, 202, 212, 0.3) !important;
+  position: relative !important;
+  margin: 20px !important;
+  max-height: 90vh !important;
+  max-width: 440px !important;
+  width: 100% !important;
+  transform: none !important;
 }
 
 /* Header avec bouton fermer */
@@ -25,47 +30,51 @@
 }
 
 .size-modal-close-btn {
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(233, 30, 99, 0.1) !important;
-  color: #666 !important;
-  width: 32px !important;
-  height: 32px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 2px solid rgba(255, 202, 212, 0.3) !important;
+  color: #333 !important;
+  width: 40px !important;
+  height: 40px !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 .size-modal-close-btn:hover {
-  background: rgba(233, 30, 99, 0.05) !important;
-  color: #e91e63 !important;
-  transform: scale(1.1);
+  background: rgba(255, 202, 212, 0.1) !important;
+  color: #000000 !important;
+  transform: scale(1.05) rotate(90deg);
+  border-color: #FFCAD4 !important;
 }
 
 .size-modal-title {
-  background: transparent !important;
-  padding: 32px 24px 16px 24px !important;
+  background: linear-gradient(135deg, rgba(255, 202, 212, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%) !important;
+  padding: 28px 24px 14px 24px !important;
   text-align: center;
-  border-bottom: none !important;
+  border-bottom: 1px solid rgba(255, 202, 212, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .size-modal-title-text {
-  color: #2c2c2c !important;
-  font-weight: 500 !important;
-  font-size: 1.25rem !important;
-  margin-bottom: 8px !important;
-  letter-spacing: -0.01em !important;
-  font-family: 'Inter', -apple-system, sans-serif !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  font-size: 1.3rem !important;
+  margin-bottom: 12px !important;
+  letter-spacing: -0.02em !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .size-modal-subtitle {
-  color: #888 !important;
+  color: #666 !important;
   font-size: 0.9rem !important;
   font-weight: 400 !important;
-  opacity: 0.8;
+  opacity: 0.9;
+  font-family: 'Inter', sans-serif !important;
 }
 
 .size-modal-content {
-  padding: 0 24px 24px 24px !important;
-  background: #ffffff !important;
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%) !important;
+  min-height: 160px;
 }
 
 .size-modal-sizes {
@@ -73,10 +82,11 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 24px;
+  padding: 4px;
 }
 
 .size-button {
-  height: 72px !important;
+  height: 60px !important;
   border-radius: 12px !important;
   border: 1.5px solid !important;
   transition: all 0.2s ease !important;
@@ -190,101 +200,91 @@
 
 .size-modal-selection {
   border-radius: 8px !important;
-  background: linear-gradient(135deg, #ffeef2 0%, #fff5f7 100%) !important;
-  border: 1px solid rgba(255, 182, 193, 0.3) !important;
-  color: #e91e63 !important;
+  margin-bottom: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #FFCAD4 !important;
   box-shadow: 0 2px 8px rgba(255, 182, 193, 0.15) !important;
 }
 
 /* Actions redessinées */
 .size-modal-actions {
-  padding: 20px 24px 32px 24px !important;
-  background: transparent !important;
-  border-top: none !important;
+  padding: 16px 24px 24px 24px !important;
+  background: linear-gradient(145deg, rgba(255, 202, 212, 0.03) 0%, rgba(255, 255, 255, 0.8) 100%) !important;
+  border-top: 1px solid rgba(255, 202, 212, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .size-modal-cancel-btn {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(233, 30, 99, 0.15) !important;
-  color: #666 !important;
-  border-radius: 16px !important;
-  padding: 16px !important;
-  font-weight: 500 !important;
-  font-size: 0.95rem !important;
-  text-transform: none !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: none !important;
-}
-
-.size-modal-cancel-btn:hover {
-  background: rgba(233, 30, 99, 0.05) !important;
-  border-color: rgba(233, 30, 99, 0.25) !important;
-  color: #e91e63 !important;
-  transform: translateY(-1px);
-}
-
-.size-modal-add-btn {
-  background: linear-gradient(135deg, #c2185b 0%, #e91e63 100%) !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 16px !important;
-  padding: 18px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 2px solid rgba(255, 202, 212, 0.4) !important;
+  color: #333 !important;
+  border-radius: 20px !important;
+  padding: 18px 24px !important;
   font-weight: 600 !important;
   font-size: 1rem !important;
   text-transform: none !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 0 4px 20px rgba(194, 24, 91, 0.3) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.size-modal-cancel-btn:hover {
+  background: rgba(255, 202, 212, 0.1) !important;
+  border-color: #FFCAD4 !important;
+  color: #000000 !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+.size-modal-add-btn {
+  background: #000000 !important;
+  color: white !important;
+  border-radius: 20px !important;
+  padding: 20px 24px !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-transform: none !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
   position: relative;
   overflow: hidden;
-}
-
-.size-modal-add-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.size-modal-add-btn:hover::before {
-  left: 100%;
+  font-family: 'Inter', sans-serif !important;
 }
 
 .size-modal-add-btn:hover {
-  background: linear-gradient(135deg, #ad1457 0%, #c2185b 100%) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(194, 24, 91, 0.4) !important;
+  background: #000000 !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+  border-color: #FFCAD4 !important;
 }
 
 .size-modal-add-btn:disabled {
-  background: #e9ecef !important;
-  color: #adb5bd !important;
+  background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%) !important;
+  color: #999 !important;
   box-shadow: none !important;
   transform: none !important;
-  border-color: #e9ecef !important;
+  border-color: #ddd !important;
+  opacity: 0.6;
 }
 
-/* Nouvelles options de taille - Design épuré et encadré */
+/* Nouvelles options de taille - Design élégant noir/blanc/FFCAD4 */
 .size-option {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80px;
-  border-radius: 16px;
-  border: 2px solid rgba(233, 30, 99, 0.25);
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(8px);
+  height: 78px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 202, 212, 0.4);
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+  backdrop-filter: blur(12px);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   gap: 4px;
-  box-shadow: 0 3px 15px rgba(233, 30, 99, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 202, 212, 0.1);
 }
 
 .size-option::before {
@@ -294,9 +294,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(233, 30, 99, 0.05) 0%, rgba(255, 182, 193, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 202, 212, 0.1) 0%, rgba(255, 255, 255, 0.8) 100%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 .size-option:hover::before {
@@ -305,11 +305,13 @@
 
 .size-label {
   font-size: 1.1rem !important;
-  font-weight: 600 !important;
-  color: #2c2c2c !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
   margin: 0 !important;
   z-index: 2;
   position: relative;
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: -0.01em;
 }
 
 .stock-indicator {
@@ -326,7 +328,7 @@
 }
 
 .stock-text {
-  font-size: 0.75rem !important;
+  font-size: 0.7rem !important;
   font-weight: 400 !important;
   margin: 0 !important;
   z-index: 2;
@@ -335,21 +337,21 @@
 
 /* États des options */
 .size-option.disponible {
-  border-color: rgba(233, 30, 99, 0.3);
-  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(255, 202, 212, 0.4);
+  background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
 }
 
 .size-option.disponible:hover {
-  border-color: rgba(233, 30, 99, 0.5);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.2);
+  border-color: #FFCAD4;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12), 0 0 0 1px #FFCAD4;
 }
 
 .size-option.disponible.selected {
-  border-color: #e91e63;
-  background: linear-gradient(135deg, rgba(233, 30, 99, 0.12) 0%, rgba(255, 182, 193, 0.12) 100%);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.25);
+  border-color: #FFCAD4;
+  background: linear-gradient(135deg, rgba(255, 202, 212, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(255, 202, 212, 0.3), 0 0 0 2px #FFCAD4;
 }
 
 .size-option.disponible .stock-indicator {
@@ -414,12 +416,13 @@
 
 /* Indicateur de sélection */
 .size-selection-indicator {
-  background: linear-gradient(135deg, rgba(233, 30, 99, 0.08) 0%, rgba(255, 182, 193, 0.08) 100%);
-  border: 1px solid rgba(233, 30, 99, 0.2);
-  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 202, 212, 0.1) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border: 2px solid #FFCAD4;
+  border-radius: 20px;
   padding: 16px;
   margin-bottom: 16px;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(255, 202, 212, 0.15);
 }
 
 .selection-content {
@@ -430,27 +433,29 @@
 
 .selection-text {
   font-size: 0.9rem !important;
-  color: #666 !important;
+  color: #333 !important;
   margin: 0 !important;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 .selection-size {
   font-size: 1.1rem !important;
-  color: #e91e63 !important;
-  font-weight: 600 !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
   margin: 0 !important;
-  background: rgba(233, 30, 99, 0.1);
-  padding: 4px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(233, 30, 99, 0.2);
+  background: rgba(255, 202, 212, 0.2);
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 2px solid #FFCAD4;
+  font-family: 'Inter', sans-serif !important;
 }
 
 /* Actions redessinées */
 .action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
 }
 
@@ -458,19 +463,16 @@
 @media (max-width: 600px) {
   .size-modal-paper {
     margin: 16px !important;
-    border-radius: 12px !important;
+    border-radius: 20px !important;
+    max-width: calc(100vw - 32px) !important;
   }
   
   .size-modal-title {
-    padding: 24px 20px 20px 20px !important;
+    padding: 24px 20px 12px 20px !important;
   }
   
   .size-modal-title-text {
     font-size: 1.2rem !important;
-  }
-  
-  .size-modal-content {
-    padding: 24px 20px !important;
   }
   
   .size-modal-sizes {
@@ -478,22 +480,38 @@
     gap: 10px;
   }
   
-  .size-button {
-    height: 64px !important;
+  .size-option {
+    height: 74px !important;
   }
   
-  .size-text {
-    font-size: 1rem !important;
+  .size-label {
+    font-size: 1.05rem !important;
   }
   
   .size-modal-actions {
-    padding: 20px 20px 24px 20px !important;
-    flex-direction: column;
+    padding: 16px 20px 24px 20px !important;
   }
   
   .size-modal-cancel-btn,
   .size-modal-add-btn {
     width: 100%;
+    padding: 14px 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .size-modal-paper {
+    margin: 12px !important;
+    max-height: 95vh !important;
+  }
+  
+  
+  .size-modal-sizes {
+    gap: 8px;
+  }
+  
+  .size-option {
+    height: 70px !important;
   }
 }
 

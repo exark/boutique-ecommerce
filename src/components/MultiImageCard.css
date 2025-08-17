@@ -39,6 +39,7 @@
   z-index: 10;
   opacity: 0;
   transition: opacity 0.3s ease;
+  font-family: 'Playfair Display', serif !important;
 }
 
 .multi-image-card.has-multiple:hover .multi-image-overlay {
@@ -50,8 +51,8 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  background: rgba(233, 30, 99, 0.9);
-  color: white;
+  background: rgba(255, 202, 212, 0.9);
+  color: #000000;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -62,10 +63,7 @@
   z-index: 10;
   opacity: 0;
   transition: opacity 0.3s ease;
-}
-
-.multi-image-card.has-multiple:hover .multi-image-badge {
-  opacity: 1;
+  font-family: 'Playfair Display', serif !important;
 }
 
 .multi-image-badge svg {

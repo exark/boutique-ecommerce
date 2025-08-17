@@ -86,13 +86,13 @@
 }
 
 .thumbnail:hover {
-  border-color: rgba(233, 30, 99, 0.3);
+  border-color: rgba(255, 202, 212, 0.3);
   transform: translateY(-2px);
 }
 
 .thumbnail.active {
-  border-color: #e91e63;
-  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+  border-color: #FFCAD4;
+  box-shadow: 0 4px 12px rgba(255, 202, 212, 0.3);
 }
 
 .thumbnail-image {
@@ -108,19 +108,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(233, 30, 99, 0.2);
+  background: rgba(255, 202, 212, 0.2);
   border-radius: 6px;
 }
 
 /* Compteur d'images */
 .image-counter {
-  background: rgba(233, 30, 99, 0.1);
-  color: #e91e63;
+  background: rgba(255, 202, 212, 0.1);
+  color: #FFCAD4;
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 600;
-  border: 1px solid rgba(233, 30, 99, 0.2);
+  border: 1px solid rgba(255, 202, 212, 0.2);
 }
 
 /* Responsive */

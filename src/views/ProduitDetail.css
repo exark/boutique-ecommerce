@@ -5,19 +5,19 @@
   margin: 16px auto 32px auto;
   background: #fff;
   border-radius: 32px;
-  box-shadow: 0 4px 18px 0 rgba(233, 30, 99, 0.10), 0 1.5px 8px 0 rgba(0,0,0,0.03);
+  box-shadow: 0 4px 18px 0 rgba(255, 202, 212, 0.10), 0 1.5px 8px 0 rgba(0,0,0,0.03);
   padding: 48px 48px 40px 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Quicksand', system-ui, sans-serif;
+  font-family: 'Playfair Display', serif;
   position: relative;
   min-height: 700px;
-  background: linear-gradient(120deg, #fff 80%, #ffe4ef 100%);
+  background: linear-gradient(120deg, #fff 80%, #FFCAD4 100%);
   transition: box-shadow 0.3s cubic-bezier(.4,.2,.2,1), transform 0.3s cubic-bezier(.4,.2,.2,1);
 }
 .produit-detail-container:hover {
-  box-shadow: 0 16px 48px 0 rgba(233, 30, 99, 0.18), 0 3px 16px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 16px 48px 0 rgba(255, 202, 212, 0.18), 0 3px 16px 0 rgba(0,0,0,0.06);
   transform: translateY(-2px) scale(1.012);
 }
 
@@ -27,7 +27,7 @@
   flex-shrink: 0;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(233, 30, 99, 0.10);
+  box-shadow: 0 4px 24px rgba(255, 202, 212, 0.10);
   background: #f8f8f8;
   margin-bottom: 24px;
 }
@@ -74,24 +74,25 @@
 .produit-detail-title {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #e91e63;
+  color: #000000;
   margin-bottom: 16px;
   text-align: center;
   max-width: 600px;
   line-height: 1.2;
+  font-family: 'Playfair Display', serif;
 }
 
 .produit-detail-nouveau {
   display: flex;
   align-items: center;
-  background: #ffe4ef;
-  color: #e91e63;
+  background: #FFCAD4;
+  color: #000000;
   font-weight: 600;
   font-size: 1rem;
   border-radius: 16px;
   padding: 4px 16px;
   margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(233,30,99,0.08);
+  box-shadow: 0 2px 8px rgba(255,202,212,0.08);
   animation: nouveautePop 0.7s cubic-bezier(.4,1.4,.6,1) 0.1s both;
 }
 @keyframes nouveautePop {
@@ -455,7 +456,7 @@
   color: #e91e63;
   text-align: center;
   margin-bottom: 32px;
-  font-family: 'Quicksand', system-ui, sans-serif;
+  font-family: 'Playfair Display', serif;
   letter-spacing: 0.5px;
 }
 
@@ -526,6 +527,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Playfair Display', serif;
 }
 
 .similar-product-category {

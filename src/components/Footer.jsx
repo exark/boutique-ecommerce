@@ -17,7 +17,7 @@ export default function Footer() {
         {/* Section Logo et Description */}
         <div className="footer__section">
           <div className="footer__logo">
-            <img src={logo} alt="Logo Solène" />
+            <span className="footer__logo-text">Solène</span>
           </div>
           <p className="footer__description">
             Découvrez notre collection exclusive de vêtements féminins élégants et tendance.
@@ -41,7 +41,6 @@ export default function Footer() {
           <h3 className="footer__title">Navigation</h3>
           <ul className="footer__links">
             <li><Link to="/home">Notre collection</Link></li>
-            <li><Link to="/categories">Catégories</Link></li>
             <li><Link to="/cart">Panier</Link></li>
           </ul>
         </div>

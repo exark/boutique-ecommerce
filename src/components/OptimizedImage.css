@@ -66,6 +66,7 @@
   font-size: 0.875rem;
   border-radius: 8px;
   border: 2px dashed #dee2e6;
+  font-family: 'Playfair Display', serif !important;
 }
 
 /* Shimmer animation optimisée pour mobile */

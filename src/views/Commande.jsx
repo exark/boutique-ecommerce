@@ -365,8 +365,6 @@ export default function Commande() {
                   label="Mode de paiement"
                 >
                   <MenuItem value="especes">Espèces à la livraison</MenuItem>
-                  <MenuItem value="carte">Carte bancaire à la livraison</MenuItem>
-                  <MenuItem value="virement">Virement bancaire</MenuItem>
                 </Select>
               </FormControl>
             </CardContent>

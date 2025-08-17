@@ -251,7 +251,7 @@ export default function Navbar() {
     <nav className={`navbar${menuOpen ? ' navbar--menu-open' : ''}${categoriesOpen && !isMobile ? ' navbar--categories-open' : ''}`}>
       <div className="navbar__left">
         <div href="/home" className="navbar__logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-          <img  src={logo} alt="Logo Solène" />
+          <span className="navbar__logo-text">Solène</span>
         </div>
         <ul className="navbar__menu">
           <li ref={categoriesRef}>
@@ -262,7 +262,7 @@ export default function Navbar() {
       <div className="navbar__right">
         <div className={`navbar__cart${cartBump ? ' bump' : ''}`} onClick={() => setCartOpen(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" role="img" aria-label="Panier boutique"
-               viewBox="0 0 24 24" fill="none" stroke="#c2185b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+               viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <title>Panier boutique</title>
             <path d="M3 9h18l-1.6 8.2A2.5 2.5 0 0 1 16.9 20H7.1a2.5 2.5 0 0 1-2.5-2.1L3 9Z"/>
             <path d="M8 9V6a4 4 0 0 1 8 0v3"/>
@@ -319,14 +319,14 @@ export default function Navbar() {
                     display: 'block', 
                     width: '100%',
                     padding: '8px 12px', 
-                    color: isSelected ? '#e91e63' : '#495057', 
+                    color: isSelected ? '#FFCAD4' : '#495057', 
                     fontWeight: isSelected ? 600 : 400, 
                     textDecoration: 'none', 
                     borderRadius: 8, 
                     transition: 'all 0.2s ease',
                     fontSize: '0.85rem',
-                    background: isSelected ? 'rgba(233, 30, 99, 0.1)' : 'transparent',
-                    border: isSelected ? '1px solid rgba(233, 30, 99, 0.3)' : '1px solid transparent',
+                    background: isSelected ? 'rgba(255, 205, 212, 0.1)' : 'transparent',
+                    border: isSelected ? '1px solid rgba(255, 205, 212, 0.3)' : '1px solid transparent',
                     textAlign: 'center',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
@@ -425,10 +425,10 @@ export default function Navbar() {
                       }}
                       style={{ 
                         cursor: 'pointer',
-                        color: isSelected ? '#e91e63' : 'inherit',
+                        color: isSelected ? '#FFCAD4' : 'inherit',
                         fontWeight: isSelected ? 600 : 'inherit',
-                        backgroundColor: isSelected ? 'rgba(233, 30, 99, 0.1)' : 'transparent',
-                        border: isSelected ? '1px solid rgba(233, 30, 99, 0.3)' : '1px solid transparent',
+                        backgroundColor: isSelected ? 'rgba(255, 205, 212, 0.1)' : 'transparent',
+                        border: isSelected ? '1px solid rgba(255, 205, 212, 0.3)' : '1px solid transparent',
                         borderRadius: '6px',
                         position: 'relative'
                       }}

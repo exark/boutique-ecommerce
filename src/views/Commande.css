@@ -22,13 +22,13 @@
 
 .commande-back-btn {
   color: var(--color-accent) !important;
-  background: rgba(247, 86, 124, 0.1) !important;
+  background: rgba(255, 202, 212, 0.1) !important;
   border-radius: 12px !important;
   transition: all 0.2s ease !important;
 }
 
 .commande-back-btn:hover {
-  background: rgba(247, 86, 124, 0.2) !important;
+  background: rgba(255, 202, 212, 0.2) !important;
   transform: translateX(-2px);
 }
 
@@ -37,6 +37,7 @@
   font-weight: 700 !important;
   margin: 0 !important;
   flex: 1;
+  font-family: 'Playfair Display', serif;
 }
 
 .commande-content {
@@ -58,7 +59,7 @@
 .form-section {
   border-radius: 16px !important;
   box-shadow: var(--shadow-card) !important;
-  border: 1px solid rgba(247, 86, 124, 0.1) !important;
+  border: 1px solid rgba(255, 202, 212, 0.1) !important;
   transition: all 0.3s ease !important;
 }
 
@@ -132,6 +133,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: 'Playfair Display', serif !important;
 }
 
 .summary-items {
