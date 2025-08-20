@@ -31,6 +31,7 @@
   justify-content: center; /* Center the left section items */
   gap: 32px;
   height: 100%;
+  padding-left: 20px;
 }
 
 @media (max-width: 400px) { 
@@ -52,6 +53,15 @@
   color: var(--color-accent);
   letter-spacing: -0.02em;
   transition: transform 0.2s ease, color 0.2s ease;
+  line-height: 1; /* normalize to avoid baseline drift */
+}
+
+/* Micro-adjust for perfect visual alignment on desktop */
+@media (min-width: 1025px) {
+  .navbar__logo-text {
+    position: relative;
+    top: 1px;
+  }
 }
 
 .navbar__logo:hover .navbar__logo-text {
@@ -67,7 +77,15 @@
   gap: 32px;
   margin: 0 auto; /* Center the menu within the navbar */
   padding: 0;
+  padding-top: 10px;
   height: 100%;
+}
+
+/* Ensure li fills navbar height so anchors can center properly */
+.navbar__menu li {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .navbar__menu a {
@@ -76,7 +94,12 @@
   font-weight: 500;
   font-size: 1.1rem;
   position: relative;
-  padding: 0.5rem 0;
+  /* Remove vertical padding and center within full height */
+  padding: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  line-height: 1;
   font-family: 'Playfair Display', serif;
 }
 
