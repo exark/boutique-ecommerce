@@ -74,7 +74,7 @@ export default function CartDrawer({ open, onClose }) {
                 <Typography variant="body2" className="cart-drawer__shipping">
                   Livraison : {total > 50 ? 'Gratuite' : formatPrice(5.99)}
                 </Typography>
-                <Typography variant="h6" className="cart-drawer__total">
+                <Typography variant="body1" className="cart-drawer__total">
                   Total : {formatPrice(total > 50 ? total : total + 5.99)}
                 </Typography>
               </div>

@@ -69,6 +69,14 @@ export default function ProduitDetail() {
     return produit.tailles.filter(t => t.stock > 0).length;
   };
 
+  const getAvailableSizesDisplay = (produit) => {
+    const availableSizes = produit.tailles.filter(t => t.stock > 0);
+    if (availableSizes.length === 0) {
+      return "Aucune taille disponible";
+    }
+    return availableSizes.map(t => `${t.taille} (${t.stock})`).join(', ');
+  };
+
   // Fonction pour obtenir des produits similaires
   const getSimilarProducts = (currentProduct) => {
     if (!currentProduct) return [];
@@ -133,7 +141,7 @@ export default function ProduitDetail() {
       </IconButton>
       {loading && (
         <div className="produit-detail-loading-overlay">
-          <CircularProgress size={60} thickness={4} style={{ color: '#e91e63' }} />
+          <CircularProgress size={60} thickness={4} style={{ color: '#2c3e50' }} />
         </div>
       )}
       <div className="produit-detail-page">
@@ -180,7 +188,7 @@ export default function ProduitDetail() {
                   <div className="produit-detail-info"><ColorLensIcon sx={{ color: '#e91e63', mr: 1 }} /> <b>Couleur :</b> {produit.couleur}</div>
                   <div className="produit-detail-info">
                     <StraightenIcon sx={{ color: '#e91e63', mr: 1 }} /> 
-                    <b>Tailles disponibles :</b> {getAvailableSizesCount(produit)} taille{getAvailableSizesCount(produit) > 1 ? 's' : ''}
+                    <b>Tailles disponibles :</b> {getAvailableSizesDisplay(produit)}
                   </div>
                   <div className="produit-detail-info">
                     <CheckCircleIcon sx={{ color: '#e91e63', mr: 1 }} /> 
@@ -196,9 +204,8 @@ export default function ProduitDetail() {
                   {formatPrice(produit.prix)}
                 </motion.div>
                 <Button
-                  variant="contained"
-                  color="primary"
-                  className={`produit-detail-btn ${!hasAvailableSizes(produit) ? 'produit-detail-btn-disabled' : ''}`}
+                  variant="text"
+                  className={`produit-detail-retour ${!hasAvailableSizes(produit) ? 'produit-detail-btn-disabled' : ''}`}
                   onClick={handleAddToCartClick}
                   disabled={!hasAvailableSizes(produit)}
                   size="large"

@@ -257,6 +257,9 @@ export default function Navbar() {
           <li ref={categoriesRef}>
             <a href="#" onClick={(e) => { e.preventDefault(); setCategoriesOpen(!categoriesOpen); }}>Catégories</a>
           </li>
+          <li>
+            <Link to="/commande" onClick={() => { setMenuOpen(false); setCategoriesOpen(false); }}>Commande</Link>
+          </li>
         </ul>
       </div>
       <div className="navbar__right">
@@ -365,6 +368,33 @@ export default function Navbar() {
             );
           })}
         </div>
+        
+        {/* Lien Commande en dessous des catégories */}
+        <div style={{ padding: '16px 20px 0 20px', width: '100%' }}>
+          <Link 
+            to="/commande"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '14px 20px',
+              color: '#333',
+              fontWeight: 600,
+              textDecoration: 'none',
+              borderRadius: 12,
+              transition: 'all 0.2s ease',
+              fontSize: '1.1rem',
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(8px)',
+              border: '2px solid rgba(255, 202, 212, 0.1)',
+              boxShadow: '0 2px 12px rgba(255, 202, 212, 0.05)',
+              textAlign: 'center'
+            }}
+          >
+            📋 Commande
+          </Link>
+        </div>
+        
         <hr style={{ margin: '24px 0 12px 0', border: 'none', borderTop: '1px solid #eee' }} />
       </div>
       
