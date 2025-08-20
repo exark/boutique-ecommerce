@@ -4,7 +4,7 @@ const produits = [
     id: 2,
     nom: 'crop top orange',
     categorie: 'Blouses',
-    prix: 99.99,
+    prix: 45,
     image: 'sA8yYui',
     images: [
       'sA8yYui',
