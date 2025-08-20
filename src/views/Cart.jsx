@@ -19,6 +19,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import OptimizedImage from '../components/OptimizedImage';
 import './Cart.css';
+import { formatPrice } from '../utils/currency';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -110,7 +111,7 @@ export default function Cart() {
                     />
                   )}
                   <Typography variant="body2" className="cart-item__price">
-                    {item.prix.toFixed(2)} €
+                    {formatPrice(item.prix)}
                   </Typography>
                 </div>
 
@@ -135,7 +136,7 @@ export default function Cart() {
 
                 <div className="cart-item__total">
                   <Typography variant="h6" className="item-total">
-                    {(item.prix * item.quantity).toFixed(2)} €
+                    {formatPrice(item.prix * item.quantity)}
                   </Typography>
                 </div>
 
@@ -192,20 +193,20 @@ export default function Cart() {
               <div className="summary-details">
                 <div className="summary-row">
                   <Typography>Sous-total</Typography>
-                  <Typography>{subtotal.toFixed(2)} €</Typography>
+                  <Typography>{formatPrice(subtotal)}</Typography>
                 </div>
                 
                 <div className="summary-row">
                   <Typography>Livraison</Typography>
                   <Typography>
-                    {shipping === 0 ? 'Gratuit' : `${shipping.toFixed(2)} €`}
+                    {shipping === 0 ? 'Gratuit' : formatPrice(shipping)}
                   </Typography>
                 </div>
 
                 {discount > 0 && (
                   <div className="summary-row discount">
                     <Typography>Réduction</Typography>
-                    <Typography>-{discount.toFixed(2)} €</Typography>
+                    <Typography>{formatPrice(-discount)}</Typography>
                   </div>
                 )}
 
@@ -213,7 +214,7 @@ export default function Cart() {
 
                 <div className="summary-row total">
                   <Typography variant="h6">Total</Typography>
-                  <Typography variant="h6">{total.toFixed(2)} €</Typography>
+                  <Typography variant="h6">{formatPrice(total)}</Typography>
                 </div>
               </div>
 

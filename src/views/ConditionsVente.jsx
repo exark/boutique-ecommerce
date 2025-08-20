@@ -50,7 +50,7 @@ export default function ConditionsVente() {
               3. Prix
             </Typography>
             <Typography variant="body1">
-              Les prix sont indiqués en euros, toutes taxes comprises le cas échéant. Les frais de livraison sont précisés lors du
+              Les prix sont indiqués en dinars tunisiens (TND), toutes taxes comprises le cas échéant. Les frais de livraison sont précisés lors du
               passage de commande et avant validation.
             </Typography>
           </section>

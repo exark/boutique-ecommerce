@@ -34,6 +34,7 @@ import {
 } from '@mui/icons-material';
 import { useDebounce } from '../hooks/useDebounce';
 import './SearchFilters.css';
+import { formatPrice } from '../utils/currency';
 
 export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = false, selectedCategories = [] }) {
   // Fonction pour charger les filtres depuis localStorage
@@ -407,7 +408,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                   <LocalOfferIcon sx={{ fontSize: 16, color: '#667eea' }} />
                   <Typography variant="body2" sx={{ fontWeight: 600, color: '#1a1a1a', fontSize: '0.85rem' }}>
-                    Prix: {priceRange[0]}€ - {priceRange[1]}€
+                    Prix: {formatPrice(priceRange[0], { minimumFractionDigits: 0, maximumFractionDigits: 0 })} - {formatPrice(priceRange[1], { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </Typography>
                 </Box>
                 <Slider
@@ -588,7 +589,7 @@ export default function SearchFilters({ onFiltersChange, produits, alwaysOpen = 
               {/* Prix mobile */}
               <Box sx={{ background: 'rgba(255, 255, 255, 0.9)', border: '1px solid rgba(224, 224, 224, 0.5)', borderRadius: '8px', padding: '12px' }}>
                 <Typography variant="body2" sx={{ fontWeight: 600, marginBottom: 1, fontSize: '0.85rem' }}>
-                  Prix: {priceRange[0]}€ - {priceRange[1]}€
+                  Prix: {formatPrice(priceRange[0], { minimumFractionDigits: 0, maximumFractionDigits: 0 })} - {formatPrice(priceRange[1], { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </Typography>
                 <Slider
                   value={priceRange}

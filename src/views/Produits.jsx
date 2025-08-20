@@ -13,6 +13,7 @@ import MultiImageCard from '../components/MultiImageCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/material/styles';
+import { formatPrice } from '../utils/currency';
 
 export default function Produits() {
   const { addToCart } = useCart();
@@ -1255,14 +1256,14 @@ export default function Produits() {
                                   fontSize: '0.8rem',
                                   fontWeight: 500,
                                   flexShrink: 0
-                                }}>{produit.prix.toFixed(2)} €</Typography>
+                                }}>{formatPrice(produit.prix)}</Typography>
                               </div>
                             ) : (
                               /* Mode 1-2 colonnes : layout classique */
                               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1, minWidth: 0 }}>
                                   <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '1.08rem', mb: 0.5, wordBreak: 'break-word' }}>{produit.nom}</Typography>
-                                  <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
+                                  <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{formatPrice(produit.prix)}</Typography>
                                 </div>
                                 {effectiveColumns === 2 && (
                                   <Button
@@ -1312,7 +1313,7 @@ export default function Produits() {
                         ) : (
                           <>
                             <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '1.08rem', mb: 0.5 }}>{produit.nom}</Typography>
-                            <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{produit.prix.toFixed(2)} €</Typography>
+                            <Typography variant="body2" sx={{ color: '#888', fontSize: '0.98rem', mb: 1 }}>{formatPrice(produit.prix)}</Typography>
                           </>
                         )}
                        </CardContent>

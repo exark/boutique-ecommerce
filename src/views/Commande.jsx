@@ -25,6 +25,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import OptimizedImage from '../components/OptimizedImage';
 import './Commande.css';
+import { formatPrice } from '../utils/currency';
 
 export default function Commande() {
   const { cart, clearCart } = useCart();
@@ -162,13 +163,13 @@ export default function Commande() {
     msg += `📦 *DÉTAILS DE LA COMMANDE*%0A`;
     cart.forEach(item => {
       const sizeInfo = item.selectedSize ? ` (Taille: ${item.selectedSize})` : '';
-      msg += `• ${item.nom}${sizeInfo} x${item.quantity} : ${(item.prix * item.quantity).toFixed(2)} €%0A`;
+      msg += `• ${item.nom}${sizeInfo} x${item.quantity} : ${formatPrice(item.prix * item.quantity)}%0A`;
     });
     
     msg += `%0A💰 *RÉSUMÉ FINANCIER*%0A`;
-    msg += `Sous-total: ${subtotal.toFixed(2)} €%0A`;
-    if (shipping > 0) msg += `Livraison: ${shipping.toFixed(2)} €%0A`;
-    msg += `*Total: ${total.toFixed(2)} €*%0A%0A`;
+    msg += `Sous-total: ${formatPrice(subtotal)}%0A`;
+    if (shipping > 0) msg += `Livraison: ${formatPrice(shipping)}%0A`;
+    msg += `*Total: ${formatPrice(total)}*%0A%0A`;
     
     msg += `🚚 *LIVRAISON*%0A`;
     msg += `Mode: ${livraison === 'domicile' ? 'Livraison à domicile' : 'Retrait en magasin'}%0A%0A`;
@@ -304,7 +305,7 @@ export default function Commande() {
                   onChange={(e) => setLivraison(e.target.value)}
                   label="Mode de livraison"
                 >
-                  <MenuItem value="domicile">Livraison à domicile ({shipping > 0 ? `${shipping.toFixed(2)} €` : 'Gratuite'})</MenuItem>
+                  <MenuItem value="domicile">Livraison à domicile ({shipping > 0 ? formatPrice(shipping) : 'Gratuite'})</MenuItem>
                   <MenuItem value="magasin">Retrait en magasin (Gratuit)</MenuItem>
                 </Select>
               </FormControl>
@@ -425,7 +426,7 @@ export default function Commande() {
                       </Typography>
                     </div>
                     <Typography variant="body1" className="summary-item__price">
-                      {(item.prix * item.quantity).toFixed(2)} €
+                      {formatPrice(item.prix * item.quantity)}
                     </Typography>
                   </div>
                 ))}
@@ -436,13 +437,13 @@ export default function Commande() {
               <div className="summary-details">
                 <div className="summary-row">
                   <Typography>Sous-total</Typography>
-                  <Typography>{subtotal.toFixed(2)} €</Typography>
+                  <Typography>{formatPrice(subtotal)}</Typography>
                 </div>
                 
                 <div className="summary-row">
                   <Typography>Livraison</Typography>
                   <Typography>
-                    {livraison === 'magasin' ? 'Gratuit' : shipping === 0 ? 'Gratuit' : `${shipping.toFixed(2)} €`}
+                    {livraison === 'magasin' ? 'Gratuit' : shipping === 0 ? 'Gratuit' : formatPrice(shipping)}
                   </Typography>
                 </div>
 
@@ -451,7 +452,7 @@ export default function Commande() {
                 <div className="summary-row total">
                   <Typography variant="h6">Total</Typography>
                   <Typography variant="h6">
-                    {livraison === 'magasin' ? subtotal.toFixed(2) : total.toFixed(2)} €
+                    {formatPrice(livraison === 'magasin' ? subtotal : total)}
                   </Typography>
                 </div>
               </div>

@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ProductImageGallery from '../components/ProductImageGallery';
 import SizeSelectionModal from '../components/SizeSelectionModal';
 import OptimizedImage from '../components/OptimizedImage';
+import { formatPrice } from '../utils/currency';
 
 export default function ProduitDetail() {
   const { id } = useParams();
@@ -85,7 +86,7 @@ export default function ProduitDetail() {
       p.categorie !== currentProduct.categorie
     );
     
-    // Priorité 3: Prix similaire (±20€)
+    // Priorité 3: Prix similaire (±20 TND)
     const similarPrice = produits.filter(p => 
       p.id !== currentProduct.id &&
       Math.abs(p.prix - currentProduct.prix) <= 20 &&
@@ -192,7 +193,7 @@ export default function ProduitDetail() {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  {produit.prix.toFixed(2)} €
+                  {formatPrice(produit.prix)}
                 </motion.div>
                 <Button
                   variant="contained"
@@ -272,7 +273,7 @@ export default function ProduitDetail() {
                     <h4 className="similar-product-name">{product.nom}</h4>
                     <p className="similar-product-category">{product.categorie}</p>
                     <div className="similar-product-price">
-                      {product.prix.toFixed(2)} €
+                      {formatPrice(product.prix)}
                     </div>
                   </div>
                 </motion.div>

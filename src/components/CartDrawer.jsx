@@ -7,6 +7,7 @@ import { useCart } from '../cartContext';
 import { useNavigate } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 import './CartDrawer.css';
+import { formatPrice } from '../utils/currency';
 
 export default function CartDrawer({ open, onClose }) {
   const { cart, removeFromCart } = useCart();
@@ -51,7 +52,7 @@ export default function CartDrawer({ open, onClose }) {
                         />
                       )}
                       <Typography variant="body2" color="text.secondary" className="cart-drawer__item-price">
-                        {item.quantity} x {item.prix.toFixed(2)} €
+                        {item.quantity} x {formatPrice(item.prix)}
                       </Typography>
                     </div>
                     <Button 
@@ -68,13 +69,13 @@ export default function CartDrawer({ open, onClose }) {
               
               <div className="cart-drawer__summary">
                 <Typography variant="body1" className="cart-drawer__subtotal">
-                  Sous-total : {total.toFixed(2)} €
+                  Sous-total : {formatPrice(total)}
                 </Typography>
                 <Typography variant="body2" className="cart-drawer__shipping">
-                  Livraison : {total > 50 ? 'Gratuite' : '5.99 €'}
+                  Livraison : {total > 50 ? 'Gratuite' : formatPrice(5.99)}
                 </Typography>
                 <Typography variant="h6" className="cart-drawer__total">
-                  Total : {total > 50 ? total.toFixed(2) : (total + 5.99).toFixed(2)} €
+                  Total : {formatPrice(total > 50 ? total : total + 5.99)}
                 </Typography>
               </div>
             </>
