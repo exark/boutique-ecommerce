@@ -62,7 +62,7 @@ export default function Footer() {
           <div className="footer__contact">
             <div className="footer__contact-item">
               <PhoneIcon />
-              <span>52 349 234</span>
+              <span>+216 52 349 234</span>
             </div>
             <div className="footer__contact-item">
               <EmailIcon />
