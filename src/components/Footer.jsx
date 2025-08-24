@@ -62,7 +62,13 @@ export default function Footer() {
           <div className="footer__contact">
             <div className="footer__contact-item">
               <PhoneIcon />
-              <span>+216 52 349 234</span>
+              <a
+                href="tel:+21652349234"
+                aria-label="Appeler +216 52 349 234"
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                +216 52 349 234
+              </a>
             </div>
             <div className="footer__contact-item">
               <EmailIcon />

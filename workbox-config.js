@@ -1,12 +1,16 @@
 module.exports = {
   globDirectory: 'dist/',
+  // Do not precache HTML to avoid serving stale index.html
   globPatterns: [
-    '**/*.{html,js,css,png,jpg,jpeg,svg,webp,avif,woff,woff2}'
+    '**/*.{js,css,png,jpg,jpeg,svg,webp,avif,woff,woff2}'
   ],
   swDest: 'dist/sw.js',
   skipWaiting: true,
   clientsClaim: true,
   cleanupOutdatedCaches: true,
+  // SPA navigation fallback; exclude static assets
+  navigateFallback: 'index.html',
+  navigateFallbackDenylist: [/^\/assets\//, /^\/images\//, /favicon\.ico$/, /manifest\.json$/],
   
   // Runtime caching strategies
   runtimeCaching: [
@@ -93,10 +97,7 @@ module.exports = {
   manifestTransforms: [
     (manifestEntries) => {
       const manifest = manifestEntries.map((entry) => {
-        // Add cache busting to critical resources
-        if (entry.url.includes('index.html')) {
-          entry.revision = Date.now().toString();
-        }
+        // Optionally customize revisions here
         return entry;
       });
       return { manifest };

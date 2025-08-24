@@ -22,7 +22,16 @@ export default defineConfig({
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,avif}'],
+        // Do not precache HTML to avoid serving stale index.html
+        globPatterns: ['**/*.{js,css,ico,png,jpg,jpeg,svg,webp,avif}'],
+        // SPA navigation fallback (network-first under the hood by Workbox)
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [
+          /^\/assets\//,
+          /^\/images\//,
+          /favicon\.ico$/,
+          /manifest\.json$/
+        ],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB limit
         runtimeCaching: [
           {
