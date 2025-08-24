@@ -181,7 +181,7 @@ export default function Commande() {
       msg += `%0A📝 *COMMENTAIRES*%0A${formData.commentaires}%0A`;
     }
     
-    const whatsappNumber = '21695495874';
+    const whatsappNumber = '21652349234';
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${msg}`;
     
     // Ouvrir WhatsApp
