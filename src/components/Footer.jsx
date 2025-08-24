@@ -61,12 +61,8 @@ export default function Footer() {
           <h3 className="footer__title">Contact</h3>
           <div className="footer__contact">
             <div className="footer__contact-item">
-              <LocationOnIcon />
-              <span>123 Rue de la Mode<br />75001 Paris, France</span>
-            </div>
-            <div className="footer__contact-item">
               <PhoneIcon />
-              <span>+33 1 23 45 67 89</span>
+              <span>52 349 234</span>
             </div>
             <div className="footer__contact-item">
               <EmailIcon />
