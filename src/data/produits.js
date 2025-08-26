@@ -12,15 +12,13 @@ const produits = [
       'bbqurwk'
     ],
     description: 'Produit élégant et confortable, parfait pour toutes les occasions.',
-    matiere: 'Viscose',
-    couleur: 'Blanc cassé',
+    matiere: 'Crochet',
+    couleur: '\"Blanc cassé',
     tailles: [
-      { taille: 'XS', stock: 3 },
-      { taille: 'S', stock: 7 },
-      { taille: 'M', stock: 4 }
+      { taille: 'XL', stock: 3 }
     ],
-    disponibilite: 'En stock',
-    nouveaute: true
+    disponibilite: '7',
+    nouveaute: false
   },
 
   {
@@ -33,58 +31,37 @@ const produits = [
       '3LYnlYV'
     ],
     description: 'Produit élégant et confortable, parfait pour toutes les occasions.',
-    matiere: 'Denim',
-    couleur: 'Bleu clair',
+    matiere: 'Crochet',
+    couleur: '\"marron',
     tailles: [
-      { taille: 'S', stock: 2 },
-      { taille: 'M', stock: 6 },
-      { taille: 'L', stock: 4 },
-      { taille: 'XL', stock: 1 }
+      { taille: 'S', stock: 1 },
+      { taille: 'M', stock: 2 },
+      { taille: 'L', stock: 6 },
+      { taille: 'XL', stock: 4 }
     ],
-    disponibilite: 'En stock',
-    nouveaute: true
-  },
-
-  {
-    id: 4,
-    nom: 'Veste en jean',
-    categorie: 'Sac',
-    prix: 75,
-    image: 'd2pA79w',
-    images: [
-      'd2pA79w'
-    ],
-    description: 'Produit élégant et confortable, parfait pour toutes les occasions.',
-    matiere: 'Denim',
-    couleur: 'Bleu',
-    tailles: [
-      { taille: 'M', stock: 3 },
-      { taille: 'L', stock: 1 }
-    ],
-    disponibilite: 'Stock limité',
-    nouveaute: true
+    disponibilite: '1',
+    nouveaute: false
   },
 
   {
     id: 5,
     nom: 'T-shirt basique',
     categorie: 'Tote bag',
-    prix: 10.96,
+    prix: 65,
     image: 'bbqurwk',
     images: [
       'bbqurwk'
     ],
     description: 'Produit élégant et confortable, parfait pour toutes les occasions.',
-    matiere: 'Coton',
-    couleur: 'Blanc',
+    matiere: 'Crochet',
+    couleur: '\"Blanc',
     tailles: [
-      { taille: 'XS', stock: 8 },
-      { taille: 'S', stock: 12 },
-      { taille: 'M', stock: 15 },
-      { taille: 'L', stock: 10 },
-      { taille: 'XL', stock: 6 }
+      { taille: 'S', stock: 8 },
+      { taille: 'M', stock: 12 },
+      { taille: 'L', stock: 15 },
+      { taille: 'XL', stock: 10 }
     ],
-    disponibilite: 'En stock',
+    disponibilite: '6',
     nouveaute: false
   }
 ];
