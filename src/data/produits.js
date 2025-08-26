@@ -5,11 +5,11 @@ const produits = [
     nom: 'crop top orange',
     categorie: 'Crop Top',
     prix: 60,
-    image: 'sA8yYui',
+    image: 'evbzcY1',
     images: [
-      'sA8yYui',
-      '3LYnlYV',
-      'bbqurwk'
+      'evbzcY1',
+      '8oEN24S',
+      'hKU5SIV'
     ],
     description: 'Produit élégant et confortable, parfait pour toutes les occasions.',
     matiere: 'Crochet',
