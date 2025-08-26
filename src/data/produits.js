@@ -2,7 +2,7 @@ const produits = [
 
   {
     id: 2,
-    nom: 'crop top orange',
+    nom: 'crop top',
     categorie: 'Crop Top',
     prix: 60,
     image: 'evbzcY1',
